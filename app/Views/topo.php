@@ -17,7 +17,7 @@
                             <a class="nav-link dropdown-toggle li-a-artcor" data-bs-toggle="dropdown" role="button">Cadastro</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/UsuariosController">Usuários</a></li>
-                                <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EditoriasController">Editorias</a></li>
+                                <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Espectador</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">

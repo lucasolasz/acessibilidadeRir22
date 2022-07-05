@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS `tb_condicao` (
   UNIQUE KEY `id_condicao` (`id_condicao`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
+INSERT INTO `tb_condicao` (`id_condicao`, `ds_condicao`) VALUES
+	(1, 'PCD'),
+	(2, 'Mobilidade reduzida temporária'),
+	(3, 'Gestante'),
+	(4, 'Idoso');
+
 
 CREATE TABLE IF NOT EXISTS `tb_tipo_deficiencia` (
   `id_tipo_deficiencia` int(2) unsigned NOT NULL AUTO_INCREMENT,

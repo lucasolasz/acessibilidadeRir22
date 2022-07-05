@@ -13,6 +13,17 @@ h5{
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #E62E49;
 }
 
+input[type="checkbox"]:checked{
+  background-color: red;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #E62E49;
+}
+
+input[type="radio"]:checked{
+  background-color: red;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #E62E49;
+}
+
+
 .card{
   box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.75);
   /* background-color: black; */
