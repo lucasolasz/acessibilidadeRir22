@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <h1 class="my-5"><?= APP_NOME ?></h1>
-            <p>Painel administrativo do Portal ArteCult</p>
+            <p>Painel de gerenciamento de cadastros da área de acessibilidade do Rock In Rio 2022</p>
         </div>
 
         <div class="col-md-6 text-center">

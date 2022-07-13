@@ -24,10 +24,13 @@ CREATE TABLE IF NOT EXISTS `tb_condicao` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 INSERT INTO `tb_condicao` (`id_condicao`, `ds_condicao`) VALUES
-	(1, 'PCD'),
+	(1, 'PNE'),
 	(2, 'Mobilidade reduzida temporária'),
 	(3, 'Gestante'),
-	(4, 'Idoso');
+	(4, 'Idoso'),
+  (5, 'Lactante'),
+	(6, 'Obeso');
+
 
 
 CREATE TABLE IF NOT EXISTS `tb_tipo_deficiencia` (
@@ -41,8 +44,7 @@ INSERT INTO `tb_tipo_deficiencia` (`id_tipo_deficiencia`, `ds_tipo_deficiencia`)
 	(1, 'Fisica'),
 	(2, 'Visual'),
 	(3, 'Auditiva'),
-	(4, 'Intelectual');
-
+	(4, 'Intelectual')
 
 CREATE TABLE IF NOT EXISTS `tb_acompanhante` (
   `id_acompanhante` int(4) unsigned NOT NULL AUTO_INCREMENT,
@@ -50,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `tb_acompanhante` (
   `ds_documento_acompanhante` varchar(20) DEFAULT NULL,
   `tel_acompanhante` varchar(20) DEFAULT NULL,
   `chk_menor_idade` char(1) DEFAULT NULL,
-  `qtd_menor_idade` int(2) DEFAULT NULL, 
+  `qtd_menor_idade` varchar(2) DEFAULT NULL, 
   PRIMARY KEY (`id_acompanhante`),
   UNIQUE KEY `id_acompanhante` (`id_acompanhante`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
@@ -112,3 +114,16 @@ CREATE TABLE IF NOT EXISTS `tb_espectador` (
   CONSTRAINT `fk_cadeira_rodas_tb_espectador` FOREIGN KEY (`fk_cadeira_rodas`) REFERENCES `tb_cadeira_rodas` (`id_cadeira_rodas`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
+
+
+CREATE TABLE IF NOT EXISTS `tb_anexo`(
+    `id_anexo` int(4) unsigned NOT NULL AUTO_INCREMENT,
+    `fk_espectador` int(4) unsigned DEFAULT NULL,
+    `nm_path_arquivo` varchar(300) DEFAULT NULL,
+    `nm_arquivo` varchar(300) DEFAULT NULL,
+    `fk_usuario` int(4) unsigned DEFAULT NULL,
+    `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id_anexo`),
+    KEY `fk_espectador_tb_espectador` (`fk_espectador`),
+    CONSTRAINT `fk_espectador_tb_anexo` FOREIGN KEY (`fk_espectador`) REFERENCES `tb_espectador` (`id_espectador`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
