@@ -18,7 +18,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Nome</th>
+                            <th scope="col">Espectador</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -39,9 +39,9 @@
                             <tr>
                                 <td><?= ucfirst($espectador->ds_nome_espectador) ?></td>
 
-                                <td><a href="<?= URL . '/EspectadorController/editar/' . $editorias->id_editoria ?>" class="btn btn-artcor"><i class="bi bi-pencil-square"></i></a></td>
+                                <td><a href="<?= URL . '/EspectadorController/editar/' . $espectador->id_espectador ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
                                 <td>
-                                    <form action="<?= URL . '/EspectadorController/deletar/' . $editorias->id_editoria ?>" method="POST">
+                                    <form action="<?= URL . '/EspectadorController/deletar/' . $espectador->id_espectador ?>" method="POST">
                                         <button type="submit" class="btn btn-danger"><span><i class="bi bi-trash-fill"></i></span></button>
                                     </form>
                                 </td>

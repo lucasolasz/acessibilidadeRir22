@@ -1,49 +1,52 @@
 //Somente habilita o campo quando o perfil do usuario for colaborador
-function disableTipoDeficienciaEAcompanhante(id) {
+function disableTipoDeficiencia(id_condicao) {
 
-    $(".tipoDeficiencia").prop('disabled', true);
+    $("#divTipoDeficiencia").hide(200);
 
-    if (id == 1) {
-        $(".tipoDeficiencia").prop('disabled', false);
-    }
-
-    $(".chkAcompanhante").prop('disabled', true);
-    if (id == 1 || id == 2) {
-        $(".chkAcompanhante").prop('disabled', false);
+    if (id_condicao == 1) {
+        $("#divTipoDeficiencia").show(200);
     }
 }
 
-function disableAcompanhante(acompanhante) {
-    $("#txtNomeAcompanhante").prop('disabled', true);
-    $("#txtDocumentoAcompanhante").prop('disabled', true);
-    $("#txtTelefoneAcompanhante").prop('disabled', true);
-    $(".chkAcompanhanteMenor").prop('disabled', true);
 
-    if (acompanhante == "S") {
-        $("#txtNomeAcompanhante").prop('disabled', false);
-        $("#txtDocumentoAcompanhante").prop('disabled', false);
-        $("#txtTelefoneAcompanhante").prop('disabled', false);
-        $(".chkAcompanhanteMenor").prop('disabled', false);
+function disableAcompanhante(id_condicao) {
+
+    $("#divAcompanhante").hide(200);
+
+    if (id_condicao == 1 || id_condicao == 2) {
+        $("#divAcompanhante").show(200);
     }
+
 }
+
+function disableAcompanhanteItens(chk_acompanhante) {
+
+    $("#divAcompanhanteItens").hide(200);
+
+    if (chk_acompanhante == 'S') {
+        $("#divAcompanhanteItens").show(200);
+    }
+
+}
+
 
 function disableQuantidadeMenores(acompanhanteMenor) {
-    $("#txtQuantidadeMenor").prop('disabled', true);
+
+    $("#divQtmenores").hide(200);
 
     if (acompanhanteMenor == "S") {
-        $("#txtQuantidadeMenor").prop('disabled', false);
+
+        $("#divQtmenores").show(200);
     }
 
 }
 
-function disableCadeiraRodas(servicos) {
+function disableCadeiraRodas(chk_servicos) {
 
-    $("#cboCadeiraDerodas").prop('disabled', true);
-    $("#fileTermoAdesao").prop('disabled', true);
+    $("#divCadeiraRodas").hide(200);
 
-    if (servicos == 4) {
-        $("#cboCadeiraDerodas").prop('disabled', false);
-        $("#fileTermoAdesao").prop('disabled', false);
+    if (chk_servicos == 4) {
+        $("#divCadeiraRodas").show(200);
 
     }
 
@@ -51,9 +54,10 @@ function disableCadeiraRodas(servicos) {
 
 function disableGuardaVolumes(servicos) {
 
-    $(".chkGuardaVolume").prop('disabled', true);
+    $("#divGuardaVolumes").hide(200);
 
-    if (servicos == 5) {
-        $(".chkGuardaVolume").prop('disabled', false);
+    if (chk_servicos == 5) {
+        $("#divGuardaVolumes").show(200);
+
     }
 }

@@ -12,13 +12,14 @@ class Upload
     private $nome;
     private $pasta;
     private $path;
+    private $pathDefault;
 
     public function getResultado(): string
     {
         return $this->resultado;
     }
 
-    public function getErro(): string
+    public function getErro()
     {
         return $this->erro;
     }
@@ -26,6 +27,12 @@ class Upload
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    //Esse get foi para pegar a primeira pasta criada por padrao. Neste caso é uploads
+    public function getPathDefault(): string
+    {
+        return $this->pathDefault;
     }
 
 
@@ -36,6 +43,10 @@ class Upload
         $this->diretorio = $diretorio ? $diretorio : 'uploads';
         if (!file_exists($this->diretorio) && !is_dir($this->diretorio)) {
             mkdir($this->diretorio, 0777);
+            $diretorioDefault = $this->diretorio;
+            $this->pathDefault = $diretorioDefault;
+        }else{
+            $this->pathDefault = $this->diretorio;
         }
     }
 
@@ -48,8 +59,8 @@ class Upload
         //Posso receber um nome opcional para imagem. Caso contrário, será o próprio nome do arquivo
         $this->nome = $nome ? $nome : pathinfo($this->arquivo['name'], PATHINFO_FILENAME);
         $this->pasta = $pasta ? $pasta : 'imagens';
-        //Escolher o tamanho padrão de upload é 1MB
-        $this->tamanho = $tamanho ? $tamanho : 1;
+        //Escolher o tamanho padrão de upload é 10MB
+        $this->tamanho = $tamanho ? $tamanho : 10;
         //Recebe diretório Padrão
         $this->path = $this->diretorio . DIRECTORY_SEPARATOR . $this->pasta;
 
@@ -57,7 +68,8 @@ class Upload
 
         $extensoesValidas = [
             'png',
-            'jpg'
+            'jpg',
+            'jpeg'
         ];
 
         $tiposValidos = [
@@ -88,7 +100,7 @@ class Upload
         if (file_exists($this->diretorio . DIRECTORY_SEPARATOR . $this->pasta . DIRECTORY_SEPARATOR . $arquivo)) {
             $arquivo = $this->nome . '_' . uniqid() . strrchr($this->arquivo['name'], '.');
         } else {
-            $arquivo = $_SESSION['id_usuario'] . '_' . uniqid() . '_' . $this->nome . strrchr($this->arquivo['name'], '.');
+            $arquivo = $this->nome . '_' . uniqid() . strrchr($this->arquivo['name'], '.');
         }
         $this->nome = $arquivo;
     }
@@ -114,10 +126,18 @@ class Upload
         }
     }
 
-    public function deletarArquivo($arquivo)
+    public function deletarArquivo($arquivo_nome = null, $arquivo_path = null)
     {
-        //String com o caminho + nome_arquivo
-        $diretorio = ($this->diretorio . DIRECTORY_SEPARATOR . $this->pasta . DIRECTORY_SEPARATOR . $arquivo);
+        
+        //Somente nome arquivo
+        if(!$arquivo_nome == NULL){
+            $diretorio = ($this->diretorio . DIRECTORY_SEPARATOR . $this->pasta . DIRECTORY_SEPARATOR . $arquivo_nome);
+        }
+
+         //String com o caminho + nome_arquivo
+        if(!$arquivo_path == NULL){
+            $diretorio = $arquivo_path;
+        }        
 
         if (file_exists($diretorio)) {
 

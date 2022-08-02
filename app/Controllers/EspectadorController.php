@@ -39,132 +39,71 @@ class EspectadorController extends Controller
         if (isset($formulario)) {
 
             // var_dump($formulario);
+            // exit();
 
             $dados = [
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
                 'txtDocumento' => trim($formulario['txtDocumento']),
                 'txtIdade' => trim($formulario['txtIdade']),
                 'txtTelefone' => trim($formulario['txtTelefone']),
-                'acessoServico' => $acessoServico,
                 'chkKitLivre' => $formulario['chkKitLivre'],
+                'chkAcompanhante' => $formulario['chkAcompanhante'],
+                'txtNomeAcompanhante' => $formulario['txtNomeAcompanhante'],
+                'txtDocumentoAcompanhante' => $formulario['txtDocumentoAcompanhante'],
+                'txtTelefoneAcompanhante' => $formulario['txtTelefoneAcompanhante'],
+                'chkAcompanhanteMenor' => $formulario['chkAcompanhanteMenor'],
+                'txtQuantidadeMenor' => $formulario['txtQuantidadeMenor'],
+                // 'cboCadeiraDerodas' => $formulario['cboCadeiraDerodas'],
+                'acessoServico' => $acessoServico,
                 'tipoDeficiencia' => $tipoDeficiencia,
                 'guardaVolumes' => $guardaVolumes,
                 'condicao' => $condicao,
-                'cadeiraDeRodas' => $cadeiraDeRodas,
-                'outrosDados' => $formulario,
+                'cadeiraDeRodas' => $cadeiraDeRodas
             ];
 
-
-            //Todos estes issets foram necessários, pois são os campos disabled
-            if (isset($_FILES['fileTermoAdesao'])) {
-                $dados['arquivo'] = $_FILES['fileTermoAdesao'];
-            }else{
-                $dados['arquivo'] = "";
-            }
-
-            if (isset($formulario['radioCondicao'])) {
-                $dados['radioCondicao'] = $formulario['radioCondicao'];
-            } else {
-                $dados['radioCondicao'] = NULL;
-            }
-
-            if (isset($formulario['chkAcompanhante'])) {
-                $dados['chkAcompanhante'] = $formulario['chkAcompanhante'];
-            }else{
-                $dados['chkAcompanhante'] = 'N';
-            }
-
-            if (isset($formulario['txtNomeAcompanhante'])) {
-                $dados['txtNomeAcompanhante'] = $formulario['txtNomeAcompanhante'];
-            }else {
-                $dados['txtNomeAcompanhante'] = "";
-            }
-
-            if (isset($formulario['txtDocumentoAcompanhante'])) {
-                $dados['txtDocumentoAcompanhante'] = $formulario['txtDocumentoAcompanhante'];
-            }else{
-                $dados['txtDocumentoAcompanhante'] = "";
-            }
-
-            if (isset($formulario['txtTelefoneAcompanhante'])) {
-                $dados['txtTelefoneAcompanhante'] = $formulario['txtTelefoneAcompanhante'];
-            } else{
-                $dados['txtTelefoneAcompanhante'] = "";
-            }
-
-            if (isset($formulario['chkAcompanhanteMenor'])) {
-                $dados['chkAcompanhanteMenor'] = $formulario['chkAcompanhanteMenor'];
-            } else{
-                $dados['chkAcompanhanteMenor'] = 'N';
-            }
-
-            if (isset($formulario['txtQuantidadeMenor'])) {
-                $dados['txtQuantidadeMenor'] = $formulario['txtQuantidadeMenor'];
-            } else {
-                $dados['txtQuantidadeMenor'] = '';
-            }
-
-            if (isset($formulario['cboCadeiraDerodas'])) {
-                $dados['cboCadeiraDerodas'] = $formulario['cboCadeiraDerodas'];
-            }else{
-                $dados['cboCadeiraDerodas'] = NULL;
-            }
+            $dados['cboCadeiraDerodas'] = !$formulario['cboCadeiraDerodas'] == "" ? $formulario['cboCadeiraDerodas'] : NULL;
+            $dados['chkAcessoServico'] = isset($formulario['chkAcessoServico']) ? $formulario['chkAcessoServico'] : "";
+            $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
+            $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
+            $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
+            $dados['fileTermoAdesao'] = isset($_FILES['fileTermoAdesao']) ? $_FILES['fileTermoAdesao'] : "";
 
             // var_dump($dados);
             // echo "<br>";
             // exit();
 
-            if (empty($formulario['txtNomeEspectador'])) {
-                $dados['nome_espectador_erro'] = "Preencha um nome";
+            if ($this->espectadorModel->armazenarEspectador($dados)) {
+
+                Alertas::mensagem('espectador', 'Espectador cadastrado com sucesso');
+                Redirecionamento::redirecionar('EspectadorController');
             } else {
-                //Invoca método estatico da classe 
-                if ($this->espectadorModel->existeEspectador($dados)) {
-                    $dados['documento_erro'] = "Já existe Espectador cadastrado com esse documento";
-                } else {
-
-                    if ($this->espectadorModel->armazenarEspectador($dados)) {
-
-                        Alertas::mensagem('espectador', 'Espectador cadastrado com sucesso');
-                        Redirecionamento::redirecionar('EspectadorController');
-                    } else {
-                        Alertas::mensagem('espectador', 'Não foi possível cadastrar o espectador', 'alert alert-danger');
-                        Redirecionamento::redirecionar('EspectadorController');
-                    }
-                }
+                Alertas::mensagem('espectador', 'Não foi possível cadastrar o espectador', 'alert alert-danger');
+                Redirecionamento::redirecionar('EspectadorController');
             }
+            
         } else {
 
             $dados = [
-                'txtNomeEspectador' => '',
-                'nome_espectador_erro' => '',
-                'txtDocumento' => '',
-                'documento_erro' => '',
-                'txtIdade' => '',
-                'idade_erro' => '',
-                'txtTelefone' => '',
-                'telefone_erro' => '',
+                'txtNomeEspectador' => '',                
+                'txtDocumento' => '',                
+                'txtIdade' => '',                
+                'txtTelefone' => '',                
                 'radioCondicao' => '',
                 'condicao' => $condicao,
                 'acessoServico' => $acessoServico,
                 'chkKitLivre' => '',
                 'tipoDeficiencia' => $tipoDeficiencia,
                 'chkAcompanhante' => '',
-                'txtNomeAcompanhante' => '',
-                'nome_acompanhante_erro' => '',
-                'txtDocumentoAcompanhante' => '',
-                'documento_acompanhante_erro' => '',
-                'txtTelefoneAcompanhante' => '',
-                'telefone_acompanhante_erro' => '',
+                'txtNomeAcompanhante' => '',                
+                'txtDocumentoAcompanhante' => '',                
+                'txtTelefoneAcompanhante' => '',                
                 'chkAcompanhanteMenor' => '',
-                'txtQuantidadeMenor' => '',
-                'quantidade_menor_erro' => '',
-                'cadeiraDeRodas' => $cadeiraDeRodas,
-                'cadeira_de_rodas_erro' => '',
+                'txtQuantidadeMenor' => '',                
+                'cadeiraDeRodas' => $cadeiraDeRodas,                
                 'chkGuardaVolume' => '',
                 'guardaVolumes' => $guardaVolumes
             ];
         }
-
 
         //Retorna para a view
         $this->view('espectador/cadastrar', $dados);
