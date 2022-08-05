@@ -6,7 +6,7 @@
 
         <div class="artcor card-header">
 
-            <h5>Espectador
+            <h5 class="tituloIndex">Espectador
                 <div style="float: right;">
                     <a href="<?= URL ?>/EspectadorController/cadastrar" class="btn btn-artcor">Novo Espectador</a>
                 </div>

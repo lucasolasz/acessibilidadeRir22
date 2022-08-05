@@ -6,7 +6,7 @@
 
         <div class="artcor card-header">
 
-            <h5>Usuários
+            <h5 class="tituloIndex">Usuários
                 <div style="float: right;">
                     <a href="<?= URL ?>/UsuariosController/cadastrar" class="btn btn-artcor">Novo Usuário</a>
                 </div>
