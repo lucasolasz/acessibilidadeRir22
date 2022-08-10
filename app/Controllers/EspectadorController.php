@@ -70,7 +70,7 @@ class EspectadorController extends Controller
             if ($this->espectadorModel->armazenarEspectador($dados)) {
 
                 Alertas::mensagem('espectador', 'Espectador cadastrado com sucesso');
-                Redirecionamento::redirecionar('EspectadorController');
+                Redirecionamento::redirecionar('EspectadorController/index');
             } else {
                 Alertas::mensagem('espectador', 'Não foi possível cadastrar o espectador', 'alert alert-danger');
                 Redirecionamento::redirecionar('EspectadorController');
