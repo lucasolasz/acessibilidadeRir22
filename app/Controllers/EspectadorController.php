@@ -19,7 +19,8 @@ class EspectadorController extends Controller
     public function index()
     {
         $dados = [
-            'espectador' =>  $this->espectadorModel->visualizarEspectador()
+            'espectador' =>  $this->espectadorModel->visualizarEspectador(),
+            'acessoServico' => $this->espectadorModel->lerAcessoServico()
         ];
 
         //Retorna para a view

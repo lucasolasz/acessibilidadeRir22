@@ -13,7 +13,10 @@ class Espectador
 
     public function visualizarEspectador()
     {
-        $this->db->query("SELECT * FROM tb_espectador ORDER BY ds_nome_espectador");
+        $this->db->query("SELECT * FROM tb_espectador te 
+        LEFT JOIN tb_condicao tc ON tc.id_condicao = te.fk_condicao
+        LEFT JOIN tb_usuario tu ON tu.id_usuario = te.fk_usuario
+        ORDER BY ds_nome_espectador");
 
         return $this->db->resultados();
     }
@@ -56,7 +59,7 @@ class Espectador
         }
 
         //Insert do espectador
-        $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas) VALUES (:ds_nome_espectador,
+        $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario) VALUES (:ds_nome_espectador,
         :ds_documento_espectador,
         :tel_espectador,
         :idade_espectador,
@@ -64,7 +67,8 @@ class Espectador
         :fk_condicao,
         :chk_acompanhante,
         :fk_acompanhante,
-        :fk_cadeira_rodas)");
+        :fk_cadeira_rodas,
+        :fk_usuario)");
 
         $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
         $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
@@ -75,6 +79,7 @@ class Espectador
         $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
         $this->db->bind("fk_acompanhante", $fk_acompanhante);
         $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
+        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
         if (!$this->db->executa()) {
             $armazenaEspectadorErro = true;
         }

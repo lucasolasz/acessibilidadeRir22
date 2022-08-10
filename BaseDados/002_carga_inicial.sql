@@ -103,15 +103,18 @@ CREATE TABLE IF NOT EXISTS `tb_espectador` (
   `chk_acompanhante` char(1) DEFAULT NULL,
   `fk_acompanhante` int(4) unsigned DEFAULT NULL,
   `fk_cadeira_rodas` int(2) unsigned DEFAULT NULL,
+  `fk_usuario` int(4) unsigned DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_espectador`),
   UNIQUE KEY `id_espectador` (`id_espectador`),
   KEY `fk_condicao_tb_codicao` (`fk_condicao`),
   KEY `fk_acompanhante_tb_condicao` (`fk_acompanhante`),
   KEY `fk_cadeira_rodas_tb_cadeira_rodas` (`fk_cadeira_rodas`),
+  KEY `fk_usuario_tb_usuario` (`fk_usuario`),
   CONSTRAINT `fk_condicao_tb_espectador` FOREIGN KEY (`fk_condicao`) REFERENCES `tb_condicao` (`id_condicao`),
   CONSTRAINT `fk_acompanhante_tb_espectador` FOREIGN KEY (`fk_acompanhante`) REFERENCES `tb_acompanhante` (`id_acompanhante`),
-  CONSTRAINT `fk_cadeira_rodas_tb_espectador` FOREIGN KEY (`fk_cadeira_rodas`) REFERENCES `tb_cadeira_rodas` (`id_cadeira_rodas`)
+  CONSTRAINT `fk_cadeira_rodas_tb_espectador` FOREIGN KEY (`fk_cadeira_rodas`) REFERENCES `tb_cadeira_rodas` (`id_cadeira_rodas`),
+  CONSTRAINT `fk_usuario_tb_espectador` FOREIGN KEY (`fk_usuario`) REFERENCES `tb_usuario` (`id_usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 
