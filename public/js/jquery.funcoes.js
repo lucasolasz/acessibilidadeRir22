@@ -61,3 +61,24 @@ function disableGuardaVolumes(servicos) {
 
     }
 }
+
+function chkAcessoServico(id_condicao) {
+
+    $('#chkAcessoServico3').prop('checked', false);
+    $('#chkAcessoServico2').prop('checked', false);
+    $('#chkAcessoServico1').prop('checked', false);
+
+
+    if (id_condicao == 2 || id_condicao == 3 || id_condicao == 4) {
+
+        $('#chkAcessoServico3').prop('checked', true);
+        $('#chkAcessoServico2').prop('checked', true);
+
+    }
+
+    if (id_condicao == 1){
+
+        $('#chkAcessoServico1').prop('checked', true);
+
+    }
+}

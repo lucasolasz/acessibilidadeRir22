@@ -1,63 +1,91 @@
-<div class="col-xl-4 col-md-6 mx-auto p-5">
+<?php
 
+$fk_condicao = $dados['espectador']->fk_condicao;
+
+$guarda_volumes = false;
+$cadeira_rodas = false;
+
+foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
+
+    if ($relacAcessoServico->fk_acesso_servico == 5) {
+        $guarda_volumes = true;
+    }
+
+    if ($relacAcessoServico->fk_acesso_servico == 4) {
+        $cadeira_rodas = true;
+    }
+}
+
+?>
+
+<div class="col-xl-4 col-md-6 mx-auto p-5">
+    <!-- <pre><?php var_dump($dados['fotoAdesao']); ?></pre> -->
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= URL ?>/EspectadorController">Espectador</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?= $dados['usuario']->ds_nome_usuario ?></li>
+            <li class="breadcrumb-item active" aria-current="page"><?= $dados['espectador']->ds_nome_espectador ?></li>
         </ol>
     </nav>
-
-
     <div class="card">
         <div class="card-body">
-            <h2>Cadastrar Novo Espectador</h2>
-            <small>Preencha o formulário abaixo para cadastrar um novo espectador</small>
+            <h2 class="card-title">Editar Espectador</h2>
+            <small>Preencha o formulário abaixo para editar o espectador</small>
 
-            <form name="cadastrar" method="POST" action="<?= URL ?>/EspectadorController/cadastrar" enctype="multipart/form-data">
+            <form name="editar" method="POST" action="<?= URL . '/EspectadorController/editar/' . $dados['espectador']->id_espectador ?>" enctype="multipart/form-data">
                 <div class="mb-3 mt-3">
                     <label for="txtNomeEspectador" class="form-label">Nome do Espectador: *</label>
-                    <input type="text" class="form-control <?= $dados['nome_espectador_erro'] ? 'is-invalid' : '' ?>" name="txtNomeEspectador" id="txtNomeEspectador" value="<?= $dados['txtNomeEspectador'] ?>">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['nome_espectador_erro'] ?></div>
+                    <input type="text" class="form-control" name="txtNomeEspectador" id="txtNomeEspectador" value="<?= $dados['espectador']->ds_nome_espectador ?>">
                 </div>
                 <div class="mb-3">
                     <label for="txtDocumento" class="form-label">Documento: *</label>
-                    <input type="text" class="form-control <?= $dados['documento_erro'] ? 'is-invalid' : '' ?>" name="txtDocumento" id="txtDocumento" value="<?= $dados['txtDocumento'] ?>" maxlength="11">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['documento_erro'] ?></div>
+                    <input type="text" class="form-control" name="txtDocumento" id="txtDocumento" value="<?= $dados['espectador']->ds_documento_espectador ?>" maxlength="11" placeholder="Somente números">
                 </div>
 
                 <div class="mb-3">
                     <label for="txtIdade" class="form-label">Idade: *</label>
-                    <input type="text" class="form-control <?= $dados['idade_erro'] ? 'is-invalid' : '' ?>" name="txtIdade" id="txtIdade" value="<?= $dados['txtIdade'] ?>">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['idade_erro'] ?></div>
+                    <input type="text" class="form-control" name="txtIdade" id="txtIdade" value="<?= $dados['espectador']->idade_espectador ?>" maxlength="2">
                 </div>
 
                 <div class="mb-3">
                     <label for="txtTelefone" class="form-label">Telefone: *</label>
-                    <input type="text" class="form-control <?= $dados['telefone_erro'] ? 'is-invalid' : '' ?>" name="txtTelefone" id="txtTelefone" value="<?= $dados['txtTelefone'] ?>" pattern="([0-9]{3})" maxlength="11">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['telefone_erro'] ?></div>
+                    <input type="text" class="form-control" name="txtTelefone" id="txtTelefone" value="<?= $dados['espectador']->tel_espectador ?>" maxlength="11" placeholder="Somente números">
                 </div>
 
                 <label for="radioCondicao" class="form-label">Condição: *</label>
-                <?php foreach ($dados['condicao'] as $condicao) { ?>
+                <?php foreach ($dados['condicao'] as $condicao) {
+                    $condicaoChecked = '';
+
+                    if ($dados['espectador']->fk_condicao == $condicao->id_condicao) {
+                        $condicaoChecked = 'checked';
+                    }
+
+                ?>
                     <div class="form-check">
                         <label class="form-check-label" for="radioCondicao">
                             <?= $condicao->ds_condicao ?>
-                            <input class="form-check-input" type="radio" name="radioCondicao" id="radioCondicao<?= $condicao->id_condicao ?>" value="<?= $condicao->id_condicao ?>">
+                            <input class="form-check-input" type="radio" name="radioCondicao" id="radioCondicao<?= $condicao->id_condicao ?>" value="<?= $condicao->id_condicao ?>" <?= $condicaoChecked ?>>
                         </label>
                     </div>
                 <?php } ?>
 
                 <label for="chkAcessoServico" class="form-label mt-3">Acessos / Serviços: *</label>
-                <?php foreach ($dados['acessoServico'] as $acessoServico) { ?>
+                <?php foreach ($dados['acessoServico'] as $acessoServico) {
+
+                    $servicoChk = '';
+
+                    foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
+
+                        if ($relacAcessoServico->fk_acesso_servico == $acessoServico->id_acesso_servico) {
+                            $servicoChk = 'checked';
+                        }
+                    }
+
+                ?>
                     <div class="form-check">
                         <label class="form-check-label" for="chkAcessoServico">
                             <?= $acessoServico->ds_acesso_servico ?>
-                            <input class="form-check-input" type="checkbox" name="chkAcessoServico" id="chkAcessoServico<?= $acessoServico->id_acesso_servico ?>" value="<?= $acessoServico->id_acesso_servico ?>">
+                            <input class="form-check-input" type="checkbox" name="chkAcessoServico[]" id="chkAcessoServico<?= $acessoServico->id_acesso_servico ?>" value="<?= $acessoServico->id_acesso_servico ?>" <?= $servicoChk ?>>
                         </label>
                     </div>
                 <?php } ?>
@@ -67,130 +95,332 @@
                     Interesse no Kit Livre? *
                 </label>
                 <br>
+                <?php
+                $kitlivreS = '';
+                $kitlivreN = '';
+
+                if ($dados['espectador']->chk_kit_livre == 'N') {
+                    $kitlivreN = 'checked';
+                }
+                if ($dados['espectador']->chk_kit_livre == 'S') {
+                    $kitlivreS = 'checked';
+                }
+                ?>
                 <div class="form-check form-check-inline">
                     <label class="form-check-label" for="chkKitLivre">
                         Sim
-                        <input class="form-check-input" type="radio" name="chkKitLivre" id="chkKitLivre" value="S">
+                        <input class="form-check-input" type="radio" name="chkKitLivre" id="chkKitLivre" value="S" <?= $kitlivreS ?>>
                     </label>
                 </div>
 
                 <div class="form-check form-check-inline">
                     <label class="form-check-label" for="chkKitLivre">
                         Não
-                        <input class="form-check-input" type="radio" name="chkKitLivre" id="chkKitLivre" value="N">
+                        <input class="form-check-input" type="radio" name="chkKitLivre" id="chkKitLivre" value="N" <?= $kitlivreN ?>>
                     </label>
                 </div>
 
                 <br>
 
-                <label for="chkTipoDeficiencia" class="form-label mt-3">Tipo Deficiência: *</label>
-                <?php foreach ($dados['tipoDeficiencia'] as $tipoDeficiencia) { ?>
-                    <div class="form-check">
-                        <label class="form-check-label" for="chkTipoDeficiencia">
-                            <?= $tipoDeficiencia->ds_tipo_deficiencia ?>
-                            <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia" id="chkTipoDeficiencia<?= $tipoDeficiencia->id_tipo_deficiencia ?>" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>">
-                        </label>
-                    </div>
-                <?php } ?>
+                <div class="p-0 form-check" id="divTipoDeficiencia">
+                    <label for="chkTipoDeficiencia" class="form-label mt-3">Tipo Deficiência: *</label>
+                    <?php foreach ($dados['tipoDeficiencia'] as $tipoDeficiencia) {
 
-                <label class="form-check-label mt-3 mb-2" for="chkAcompanhante">
-                    Acompanhante? *
-                </label>
-                <br>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="chkAcompanhante">
-                        Sim
-                        <input class="form-check-input" type="radio" name="chkAcompanhante" id="chkAcompanhante" value="S">
-                    </label>
-                </div>
+                        $tipoDeficienciaChk = '';
+                        foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
+                            if ($relacTipoDeficiencia->fk_tipo_deficiencia == $tipoDeficiencia->id_tipo_deficiencia) {
+                                $tipoDeficienciaChk = 'checked';
+                            }
+                        }
 
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="chkAcompanhante">
-                        Não
-                        <input class="form-check-input" type="radio" name="chkAcompanhante" id="chkAcompanhante" value="N">
-                    </label>
-                </div>
-                <br>
-
-                <div class="mb-3 mt-3">
-                    <label for="txtNomeAcompanhante" class="form-label">Nome do Acompanhante: *</label>
-                    <input type="text" class="form-control <?= $dados['nome_acompanhante_erro'] ? 'is-invalid' : '' ?>" name="txtNomeAcompanhante" id="txtNomeAcompanhante" value="<?= $dados['txtNomeAcompanhante'] ?>">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['nome_acompanhante_erro'] ?></div>
-                </div>
-                <div class="mb-3">
-                    <label for="txtDocumentoAcompanhante" class="form-label">Documento Acompanhante: *</label>
-                    <input type="text" class="form-control <?= $dados['documento_acompanhante_erro'] ? 'is-invalid' : '' ?>" name="txtDocumentoAcompanhante" id="txtDocumentoAcompanhante" value="<?= $dados['txtDocumentoAcompanhante'] ?>" maxlength="11">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['documento_acompanhante_erro'] ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="txtTelefoneAcompanhante" class="form-label">Telefone Acompanhante: *</label>
-                    <input type="text" class="form-control <?= $dados['telefone_acompanhante_erro'] ? 'is-invalid' : '' ?>" name="txtTelefoneAcompanhante" id="txtTelefoneAcompanhante" value="<?= $dados['txtTelefoneAcompanhante'] ?>" pattern="([0-9]{3})" maxlength="11">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['telefone_acompanhante_erro'] ?></div>
-                </div>
-
-                <label class="form-check-label mt-3 mb-2" for="chkAcompanhanteMenor">
-                    Acompanhante menor de 18 anos? *
-                </label>
-                <br>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="chkAcompanhanteMenor">
-                        Sim
-                        <input class="form-check-input" type="radio" name="chkAcompanhanteMenor" id="chkAcompanhanteMenor" value="S">
-                    </label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label" for="chkAcompanhanteMenor">
-                        Não
-                        <input class="form-check-input" type="radio" name="chkAcompanhanteMenor" id="chkAcompanhanteMenor" value="N">
-                    </label>
-                </div>
-                <br>
-
-                <div class="mb-3 mt-3">
-                    <label for="txtQuantidadeMenor" class="form-label">Quantidade de menores: *</label>
-                    <input type="text" class="form-control <?= $dados['quantidade_menor_erro'] ? 'is-invalid' : '' ?>" name="txtQuantidadeMenor" id="txtQuantidadeMenor" value="<?= $dados['txtQuantidadeMenor'] ?>">
-                    <!-- Div para exibir o erro abaixo do campo -->
-                    <div class="invalid-feedback"><?= $dados['quantidade_menor_erro'] ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="cboCadeiraDerodas" class="form-label">Cadeira de Rodas Nº: *</label>
-                    <select class="form-select <?= $dados['cadeira_de_rodas_erro'] ? 'is-invalid' : '' ?>" name="cboCadeiraDerodas" id="cboCadeiraDerodas">
-                        <option value="NULL"></option>
-                        <?php foreach ($dados['cadeiraDeRodas'] as $cadeiraDeRodas) { ?>
-                            <option value="<?= $cadeiraDeRodas->id_cadeira_rodas ?>"><?= $cadeiraDeRodas->num_cadeira_rodas ?></option>
-                        <?php } ?>
-                    </select>
-                    <div class="invalid-feedback"><?= $dados['cadeira_de_rodas_erro'] ?></div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="fileTermoAdesao" class="form-label">Termo de adesão:</label>
-                    <input class="form-control" type="file" id="fileTermoAdesao" name="fileTermoAdesao">
-                </div>
-
-                <div class="mb-3">
-                    <label for="chkGuardaVolume" class="form-label mt-3">Guarda volumes: *</label>
-                    <?php foreach ($dados['guardaVolumes'] as $guardaVolumes) { ?>
+                    ?>
                         <div class="form-check">
-                            <label class="form-check-label" for="chkGuardaVolume">
-                                <?= $guardaVolumes->ds_guarda_volume ?>
-                                <input class="form-check-input" type="checkbox" name="chkGuardaVolume" id="chkGuardaVolume<?= $guardaVolumes->id_guarda_volume ?>" value="<?= $guardaVolumes->id_guarda_volume ?>">
+                            <label class="form-check-label" for="chkTipoDeficiencia">
+                                <?= $tipoDeficiencia->ds_tipo_deficiencia ?>
+                                <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia[]" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>" <?= $tipoDeficienciaChk ?>>
                             </label>
                         </div>
                     <?php } ?>
                 </div>
-                <div class="row">
+
+                <div class="p-0 form-check" id="divAcompanhante">
+                    <label class="form-check-label mt-3 mb-2" for="chkAcompanhante">
+                        Acompanhante? *
+                    </label>
+                    <br>
+                    <?php
+                    $acompanhanteS = '';
+                    $acompanhanteN = '';
+
+
+                    if ($dados['espectador']->chk_acompanhante == 'S') {
+                        $acompanhanteS = 'checked';
+                    }
+                    if ($dados['espectador']->chk_acompanhante == 'N') {
+                        $acompanhanteN = 'checked';
+                    }
+
+                    ?>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="chkAcompanhante">
+                            Sim
+                            <input class="form-check-input" type="radio" name="chkAcompanhante" id="chkAcompanhante" value="S" <?= $acompanhanteS ?>>
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="chkAcompanhante">
+                            Não
+                            <input class="form-check-input" type="radio" name="chkAcompanhante" id="chkAcompanhante" value="N" <?= $acompanhanteN ?>>
+                        </label>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="p-0 form-check" id="divAcompanhanteItens">
+                    <div class="mb-3 mt-3">
+                        <label for="txtNomeAcompanhante" class="form-label">Nome do Acompanhante: *</label>
+                        <input type="text" class="form-control" name="txtNomeAcompanhante" id="txtNomeAcompanhante" value="<?= $dados['espectador']->ds_nome_acompanhante ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtDocumentoAcompanhante" class="form-label">Documento Acompanhante: *</label>
+                        <input type="text" class="form-control" name="txtDocumentoAcompanhante" id="txtDocumentoAcompanhante" value="<?= $dados['espectador']->ds_documento_acompanhante ?>" maxlength="11">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="txtTelefoneAcompanhante" class="form-label">Telefone Acompanhante: *</label>
+                        <input type="text" class="form-control" name="txtTelefoneAcompanhante" id="txtTelefoneAcompanhante" value="<?= $dados['espectador']->tel_acompanhante ?>" maxlength="11" placeholder="Somente números">
+
+                    </div>
+
+                    <label class="form-check-label mt-3 mb-2" for="chkAcompanhanteMenor">
+                        Acompanhante menor de 18 anos?
+                    </label>
+                    <br>
+                    <?php
+                    $menorS = '';
+                    $menorN = '';
+
+                    if ($dados['espectador']->chk_menor_idade == 'S') {
+                        $menorS = 'checked';
+                    }
+                    if ($dados['espectador']->chk_menor_idade == 'N') {
+                        $menorN = 'checked';
+                    }
+
+                    ?>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="chkAcompanhanteMenor">
+                            Sim
+                            <input class="form-check-input" type="radio" name="chkAcompanhanteMenor" id="chkAcompanhanteMenor" value="S" <?= $menorS ?>>
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="chkAcompanhanteMenor">
+                            Não
+                            <input class="form-check-input" type="radio" name="chkAcompanhanteMenor" id="chkAcompanhanteMenor" value="N" <?= $menorN ?>>
+                        </label>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="p-0 form-check" id="divQtmenores">
+                    <div class="mb-3 mt-3">
+                        <label for="txtQuantidadeMenor" class="form-label">Quantidade de menores:</label>
+                        <input type="text" class="form-control" name="txtQuantidadeMenor" id="txtQuantidadeMenor" value="<?= $dados['espectador']->qtd_menor_idade ?>" maxlength="2">
+                    </div>
+                </div>
+
+                <div class="p-0 form-check" id="divCadeiraRodas">
+
+                    <?php if (!$dados['espectador']->fk_cadeira_rodas == NULL) { ?>
+
+                        <div class="mb-3 mt-3">
+                            <label for="numCadeiraSelecionada" class="form-label">Cadeira Selecionada Nº:</label>
+                            <span name="numCadeiraSelecionada"><b><?= $dados['espectador']->num_cadeira_rodas ?></b></span>
+                        </div>
+
+                    <?php } else { ?>
+
+                        <div class="mb-3 mt-3">
+                            <label for="cboCadeiraDerodas" class="form-label">Cadeira de Rodas Nº:</label>
+                            <select class="form-select" name="cboCadeiraDerodas" id="cboCadeiraDerodas">
+                                <option value=""></option>
+                                <?php foreach ($dados['cadeiraDeRodasUsadas'] as $cadeiraDeRodasUsadas) { ?>
+
+                                    <option value="<?= $cadeiraDeRodasUsadas->id_cadeira_rodas ?>"><?= $cadeiraDeRodasUsadas->num_cadeira_rodas ?></option>
+
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                    <?php } ?>
+
+                    <?= Alertas::mensagem('imagem') ?>
+
+                    <?php if (!empty($dados['fotoAdesao'])) { ?>
+                        <hr>
+
+
+                        <?php foreach ($dados['fotoAdesao'] as $fotoAdesao) { ?>
+                            <div class="text-center m-3">
+                                <p>Termo adesão</p>
+                                <small>Clique na imagem para ampliar</small>
+                                <button type="button" class="bordaImagem" data-bs-toggle="modal" data-bs-target="#fullScreenModal"> <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>"></button>
+
+                                <a href="<?= URL . '/EspectadorController/deletarImagem/' . $dados['espectador']->id_espectador ?>" class="btn btn-danger mt-1"> Excluir imagem <i class="bi bi-trash-fill"></i></a>
+                            </div>
+                        <?php } ?>
+
+                        <!-- FullScreen Modal -->
+                        <div class="modal fade" id="fullScreenModal" tabindex="-1" aria-labelledby="fullScreenModal" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="fullScreenModal">Termo adesão espectador: <?= $dados['espectador']->ds_nome_espectador ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <small>Para substituir o termo atual, envie outra foto abaixo:</small>
+                        <hr>
+                    <?php } ?>
+                    <div class="mb-3 mt-3">
+                        <label for="fileTermoAdesao" class="form-label">Termo de adesão:</label>
+                        <input class="form-control" type="file" id="fileTermoAdesao" name="fileTermoAdesao">
+                    </div>
+
+                    <?php if (!$dados['espectador']->fk_cadeira_rodas == NULL) { ?>
+
+                        <div class="mb-3 mt-3">
+                            <label for="cboCadeiraDerodas" class="form-label">Selecionar outra cadeira:</label>
+                            <select class="form-select" name="cboCadeiraDerodas" id="cboCadeiraDerodas">
+                                <option value=""></option>
+                                <?php foreach ($dados['cadeiraDeRodasUsadas'] as $cadeiraDeRodasUsadas) { ?>
+
+                                    <option value="<?= $cadeiraDeRodasUsadas->id_cadeira_rodas ?>"><?= $cadeiraDeRodasUsadas->num_cadeira_rodas ?></option>
+
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                    <?php } ?>
+                </div>
+
+                <div class="p-0 form-check" id="divGuardaVolumes">
+                    <div class="mb-3">
+                        <label for="chkGuardaVolume" class="form-label mt-3">Guarda volumes:</label>
+                        <?php foreach ($dados['guardaVolumes'] as $guardaVolumes) {
+
+                            $guardaVolChk = '';
+                            foreach ($dados['relacGuardaVolumes'] as $relacGuardaVolumes) {
+                                if ($relacGuardaVolumes->fk_guarda_volumes == $guardaVolumes->id_guarda_volume) {
+                                    $guardaVolChk = 'checked';
+                                }
+                            }
+                        ?>
+                            <div class="form-check">
+                                <label class="form-check-label" for="chkGuardaVolume">
+                                    <?= $guardaVolumes->ds_guarda_volume ?>
+                                    <input class="form-check-input" type="checkbox" name="chkGuardaVolume[]" id="chkGuardaVolume<?= $guardaVolumes->id_guarda_volume ?>" value="<?= $guardaVolumes->id_guarda_volume ?>" <?= $guardaVolChk ?>>
+                                </label>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
                     <div class="col-md-6">
-                        <input type="submit" value="Cadastrar" class="btn btn-artcor">
+                        <input type="submit" value="Atualizar" class="btn btn-artcor">
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+
+        $("#divTipoDeficiencia").hide();
+        $("#divAcompanhante").hide();
+        $("#divAcompanhanteItens").hide();
+        $("#divQtmenores").hide();
+
+
+        <?php if ($fk_condicao == '1') { ?>
+            $("#divTipoDeficiencia").show();
+            $("#divAcompanhante").show();
+            <?php if ($dados['espectador']->chk_acompanhante == 'S') { ?>
+                $("#divAcompanhanteItens").show();
+                <?php if ($dados['espectador']->chk_menor_idade == 'S') { ?>
+                    $("#divQtmenores").show();
+                <?php } ?>
+            <?php } ?>
+        <?php } ?>
+
+        <?php if ($fk_condicao == '2') { ?>
+            $("#divAcompanhante").show();
+            <?php if ($dados['espectador']->chk_acompanhante == 'S') { ?>
+                $("#divAcompanhanteItens").show();
+                <?php if ($dados['espectador']->chk_menor_idade == 'S') { ?>
+                    $("#divQtmenores").show();
+                <?php } ?>
+            <?php } ?>
+        <?php } ?>
+
+        <?php if (!$cadeira_rodas) { ?>
+            $("#divCadeiraRodas").hide();
+        <?php } ?>
+
+        <?php if (!$guarda_volumes) { ?>
+            $("#divGuardaVolumes").hide();
+        <?php } ?>
+
+    });
+
+    //Monitora campo condição
+    $("input[name=radioCondicao]").click(function() {
+        id_condicao = $("input[name=radioCondicao]:checked").val();
+        disableTipoDeficiencia(id_condicao);
+        disableAcompanhante(id_condicao);
+    });
+
+    //Monitora campo condição para marcação automática de acessos / serviços
+    $("input[name=radioCondicao]").click(function() {
+        id_condicao = $("input[name=radioCondicao]:checked").val();
+        chkAcessoServico(id_condicao);
+    });
+
+    //Monitora campo acompanhante
+    $("input[name=chkAcompanhante]").click(function() {
+        chk_acompanhante = $("input[name=chkAcompanhante]:checked").val();
+        disableAcompanhanteItens(chk_acompanhante);
+    });
+
+    //Monitora campo acompanhante menor
+    $("input[name=chkAcompanhanteMenor]").click(function() {
+        chk_acompanhante_menor = $("input[name=chkAcompanhanteMenor]:checked").val();
+        disableQuantidadeMenores(chk_acompanhante_menor);
+    });
+
+    //Monitora campo chk Serviço Cadeira de rodas
+    $("#chkAcessoServico4").click(function() {
+        chk_servicos = $("#chkAcessoServico4:checked").val();
+        disableCadeiraRodas(chk_servicos);
+    });
+
+    //Monitora campo chk serviço guarda volumes
+    $("#chkAcessoServico5").click(function() {
+        chk_servicos = $("#chkAcessoServico5:checked").val();
+        disableGuardaVolumes(chk_servicos);
+    });
+</script>

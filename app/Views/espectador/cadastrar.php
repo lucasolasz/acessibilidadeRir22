@@ -194,12 +194,14 @@
                 </div>
 
                 <div class="p-0 form-check" id="divCadeiraRodas">
-                    <div class="mb-3">
+                    <div class="mb-3 mt-3">
                         <label for="cboCadeiraDerodas" class="form-label">Cadeira de Rodas Nº:</label>
                         <select class="form-select" name="cboCadeiraDerodas" id="cboCadeiraDerodas">
                             <option value=""></option>
-                            <?php foreach ($dados['cadeiraDeRodas'] as $cadeiraDeRodas) { ?>
-                                <option value="<?= $cadeiraDeRodas->id_cadeira_rodas ?>"><?= $cadeiraDeRodas->num_cadeira_rodas ?></option>
+                            <?php foreach ($dados['cadeiraDeRodasUsadas'] as $cadeiraDeRodasUsadas) { ?>
+
+                                <option value="<?= $cadeiraDeRodasUsadas->id_cadeira_rodas ?>"><?= $cadeiraDeRodasUsadas->num_cadeira_rodas ?></option>
+
                             <?php } ?>
                         </select>
                     </div>
@@ -248,6 +250,12 @@
         id_condicao = $("input[name=radioCondicao]:checked").val();
         disableTipoDeficiencia(id_condicao);
         disableAcompanhante(id_condicao);
+    });
+
+    //Monitora campo condição para marcação automática de acessos / serviços
+    $("input[name=radioCondicao]").click(function() {
+        id_condicao = $("input[name=radioCondicao]:checked").val();
+        chkAcessoServico(id_condicao);
     });
 
     //Monitora campo acompanhante
