@@ -44,14 +44,9 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/UsuariosController">Usuários</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Espectador</a></li>
+                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Cadeiras</a></li>
                                     </ul>
-                                </li>
-                                <!-- <li class="dropdown">
-                            <a class="nav-link dropdown-toggle li-a-artcor" data-bs-toggle="dropdown" role="button">Agendas</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/AgendaController">AC encontros Literários</a></li>                                
-                            </ul>
-                        </li>  -->
+                                </li>                                
                             <?php } ?>
                             <li class="nav-item">
                                 <a class="nav-link li-a-artcor" href="<?= URL . '/Paginas/sobre' ?>">Sobre nós</a>
