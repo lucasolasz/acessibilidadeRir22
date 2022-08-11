@@ -19,6 +19,8 @@
                     <thead>
                         <tr>
                             <th scope="col">Cadeiras</th>
+                            <th scope="col">Espectador</th>
+                            <th scope="col">Termo</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -38,6 +40,11 @@
 
                             <tr>
                                 <td><?= $cadeiraRodas->num_cadeira_rodas ?></td>
+                                <td>Manoel</td>
+
+                                <td><a href="" class="btn btn-success"><i class="bi bi-card-image"></i></a></td>
+                                </td>
+
 
                                 <td><a href="<?= URL . '/CadeiraRodasController/editar/' . $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
                                 <td>
