@@ -18,8 +18,10 @@ class CadeiraRodasController extends Controller
     //Método padrão que é invocado ao chamar a controller
     public function index()
     {
+
+
         $dados = [
-            'cadeiraRodas' =>  $this->cadeiraRodasModel->visualizarCadeiraRodas(),
+            'cadeiraRodas' =>  $this->cadeiraRodasModel->visualizarCadeiraRodas()            
         ];
 
         //Retorna para a view

@@ -13,6 +13,7 @@
             </h5>
 
         </div>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -40,12 +41,14 @@
 
                             <tr>
                                 <td><?= $cadeiraRodas->num_cadeira_rodas ?></td>
-                                <td>Manoel</td>
+                                <td><a href=" <?= URL . '/EspectadorController/editar/' . $cadeiraRodas->id_espectador ?>"><?= ucfirst($cadeiraRodas->ds_nome_espectador) ?></a></td>
+                                <td>
+                                    <?php if (!$cadeiraRodas->ds_nome_espectador == "") { ?>
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#fullScreenModal<?= $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-success"><i class="bi bi-card-image"></i></a>
 
-                                <td><a href="" class="btn btn-success"><i class="bi bi-card-image"></i></a></td>
+                                    <?php } ?>
                                 </td>
-
-
+                                </td>
                                 <td><a href="<?= URL . '/CadeiraRodasController/editar/' . $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
                                 <td>
                                     <form action="<?= URL . '/CadeiraRodasController/deletar/' . $cadeiraRodas->id_cadeira_rodas ?>" method="POST">
@@ -53,6 +56,24 @@
                                     </form>
                                 </td>
                             </tr>
+
+                            <!-- FullScreen Modal -->
+                            <div class="modal fade" id="fullScreenModal<?= $cadeiraRodas->id_cadeira_rodas ?>" tabindex="-1" aria-labelledby="fullScreenModal<?= $cadeiraRodas->id_cadeira_rodas ?>" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="fullScreenModal">Termo adesão espectador: <?= $cadeiraRodas->ds_nome_espectador ?></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?= URL . DIRECTORY_SEPARATOR . $cadeiraRodas->nm_path_arquivo . DIRECTORY_SEPARATOR . $cadeiraRodas->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $cadeiraRodas->nm_arquivo ?>">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         <?php  } ?>
                     </tbody>
