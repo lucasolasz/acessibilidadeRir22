@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `tb_acompanhante` (
   `ds_documento_acompanhante` varchar(20) DEFAULT NULL,
   `tel_acompanhante` varchar(20) DEFAULT NULL,
   `chk_menor_idade` char(1) DEFAULT NULL,
-  `qtd_menor_idade` varchar(2) DEFAULT NULL, 
+  `qtd_menor_idade` TINYINT DEFAULT NULL, 
   PRIMARY KEY (`id_acompanhante`),
   UNIQUE KEY `id_acompanhante` (`id_acompanhante`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `tb_espectador` (
   `id_espectador` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `ds_nome_espectador` varchar(255) DEFAULT NULL,
   `ds_documento_espectador` varchar(20) DEFAULT NULL,
+  `ds_descricao_deficiencia` varchar(255) DEFAULT NULL,
   `tel_espectador` varchar(20) DEFAULT NULL,
   `idade_espectador` int(1) DEFAULT NULL,
   `chk_kit_livre` char(1) DEFAULT NULL,
@@ -104,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `tb_espectador` (
   `fk_acompanhante` int(4) unsigned DEFAULT NULL,
   `fk_cadeira_rodas` int(2) unsigned DEFAULT NULL,
   `fk_usuario` int(4) unsigned DEFAULT NULL,
+  `fk_tipo_deficiencia_fisica` TINYINT unsigned DEFAULT NULL, 
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_espectador`),
   UNIQUE KEY `id_espectador` (`id_espectador`),
@@ -111,10 +113,12 @@ CREATE TABLE IF NOT EXISTS `tb_espectador` (
   KEY `fk_acompanhante_tb_condicao` (`fk_acompanhante`),
   KEY `fk_cadeira_rodas_tb_cadeira_rodas` (`fk_cadeira_rodas`),
   KEY `fk_usuario_tb_usuario` (`fk_usuario`),
+  KEY `fk_tipo_deficiencia_fisica_tb_tipo_deficiencia_fisica` (`fk_tipo_deficiencia_fisica`),
   CONSTRAINT `fk_condicao_tb_espectador` FOREIGN KEY (`fk_condicao`) REFERENCES `tb_condicao` (`id_condicao`),
   CONSTRAINT `fk_acompanhante_tb_espectador` FOREIGN KEY (`fk_acompanhante`) REFERENCES `tb_acompanhante` (`id_acompanhante`),
   CONSTRAINT `fk_cadeira_rodas_tb_espectador` FOREIGN KEY (`fk_cadeira_rodas`) REFERENCES `tb_cadeira_rodas` (`id_cadeira_rodas`),
-  CONSTRAINT `fk_usuario_tb_espectador` FOREIGN KEY (`fk_usuario`) REFERENCES `tb_usuario` (`id_usuario`)
+  CONSTRAINT `fk_usuario_tb_espectador` FOREIGN KEY (`fk_usuario`) REFERENCES `tb_usuario` (`id_usuario`),
+  CONSTRAINT `fk_tipo_deficiencia_fisica_tb_espectador` FOREIGN KEY (`fk_tipo_deficiencia_fisica`) REFERENCES `tb_tipo_deficiencia_fisica` (`id_tipo_deficiencia_fisica`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 
@@ -130,3 +134,28 @@ CREATE TABLE IF NOT EXISTS `tb_anexo`(
     KEY `fk_espectador_tb_espectador` (`fk_espectador`),
     CONSTRAINT `fk_espectador_tb_anexo` FOREIGN KEY (`fk_espectador`) REFERENCES `tb_espectador` (`id_espectador`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `tb_tipo_deficiencia_fisica` (
+  `id_tipo_deficiencia_fisica` TINYINT unsigned NOT NULL AUTO_INCREMENT,
+  `ds_tipo_deficiencia_fisica` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_tipo_deficiencia_fisica`) USING BTREE,
+  UNIQUE KEY `id_tipo_deficiencia_fisica` (`id_tipo_deficiencia_fisica`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tb_tipo_deficiencia_fisica` (`id_tipo_deficiencia_fisica`, `ds_tipo_deficiencia_fisica`) VALUES
+( 1,'Paraplegia'),
+( 2,'Paraparesia'),	
+( 3,'Monoplegia'),
+( 4,'Monoparesia'),	
+( 5,'Tetraplegia'),	
+( 6,'Tetraparesia'),
+( 7,'Triplegia'),	
+( 8,'Triparesia'),	
+( 9,'Hemiplegia'),	
+( 10,'Hemiparesia'),	
+( 11,'Amputação'),	
+( 12,'Paralisia'),
+( 13,'Ostomia'),
+( 14,'Nanismo');

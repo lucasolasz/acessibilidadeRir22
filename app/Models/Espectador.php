@@ -38,7 +38,7 @@ class Espectador
     {
         $armazenaEspectadorErro = false;
 
-        // var_dump($dados);
+        // var_dump($dados['txtDeficienciaFisica']);
         // exit();
 
         if (!$dados['txtNomeAcompanhante'] == "" || !$dados['txtDocumentoAcompanhante'] == "") {
@@ -47,7 +47,7 @@ class Espectador
             $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
             $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
             $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
-            $this->db->bind("qtd_menor_idade", $dados['txtQuantidadeMenor']);
+            $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
             if (!$this->db->executa()) {
                 $armazenaEspectadorErro = true;
             }
@@ -59,8 +59,9 @@ class Espectador
         }
 
         //Insert do espectador
-        $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario) VALUES (:ds_nome_espectador,
+        $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica) VALUES (:ds_nome_espectador,
         :ds_documento_espectador,
+        :ds_descricao_deficiencia,
         :tel_espectador,
         :idade_espectador,
         :chk_kit_livre,
@@ -68,10 +69,12 @@ class Espectador
         :chk_acompanhante,
         :fk_acompanhante,
         :fk_cadeira_rodas,
-        :fk_usuario)");
+        :fk_usuario,
+        :fk_tipo_deficiencia_fisica)");
 
         $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
         $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
+        $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
         $this->db->bind("tel_espectador", $dados['txtTelefone']);
         $this->db->bind("idade_espectador", $dados['txtIdade']);
         $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
@@ -80,23 +83,12 @@ class Espectador
         $this->db->bind("fk_acompanhante", $fk_acompanhante);
         $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
         $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+        $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
         if (!$this->db->executa()) {
             $armazenaEspectadorErro = true;
         }
 
         $ultimoIdEpectador = $this->db->ultimoIdInserido();
-
-
-        // //Seta a cadeira de rodas como em uso se diferente de nulo
-        // if (!$dados['cboCadeiraDerodas'] == NULL) {
-
-        //     $this->db->query("UPDATE tb_cadeira_rodas SET chk_em_uso = :chk_em_uso WHERE id_cadeira_rodas = :id_cadeira_rodas");
-        //     $this->db->bind("chk_em_uso", 'S');
-        //     $this->db->bind("id_cadeira_rodas", $dados['cboCadeiraDerodas']);
-        //     if (!$this->db->executa()) {
-        //         $armazenaEspectadorErro = true;
-        //     }
-        // }
 
 
         if (!$dados['chkAcessoServico'] == "") {
@@ -202,46 +194,96 @@ class Espectador
     {
         $editarEspectadorErro = false;
 
-        // var_dump( $dados);
-        // exit();
+        if (!$dados['fk_acompanhante'] == NULL) {
+
+            if ($dados['chkAcompanhante'] == 'N') {
 
 
-        if (!$dados['fk_acompanhante'] == "") {
+                //Desvincula chave estrangeira do acompanhante
+                $this->db->query("UPDATE tb_espectador SET fk_acompanhante = :fk_acompanhante WHERE id_espectador = :id_espectador");
+                $this->db->bind("fk_acompanhante", NULL);
+                $this->db->bind("id_espectador", $dados['id_espectador']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
 
-            $this->db->query("UPDATE tb_acompanhante SET 
-            ds_nome_acompanhante = :ds_nome_acompanhante,
-            ds_documento_acompanhante = :ds_documento_acompanhante,
-            tel_acompanhante = :tel_acompanhante,
-            chk_menor_idade = :chk_menor_idade,
-            qtd_menor_idade = :qtd_menor_idade
-            WHERE id_acompanhante = :fk_acompanhante");
+                //Apaga o acompanhante
+                $this->db->query("DELETE FROM tb_acompanhante WHERE id_acompanhante = :fk_acompanhante");
+                $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+                
+                //Nulo para atualizar a linha do espectador
+                $dados['fk_acompanhante'] = NULL;
 
-            $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
-            $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
-            $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
-            $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
-            $this->db->bind("qtd_menor_idade", $dados['txtQuantidadeMenor']);
-            $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
+            } else {
+
+                $this->db->query("UPDATE tb_acompanhante SET 
+                ds_nome_acompanhante = :ds_nome_acompanhante,
+                ds_documento_acompanhante = :ds_documento_acompanhante,
+                tel_acompanhante = :tel_acompanhante,
+                chk_menor_idade = :chk_menor_idade,
+                qtd_menor_idade = :qtd_menor_idade
+                WHERE id_acompanhante = :fk_acompanhante");
+
+                $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
+                $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
+                $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
+                $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
+                $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+                $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+            }
+        } else {
+
+            //Adiciona um acompanhante caso não tenha acompanhante na edição
+            if ($dados['chkAcompanhante'] == 'S') {
+
+                if (!$dados['txtNomeAcompanhante'] == "" or !$dados['txtDocumentoAcompanhante'] == "") {
+
+                    $this->db->query("INSERT INTO tb_acompanhante (ds_nome_acompanhante, ds_documento_acompanhante, tel_acompanhante, chk_menor_idade, qtd_menor_idade) VALUES (:ds_nome_acompanhante, :ds_documento_acompanhante, :tel_acompanhante, :chk_menor_idade, :qtd_menor_idade)");
+                    $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
+                    $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
+                    $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
+                    $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
+                    $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
+
+                    //Id do Acompanhante cadastrado
+                    $fk_acompanhante = $this->db->ultimoIdInserido();
+                }
+
+                $dados['fk_acompanhante'] = $fk_acompanhante;
             }
         }
 
-        // //Insert do espectador
+        var_dump($dados['txtDeficienciaFisica']);
+        // exit();
+       
+
+        //Update do espectador
         $this->db->query("UPDATE tb_espectador SET
         ds_nome_espectador = :ds_nome_espectador,
         ds_documento_espectador = :ds_documento_espectador,
+        ds_descricao_deficiencia = :ds_descricao_deficiencia,
         tel_espectador = :tel_espectador,
         idade_espectador = :idade_espectador,
         chk_kit_livre = :chk_kit_livre,
         fk_condicao = :fk_condicao, 
         chk_acompanhante = :chk_acompanhante, 
         fk_acompanhante = :fk_acompanhante, 
-        fk_cadeira_rodas = :fk_cadeira_rodas
+        fk_cadeira_rodas = :fk_cadeira_rodas,
+        fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica
         WHERE id_espectador = :id_espectador");
 
         $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
         $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
+        $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
         $this->db->bind("tel_espectador", $dados['txtTelefone']);
         $this->db->bind("idade_espectador", $dados['txtIdade']);
         $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
@@ -249,22 +291,12 @@ class Espectador
         $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
         $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
         $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
-
+        $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
         $this->db->bind("id_espectador", $dados['id_espectador']);
         if (!$this->db->executa()) {
             $editarEspectadorErro = true;
         }
 
-        //Seta a cadeira de rodas como em uso se for nulo
-        // if ($dados['cboCadeiraDerodas'] == NULL) {
-
-        //     $this->db->query("UPDATE tb_cadeira_rodas SET chk_em_uso = :chk_em_uso WHERE id_cadeira_rodas = :id_cadeira_rodas");
-        //     $this->db->bind("chk_em_uso", 'S');
-        //     $this->db->bind("id_cadeira_rodas", $dados['cboCadeiraDerodas']);
-        //     if (!$this->db->executa()) {
-        //         $armazenaEspectadorErro = true;
-        //     }
-        // }
 
         if (!$dados['chkAcessoServico'] == "") {
 
@@ -284,16 +316,17 @@ class Espectador
                     $editarEspectadorErro = true;
                 }
             }
+
         } else {
 
-            //Apaga os anteriores e salva as novas opções escolhidas
+            //Apaga se não tiver opção escolhida
             $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
             $this->db->bind("fk_espectador", $dados['id_espectador']);
             $this->db->executa();
 
 
             if (!$dados['cboCadeiraDerodas'] == NULL) {
-                //Apaga os anteriores e salva as novas opções escolhidas
+                
                 $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = :fk_cadeira_rodas WHERE id_espectador = :id_espectador");
                 $this->db->bind("fk_cadeira_rodas", NULL);
                 $this->db->bind("id_espectador", $dados['id_espectador']);
@@ -301,6 +334,7 @@ class Espectador
             }
 
             if (!empty($dados['fotoAdesao'])) {
+
                 //Usado para deletar o arquivo fisico no diretorio
                 $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
                 $upload = new Upload();
@@ -335,14 +369,14 @@ class Espectador
             }
         } else {
 
-            //Apaga os anteriores e salva as novas opções escolhidas
+            //Apaga se não tiver opção escolhida
             $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
             $this->db->bind("fk_espectador", $dados['id_espectador']);
             if (!$this->db->executa()) {
                 $editarEspectadorErro = true;
             }
 
-            //Apaga os anteriores e salva as novas opções escolhidas
+            //Apaga se não tiver opção escolhida
             $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_acesso_servico = :fk_acesso_servico");
             $this->db->bind("fk_acesso_servico", 5);
             if (!$this->db->executa()) {
@@ -370,12 +404,18 @@ class Espectador
             }
         } else {
 
-            //Apaga os anteriores e salva as novas opções escolhidas
+            //Apaga se não tiver opção escolhida
             $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
             $this->db->bind("fk_espectador", $dados['id_espectador']);
             if (!$this->db->executa()) {
                 $editarEspectadorErro = true;
             }
+
+            $this->db->query("UPDATE tb_espectador SET ds_descricao_deficiencia = :ds_descricao_deficiencia, fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica WHERE id_espectador = :id_espectador");
+            $this->db->bind("ds_descricao_deficiencia", NULL);
+            $this->db->bind("fk_tipo_deficiencia_fisica", NULL);
+            $this->db->bind("id_espectador", $dados['id_espectador']);
+            $this->db->executa();
         }
 
         if (!$dados['fileTermoAdesao']['name'] == "") {
@@ -552,6 +592,14 @@ class Espectador
         }
     }
 
+    public function lerTipoDeficienciaFisica()
+    {
+
+        $this->db->query("SELECT * FROM tb_tipo_deficiencia_fisica ORDER BY ds_tipo_deficiencia_fisica");
+
+        return $this->db->resultados();
+    }
+
 
     public function lerCondicao()
     {
@@ -586,7 +634,7 @@ class Espectador
     }
     public function lerCadeiraDeRodasUsadas()
     {
-        
+
         $this->db->query("SELECT * FROM tb_cadeira_rodas tcr 
         WHERE id_cadeira_rodas NOT IN (SELECT DISTINCT(tcr.id_cadeira_rodas) FROM tb_espectador te
         JOIN tb_cadeira_rodas tcr ON tcr.id_cadeira_rodas = te.fk_cadeira_rodas)");

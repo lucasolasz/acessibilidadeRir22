@@ -97,11 +97,32 @@
                         <div class="form-check">
                             <label class="form-check-label" for="chkTipoDeficiencia">
                                 <?= $tipoDeficiencia->ds_tipo_deficiencia ?>
-                                <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia[]" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>">
+                                <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia[]" id="chkTipoDeficiencia<?= $tipoDeficiencia->id_tipo_deficiencia ?>" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>">
                             </label>
                         </div>
                     <?php } ?>
                 </div>
+
+                <div class="pl-5 form-check" id="divTipoDeficienciaFisica">
+                    <div class="mb-3 mt-3">
+                        <label for="cboTipoDeficienciaFisica" class="form-label">Tipo deficiencia física:</label>
+                        <select class="form-select" name="cboTipoDeficienciaFisica" id="cboTipoDeficienciaFisica">
+                            <option value=""></option>
+                            <?php foreach ($dados['tipoDeficienciaFisica'] as $tipoDeficienciaFisica) { ?>
+
+                                <option value="<?= $tipoDeficienciaFisica->id_tipo_deficiencia_fisica ?>"><?= $tipoDeficienciaFisica->ds_tipo_deficiencia_fisica ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div class="mt-3">
+                        <label for="txtDeficienciaFisica">Descrição deficiência física:</label>
+                        <textarea class="form-control" id="txtDeficienciaFisica" placeholder="Descrição opcional" name="txtDeficienciaFisica"></textarea>
+                    </div>
+
+                </div>
+
 
                 <div class="p-0 form-check" id="divAcompanhante">
                     <label class="form-check-label mt-3 mb-2" for="chkAcompanhante">
@@ -188,8 +209,15 @@
 
                 <div class="p-0 form-check" id="divQtmenores">
                     <div class="mb-3 mt-3">
-                        <label for="txtQuantidadeMenor" class="form-label">Quantidade de menores:</label>
-                        <input type="text" class="form-control" name="txtQuantidadeMenor" id="txtQuantidadeMenor" value="" maxlength="2">
+                        <label for="cboQuantidadeMenor" class="form-label">Quantidade menores:</label>
+                        <select class="form-select" name="cboQuantidadeMenor">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </div>
                 </div>
 
@@ -238,6 +266,7 @@
 <script>
     $(document).ready(function() {
         $("#divTipoDeficiencia").hide();
+        $("#divTipoDeficienciaFisica").hide();
         $("#divAcompanhante").hide();
         $("#divAcompanhanteItens").hide();
         $("#divQtmenores").hide();
@@ -280,5 +309,12 @@
     $("#chkAcessoServico5").click(function() {
         chk_servicos = $("#chkAcessoServico5:checked").val();
         disableGuardaVolumes(chk_servicos);
+    });
+
+
+    //Monitora campo chk tipo deficiencia
+    $("#chkTipoDeficiencia1").click(function() {
+        chk_tipo_deficiencia = $("#chkTipoDeficiencia1:checked").val();
+        disableTipoDeficienciaFisica(chk_tipo_deficiencia);
     });
 </script>

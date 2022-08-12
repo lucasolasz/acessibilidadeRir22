@@ -62,6 +62,18 @@ function disableGuardaVolumes(servicos) {
     }
 }
 
+
+function disableTipoDeficienciaFisica(chk_tipo_deficiencia) {
+
+    $("#divTipoDeficienciaFisica").hide(200);
+
+    if (chk_tipo_deficiencia == 1) {
+        $("#divTipoDeficienciaFisica").show(200);
+
+    }
+}
+
+
 function chkAcessoServico(id_condicao) {
 
     $('#chkAcessoServico3').prop('checked', false);

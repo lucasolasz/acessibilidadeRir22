@@ -35,12 +35,13 @@ class EspectadorController extends Controller
         $cadeiraDeRodas = $this->espectadorModel->lerCadeiraDeRodas();
         $guardaVolumes = $this->espectadorModel->lerGuardaVolumes();
         $cadeiraDeRodasUsadas = $this->espectadorModel->lerCadeiraDeRodasUsadas();
+        $tipoDeficienciaFisica = $this->espectadorModel->lerTipoDeficienciaFisica();
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         if (isset($formulario)) {
 
-
+          
             $dados = [
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
                 'txtDocumento' => trim($formulario['txtDocumento']),
@@ -51,22 +52,29 @@ class EspectadorController extends Controller
                 'txtDocumentoAcompanhante' => $formulario['txtDocumentoAcompanhante'],
                 'txtTelefoneAcompanhante' => $formulario['txtTelefoneAcompanhante'],
                 'chkAcompanhanteMenor' => $formulario['chkAcompanhanteMenor'],
-                'txtQuantidadeMenor' => $formulario['txtQuantidadeMenor'],
+                'txtDeficienciaFisica' => $formulario['txtDeficienciaFisica'],
                 'acessoServico' => $acessoServico,
                 'tipoDeficiencia' => $tipoDeficiencia,
                 'guardaVolumes' => $guardaVolumes,
                 'condicao' => $condicao,
                 'cadeiraDeRodas' => $cadeiraDeRodas,
-                'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas
+                'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas,
+                'tipoDeficienciaFisica' => $tipoDeficienciaFisica
             ];
 
             $dados['txtIdade'] = !$formulario['txtIdade'] == "" ? $formulario['txtIdade'] : NULL;
             $dados['cboCadeiraDerodas'] = !$formulario['cboCadeiraDerodas'] == "" ? $formulario['cboCadeiraDerodas'] : NULL;
+            $dados['cboQuantidadeMenor'] = !$formulario['cboQuantidadeMenor'] == "" ? $formulario['cboQuantidadeMenor'] : NULL;
+            $dados['cboTipoDeficienciaFisica'] = !$formulario['cboTipoDeficienciaFisica'] == "" ? $formulario['cboTipoDeficienciaFisica'] : NULL;
             $dados['chkAcessoServico'] = isset($formulario['chkAcessoServico']) ? $formulario['chkAcessoServico'] : "";
             $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
             $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
             $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
             $dados['fileTermoAdesao'] = isset($_FILES['fileTermoAdesao']) ? $_FILES['fileTermoAdesao'] : "";
+
+
+            // var_dump($dados['cboTipoDeficienciaFisica']);
+            // exit();
 
             if ($this->espectadorModel->armazenarEspectador($dados)) {
 
@@ -93,11 +101,12 @@ class EspectadorController extends Controller
                 'txtDocumentoAcompanhante' => '',
                 'txtTelefoneAcompanhante' => '',
                 'chkAcompanhanteMenor' => '',
-                'txtQuantidadeMenor' => '',
+                'txtDeficienciaFisica' => '',
                 'cadeiraDeRodas' => $cadeiraDeRodas,
                 'chkGuardaVolume' => '',
                 'guardaVolumes' => $guardaVolumes,
-                'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas
+                'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas,
+                'tipoDeficienciaFisica' => $tipoDeficienciaFisica
             ];
         }
 
@@ -114,16 +123,20 @@ class EspectadorController extends Controller
         $guardaVolumes = $this->espectadorModel->lerGuardaVolumes();
         $espectador = $this->espectadorModel->lerEspectadorPorId($id);
         $cadeiraDeRodasUsadas = $this->espectadorModel->lerCadeiraDeRodasUsadas();
+        $tipoDeficienciaFisica = $this->espectadorModel->lerTipoDeficienciaFisica();
 
         $relacAcessoServico = $this->espectadorModel->relacAcessoServicoPorid($id);
         $relacGuardaVolumes = $this->espectadorModel->relacGuardaVolumesPorid($id);
         $relacTipoDeficiencia = $this->espectadorModel->relacTipoDeficienciaPorid($id);
-        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
+        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);        
 
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         if (isset($formulario)) {
+
+            // var_dump($formulario['cboQuantidadeMenor']);
+            // exit();
 
 
             $dados = [
@@ -135,7 +148,7 @@ class EspectadorController extends Controller
                 'txtNomeAcompanhante' => $formulario['txtNomeAcompanhante'],
                 'txtDocumentoAcompanhante' => $formulario['txtDocumentoAcompanhante'],
                 'txtTelefoneAcompanhante' => $formulario['txtTelefoneAcompanhante'],
-                'txtQuantidadeMenor' => $formulario['txtQuantidadeMenor'],
+                'txtDeficienciaFisica' => $formulario['txtDeficienciaFisica'],
                 'id_espectador' => $id,
                 'acessoServico' => $acessoServico,
                 'tipoDeficiencia' => $tipoDeficiencia,
@@ -143,7 +156,9 @@ class EspectadorController extends Controller
                 'condicao' => $condicao,
                 'cadeiraDeRodas' => $cadeiraDeRodas,
                 'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas,
-                'fotoAdesao' => $fotoAdesao
+                'fotoAdesao' => $fotoAdesao,
+                'tipoDeficienciaFisica' => $tipoDeficienciaFisica
+                
             ];
 
 
@@ -157,6 +172,8 @@ class EspectadorController extends Controller
                 $dados['cboCadeiraDerodas'] = !$formulario['cboCadeiraDerodas'] == "" ?  $formulario['cboCadeiraDerodas'] : $espectador->fk_cadeira_rodas;
             }
 
+            $dados['cboTipoDeficienciaFisica'] = !$formulario['cboTipoDeficienciaFisica'] == "" ? $formulario['cboTipoDeficienciaFisica'] : NULL;
+            $dados['cboQuantidadeMenor'] = !$formulario['cboQuantidadeMenor'] == "" ? $formulario['cboQuantidadeMenor'] : NULL;
             $dados['chkAcompanhanteMenor'] = isset($formulario['chkAcompanhanteMenor']) ? $formulario['chkAcompanhanteMenor'] : "N";
             $dados['chkAcessoServico'] = isset($formulario['chkAcessoServico']) ? $formulario['chkAcessoServico'] : "";
             $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
@@ -186,7 +203,8 @@ class EspectadorController extends Controller
                 'relacAcessoServico' => $relacAcessoServico,
                 'relacGuardaVolumes' => $relacGuardaVolumes,
                 'relacTipoDeficiencia' => $relacTipoDeficiencia,
-                'fotoAdesao' => $fotoAdesao
+                'fotoAdesao' => $fotoAdesao,
+                'tipoDeficienciaFisica' => $tipoDeficienciaFisica
 
             ];
         }

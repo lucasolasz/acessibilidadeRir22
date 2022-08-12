@@ -2,6 +2,7 @@
 
 $fk_condicao = $dados['espectador']->fk_condicao;
 
+
 $guarda_volumes = false;
 $cadeira_rodas = false;
 
@@ -15,6 +16,17 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
         $cadeira_rodas = true;
     }
 }
+
+$deficienciaFisica = false;
+
+foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
+
+    if ($relacTipoDeficiencia->fk_tipo_deficiencia == 1) {
+        $deficienciaFisica = true;
+    }
+}
+
+
 
 ?>
 
@@ -137,10 +149,37 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
                         <div class="form-check">
                             <label class="form-check-label" for="chkTipoDeficiencia">
                                 <?= $tipoDeficiencia->ds_tipo_deficiencia ?>
-                                <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia[]" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>" <?= $tipoDeficienciaChk ?>>
+                                <input class="form-check-input" type="checkbox" name="chkTipoDeficiencia[]" id="chkTipoDeficiencia<?= $tipoDeficiencia->id_tipo_deficiencia ?>" value="<?= $tipoDeficiencia->id_tipo_deficiencia ?>" <?= $tipoDeficienciaChk ?>>
                             </label>
                         </div>
                     <?php } ?>
+                </div>
+
+                <div class="pl-5 form-check" id="divTipoDeficienciaFisica">
+                    <div class="mb-3 mt-3">
+                        <label for="cboTipoDeficienciaFisica" class="form-label">Tipo deficiencia física:</label>
+                        <select class="form-select" name="cboTipoDeficienciaFisica" id="cboTipoDeficienciaFisica">
+                            <option value=""></option>
+                            <?php foreach ($dados['tipoDeficienciaFisica'] as $tipoDeficienciaFisica) {
+
+                                $tipoDeficienciaFisicaChk = '';
+
+                                if ($tipoDeficienciaFisica->id_tipo_deficiencia_fisica == $dados['espectador']->fk_tipo_deficiencia_fisica) {
+                                    $tipoDeficienciaFisicaChk = 'selected';
+                                }
+                            ?>
+
+                                <option value="<?= $tipoDeficienciaFisica->id_tipo_deficiencia_fisica ?>" <?= $tipoDeficienciaFisicaChk ?>><?= $tipoDeficienciaFisica->ds_tipo_deficiencia_fisica ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div class="mt-3">
+                        <label for="txtDeficienciaFisica">Descrição deficiência física:</label>
+                        <textarea class="form-control" id="txtDeficienciaFisica" placeholder="Descrição opcional" name="txtDeficienciaFisica"><?= $dados['espectador']->ds_descricao_deficiencia ?></textarea>
+                    </div>
+
                 </div>
 
                 <div class="p-0 form-check" id="divAcompanhante">
@@ -204,7 +243,7 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
                     if ($dados['espectador']->chk_menor_idade == 'S') {
                         $menorS = 'checked';
                     }
-                    if ($dados['espectador']->chk_menor_idade == 'N') {
+                    if ($dados['espectador']->chk_menor_idade == 'N' or $dados['espectador']->chk_menor_idade == NULL) {
                         $menorN = 'checked';
                     }
 
@@ -225,10 +264,44 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
                     <br>
                 </div>
 
+                <?php
+
+                $quantidadeMenor = $dados['espectador']->qtd_menor_idade;
+
+                // var_dump($quantidadeMenor);
+                // exit();
+
+                $qtMenorUmChk = '';
+                $qtMenorDoisChk = '';
+                $qtMenorTresChk = '';
+                $qtMenorQuatroChk = '';
+                $qtMenorCincoChk = '';
+
+                if ($quantidadeMenor == 1) {
+                    $qtMenorUmChk = 'selected';
+                } elseif ($quantidadeMenor == 2) {
+                    $qtMenorDoisChk = 'selected';
+                } elseif ($quantidadeMenor == 3) {
+                    $qtMenorTresChk = 'selected';
+                } elseif ($quantidadeMenor == 4) {
+                    $qtMenorQuatroChk = 'selected';
+                } elseif ($quantidadeMenor == 5) {
+                    $qtMenorCincoChk = 'selected';
+                }
+
+                ?>
+
                 <div class="p-0 form-check" id="divQtmenores">
                     <div class="mb-3 mt-3">
-                        <label for="txtQuantidadeMenor" class="form-label">Quantidade de menores:</label>
-                        <input type="text" class="form-control" name="txtQuantidadeMenor" id="txtQuantidadeMenor" value="<?= $dados['espectador']->qtd_menor_idade ?>" maxlength="2">
+                        <label for="cboQuantidadeMenor" class="form-label">Quantidade menores:</label>
+                        <select class="form-select" name="cboQuantidadeMenor">
+                            <option value=""></option>
+                            <option value="1" <?= $qtMenorUmChk ?>>1</option>
+                            <option value="2" <?= $qtMenorDoisChk ?>>2</option>
+                            <option value="3" <?= $qtMenorTresChk ?>>3</option>
+                            <option value="4" <?= $qtMenorQuatroChk ?>>4</option>
+                            <option value="5" <?= $qtMenorCincoChk ?>>5</option>
+                        </select>
                     </div>
                 </div>
 
@@ -351,6 +424,7 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
     $(document).ready(function() {
 
         $("#divTipoDeficiencia").hide();
+        $("#divTipoDeficienciaFisica").hide();
         $("#divAcompanhante").hide();
         $("#divAcompanhanteItens").hide();
         $("#divQtmenores").hide();
@@ -358,6 +432,9 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
 
         <?php if ($fk_condicao == '1') { ?>
             $("#divTipoDeficiencia").show();
+            <?php if ($deficienciaFisica) { ?>
+                $("#divTipoDeficienciaFisica").show();
+            <?php } ?>
             $("#divAcompanhante").show();
             <?php if ($dados['espectador']->chk_acompanhante == 'S') { ?>
                 $("#divAcompanhanteItens").show();
@@ -422,5 +499,11 @@ foreach ($dados['relacAcessoServico'] as $relacAcessoServico) {
     $("#chkAcessoServico5").click(function() {
         chk_servicos = $("#chkAcessoServico5:checked").val();
         disableGuardaVolumes(chk_servicos);
+    });
+
+    //Monitora campo chk tipo deficiencia
+    $("#chkTipoDeficiencia1").click(function() {
+        chk_tipo_deficiencia = $("#chkTipoDeficiencia1:checked").val();
+        disableTipoDeficienciaFisica(chk_tipo_deficiencia);
     });
 </script>
