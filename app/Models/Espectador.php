@@ -671,6 +671,15 @@ class Espectador
         return $this->db->resultados();
     }
 
+    public function relacAcessoServicoGuardaVol()
+    {
+        $this->db->query("SELECT DISTINCT(te.id_espectador), te.ds_nome_espectador, tc.ds_condicao FROM tb_relac_acesso_servico tras
+        JOIN tb_espectador te ON te.id_espectador = tras.fk_espectador
+        LEFT JOIN tb_condicao tc ON tc.id_condicao = te.fk_condicao WHERE tras.fk_acesso_servico = 5");
+
+        return $this->db->resultados();
+    }
+
     public function relacGuardaVolumesPorid($id)
     {
         $this->db->query("SELECT * FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");

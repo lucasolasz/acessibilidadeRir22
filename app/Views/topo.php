@@ -59,7 +59,7 @@
                                     <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Cadeiras</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Plataforma</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Brinquedos</a></li>
-                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Guarda Volume</a></li>
+                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/Paginas/guardaVolumes">Guarda Volume</a></li>
                                     </ul>
                                 </li>                                  
                             <?php } ?>
