@@ -22,7 +22,24 @@
                     <label for="txtEmail" class="form-label">E-mail: *</label>
                     <input type="text" class="form-control <?= $dados['email_erro'] ? 'is-invalid' : '' ?>" name="txtEmail" id="txtEmail" value="<?= $dados['usuario']->ds_email_usuario ?>">
                     <div class="invalid-feedback"><?= $dados['email_erro'] ?></div>
-                </div>             
+                </div> 
+                <div class="mb-3 mt-3">
+                    <label for="cboPerfilUsuario" class="form-label">Perfil usuário:</label>
+                    <select class="form-select" name="cboPerfilUsuario" id="cboPerfilUsuario">
+                        <?php foreach ($dados['perfilUsuario'] as $perfilUsuario) {
+
+                            $perfilUsuarioChk = '';
+
+                            if ($perfilUsuario->id_perfil_usuario == $dados['usuario']->fk_perfil_usuario) {
+                                $perfilUsuarioChk = 'selected';
+                            }
+                        ?>
+
+                            <option <?= $perfilUsuarioChk ?> value="<?= $perfilUsuario->id_perfil_usuario ?>"><?= $perfilUsuario->ds_perfil_usuario ?></option>
+
+                        <?php } ?>
+                    </select>
+                </div>            
                 <div class="mb-3">
                     <label for="txtSenha" class="form-label">Senha: *</label>
                     <input type="password" class="form-control <?= $dados['senha_erro'] ? 'is-invalid' : '' ?>" name="txtSenha" id="txtSenha" value="">

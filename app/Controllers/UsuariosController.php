@@ -29,6 +29,8 @@ class UsuariosController extends Controller
 
     public function cadastrar()
     {
+        $perfilUsuario = $this->usuarioModel->listarPerfilUsuario();
+
         //Evita que codigos maliciosos sejam enviados pelos campos
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         if (isset($formulario)) {
@@ -38,7 +40,9 @@ class UsuariosController extends Controller
                 'txtNome' => trim($formulario['txtNome']),
                 'txtEmail' => trim($formulario['txtEmail']),
                 'txtSenha' => trim($formulario['txtSenha']),
-                'txtConfirmaSenha' => trim($formulario['txtConfirmaSenha'])
+                'txtConfirmaSenha' => trim($formulario['txtConfirmaSenha']),
+                'cboPerfilUsuario' => $formulario['cboPerfilUsuario'],
+                'perfilUsuario' => $perfilUsuario
             ];
 
             // var_dump($dados['cboEditoriaUsuario']);
@@ -98,7 +102,8 @@ class UsuariosController extends Controller
                 'nome_erro' => '',
                 'email_erro' => '',
                 'senha_erro' => '',
-                'confirma_senha_erro' => ''
+                'confirma_senha_erro' => '',
+                'perfilUsuario' => $perfilUsuario
             ];
         }
 
@@ -110,28 +115,23 @@ class UsuariosController extends Controller
     {
 
         $usuario = $this->usuarioModel->lerUsuarioPorId($id);
+        $perfilUsuario = $this->usuarioModel->listarPerfilUsuario();
 
         //Evita que codigos maliciosos sejam enviados pelos campos
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         if (isset($formulario)) {
-
-            if (!in_array("cboPerfilUsuario", $formulario)) {
-                $cboEditoriaUsuario = NULL;
-            } else {
-                $cboEditoriaUsuario = $formulario['cboEditoriaUsuario'];
-            }
 
             $dados = [
                 'txtNome' => trim($formulario['txtNome']),
                 'txtEmail' => trim($formulario['txtEmail']),
                 'txtSenha' => trim($formulario['txtSenha']),
                 'txtConfirmaSenha' => trim($formulario['txtConfirmaSenha']),
+                'cboPerfilUsuario' => $formulario['cboPerfilUsuario'],
+                'perfilUsuario' => $perfilUsuario,
                 'id_usuario' => $id,
                 'usuario' => $usuario
             ];
 
-            // var_dump($dados);
-            // exit();
 
             //Verifica se está vazio
             if (empty($formulario['txtNome'])) {
@@ -181,7 +181,8 @@ class UsuariosController extends Controller
                 'email_erro' => '',
                 'senha_erro' => '',
                 'confirma_senha_erro' => '',
-                'usuario' => $usuario
+                'usuario' => $usuario,
+                'perfilUsuario' => $perfilUsuario
             ];
         }
         //Retorna para a view

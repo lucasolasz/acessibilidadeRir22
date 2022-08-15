@@ -20,6 +20,7 @@
                         <tr>
                             <th scope="col">Nome Convidado</th>
                             <th scope="col">E-mail</th>  
+                            <th scope="col">Perfil</th>  
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -29,7 +30,7 @@
                         if (empty($dados['usuarios'])) { ?>
 
                             <tr>
-                                <td colspan="3" class="align-middle">Nenhum Usuário cadastrado</td>
+                                <td colspan="4" class="align-middle">Nenhum Usuário cadastrado</td>
                             </tr>
 
 
@@ -41,6 +42,7 @@
                             <tr>
                                 <td><?= ucfirst($usuarios->ds_nome_usuario) ?></td>
                                 <td><?= $usuarios->ds_email_usuario ?></td>                                
+                                <td><?= $usuarios->ds_perfil_usuario ?></td>                                
 
                             <td><a href="<?= URL . '/UsuariosController/editar/' . $usuarios->id_usuario ?>" class="btn btn-artcor"><i class="bi bi-pencil-square"></i></a></td>
                             <td>
