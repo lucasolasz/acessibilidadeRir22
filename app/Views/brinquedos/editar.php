@@ -28,6 +28,8 @@ $brinquedosAgendados = [];
                     </div>
                 </div>
 
+                <?= Alertas::mensagem('remocaoAgendamento') ?>
+
                 <div class="mb-3 row">
                     <h3>Brinquedos agendados:</h3>
                     <?php
@@ -39,8 +41,8 @@ $brinquedosAgendados = [];
                     ?>
 
                             <div class="mb-3 mt-3 row">
-                                <label for="txtBrinquedo" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
-                                <div class="col-md-4">
+                                <label for="cboHoraTirolesa" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
                                     <select class="form-select" name="cboHoraTirolesa" id="cboHoraTirolesa">
                                         <optgroup label="Horário Selecionado">
                                             <option value="<?= $agendamento->id_hora_tirolesa ?>"><?= $agendamento->range_tirolesa ?></option>
@@ -55,7 +57,7 @@ $brinquedosAgendados = [];
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="<?= URL . '/BrinquedosController/ApagarAgendamento/' . $agendamento->id_brinquedo ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </div>
 
@@ -65,8 +67,8 @@ $brinquedosAgendados = [];
                         ?>
 
                             <div class="mb-3 row">
-                                <label for="txtBrinquedo" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
-                                <div class="col-md-4">
+                                <label for="cboTrintaMinMontanhaRussa" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
                                     <select class="form-select" name="cboTrintaMinMontanhaRussa" id="cboTrintaMinMontanhaRussa">
                                         <optgroup label="Horário Selecionado">
                                             <option value="<?= $agendamento->id_trinta_montanha ?>"><?= $agendamento->range_montanha ?></option>
@@ -81,7 +83,7 @@ $brinquedosAgendados = [];
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="<?= URL . '/BrinquedosController/ApagarAgendamento/' . $agendamento->id_brinquedo ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </div>
 
@@ -91,8 +93,8 @@ $brinquedosAgendados = [];
                         ?>
 
                             <div class="mb-3 row">
-                                <label for="txtBrinquedo" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
-                                <div class="col-md-4">
+                                <label for="cboQuinzeMinCabum" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
                                     <select class="form-select" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
                                         <optgroup label="Horário Selecionado">
                                             <option value="<?= $agendamento->id_quinze_cabum ?>"><?= $agendamento->range_cabum ?></option>
@@ -108,7 +110,7 @@ $brinquedosAgendados = [];
 
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="<?= URL . '/BrinquedosController/ApagarAgendamento/' . $agendamento->id_brinquedo ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </div>
 
@@ -119,8 +121,8 @@ $brinquedosAgendados = [];
                         ?>
 
                             <div class="mb-3 row">
-                                <label for="txtBrinquedo" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
-                                <div class="col-md-4">
+                                <label for="cboHoraRodaGigante" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
                                     <select class="form-select" name="cboHoraRodaGigante" id="cboHoraRodaGigante">
                                         <optgroup label="Horário Selecionado">
                                             <option value="<?= $agendamento->id_hora_roda_gigante ?>"><?= $agendamento->range_roda_gigante ?></option>
@@ -135,7 +137,7 @@ $brinquedosAgendados = [];
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="<?= URL . '/BrinquedosController/ApagarAgendamento/' . $agendamento->id_brinquedo ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </div>
 
@@ -144,7 +146,11 @@ $brinquedosAgendados = [];
                 </div>
 
                 <div class="mb-3">
-                <h3>Brinquedos não agendados:</h3>
+
+                    <?php if (count($brinquedosAgendados) != 4) { ?>
+                        <h3>Brinquedos não agendados:</h3>
+                    <?php } ?>
+
                     <?php foreach ($dados['brinquedos'] as $brinquedos) {
 
                         if (!in_array($brinquedos->id_brinquedo, $brinquedosAgendados)) {   ?>
@@ -163,8 +169,8 @@ $brinquedosAgendados = [];
 
                 <div class="p-0 form-check" id="divHoraTirolesa">
                     <div class="mb-3 mt-3">
-                        <label for="cboHoraTirolesa" class="form-label">Horário tirolesa: <small>1h em 1h</small></label>
-                        <select class="form-select" name="cboHoraTirolesa" id="cboHoraTirolesa">
+                        <label for="cboHoraTirolesaNA" class="form-label">Horário tirolesa: <small>1h em 1h</small></label>
+                        <select class="form-select" name="cboHoraTirolesaNA" id="cboHoraTirolesaNA">
                             <option value=""></option>
                             <?php foreach ($dados['horaTirolesa'] as $horaTirolesa) { ?>
 
@@ -177,8 +183,8 @@ $brinquedosAgendados = [];
 
                 <div class="p-0 form-check" id="divTrintaMontanhaRussa">
                     <div class="mb-3 mt-3">
-                        <label for="cboTrintaMinMontanhaRussa" class="form-label">Horário montanha russa: <small>30min em 30min</small></label>
-                        <select class="form-select" name="cboTrintaMinMontanhaRussa" id="cboTrintaMinMontanhaRussa">
+                        <label for="cboTrintaMinMontanhaRussaNA" class="form-label">Horário montanha russa: <small>30min em 30min</small></label>
+                        <select class="form-select" name="cboTrintaMinMontanhaRussaNA" id="cboTrintaMinMontanhaRussaNA">
                             <option value=""></option>
                             <?php foreach ($dados['trintaMinMontanhaRussa'] as $trintaMinMontanhaRussa) { ?>
 
@@ -191,8 +197,8 @@ $brinquedosAgendados = [];
 
                 <div class="p-0 form-check" id="divQuinzeCabum">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabum" class="form-label">Horário Cabum: <small>15min em 15min</small></label>
-                        <select class="form-select" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
+                        <label for="cboQuinzeMinCabumNA" class="form-label">Horário Cabum: <small>15min em 15min</small></label>
+                        <select class="form-select" name="cboQuinzeMinCabumNA" id="cboQuinzeMinCabumNA">
                             <option value=""></option>
                             <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
 
@@ -205,8 +211,8 @@ $brinquedosAgendados = [];
 
                 <div class="p-0 form-check" id="divHoraRodaGigante">
                     <div class="mb-3 mt-3">
-                        <label for="cboHoraRodaGigante" class="form-label">Horário roda gigante: <small>1h em 1h</small></label>
-                        <select class="form-select" name="cboHoraRodaGigante" id="cboHoraRodaGigante">
+                        <label for="cboHoraRodaGiganteNA" class="form-label">Horário roda gigante: <small>1h em 1h</small></label>
+                        <select class="form-select" name="cboHoraRodaGiganteNA" id="cboHoraRodaGiganteNA">
                             <option value=""></option>
                             <?php foreach ($dados['horaRodaGigante'] as $horaRodaGigante) { ?>
 

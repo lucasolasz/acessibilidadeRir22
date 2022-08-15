@@ -73,6 +73,11 @@
                                 <td><?= $brinquedosLimpo ?></td>
                                 <td><?= $horariosLimpo ?></td>
                                 <td><a href="<?= URL . '/BrinquedosController/editar/' . $agendamentos->id_espectador ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
+                                <td>
+                                    <form action="<?= URL . '/BrinquedosController/deletar/' . $agendamentos->id_espectador ?>" method="POST">
+                                        <button type="submit" class="btn btn-danger"><span><i class="bi bi-trash-fill"></i></span></button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php  } ?>
                     </tbody>

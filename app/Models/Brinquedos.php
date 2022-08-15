@@ -77,7 +77,6 @@ class Brinquedos
                     $armazenaBrinquedoErro = true;
                 }
             }
-
         } else {
             return false;
         }
@@ -90,23 +89,110 @@ class Brinquedos
         }
     }
 
-    public function editarCadeiraRodas($dados)
+    public function editarAgendamentoBrinquedo($dados)
     {
-        $editarCadeiraErro = false;
+        $editarBrinquedoErro = false;
 
-        $this->db->query("UPDATE tb_cadeira_rodas SET num_cadeira_rodas = :num_cadeira_rodas WHERE id_cadeira_rodas = :id_cadeira_rodas");
-        $this->db->bind("num_cadeira_rodas", $dados['txtCadeiraRodas']);
-        $this->db->bind("id_cadeira_rodas", $dados['id_cadeira_rodas']);
-        if (!$this->db->executa()) {
-            $editarCadeiraErro = true;
+        if (!$dados['chkBrinquedo'] == NULL) {
+
+            // echo "entrei";
+
+            foreach ($dados['chkBrinquedo'] as $chkBrinquedo) {
+                $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_trinta_min, fk_quinze_min) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_trinta_min, :fk_quinze_min)");
+
+                $this->db->bind("fk_espectador", $dados['fk_espectador']);
+                $this->db->bind("fk_brinquedo", $chkBrinquedo);
+                $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesaNA']);
+                $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGiganteNA']);
+                $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussaNA']);
+                $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabumNA']);
+                if (!$this->db->executa()) {
+                    $editarBrinquedoErro = true;
+                }
+            }
+        }
+ 
+
+        if (!$dados['cboHoraTirolesa'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_hora_tirolesa = :fk_hora_tirolesa            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesa']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
         }
 
-        if ($editarCadeiraErro) {
+        
+        if (!$dados['cboTrintaMinMontanhaRussa'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_trinta_min = :fk_trinta_min            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussa']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
+        }
+
+        if (!$dados['cboQuinzeMinCabum'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_quinze_min = :fk_quinze_min            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabum']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
+        }       
+       
+
+        if (!$dados['cboHoraRodaGigante'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_hora_roda_gigante = :fk_hora_roda_gigante            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
+        }       
+
+
+        if ($editarBrinquedoErro) {
             return false;
         } else {
             return true;
         }
     }
+
+    public function apagarAgendamentoPorId($dados)
+    {
+        $apagarAgendamento = false;
+
+        // var_dump($dados);
+        // exit();
+
+        $this->db->query("DELETE FROM tb_agenda_brinquedo WHERE fk_espectador = :fk_espectador AND fk_brinquedo = :fk_brinquedo");
+        $this->db->bind("fk_espectador", $dados['id_espectador']);
+        $this->db->bind("fk_brinquedo", $dados['id_brinquedo']);
+        if (!$this->db->executa()) {
+            $apagarAgendamento = true;
+        }
+
+        if ($apagarAgendamento) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
 
     public function lerAgendamentoPorId($id)
     {
@@ -125,20 +211,23 @@ class Brinquedos
 
 
 
-    public function deletarCadeira($dados)
+    public function apagarAgendamentos($dados)
     {
-        $id_cadeira = $dados['id_cadeira'];
+        $id_espectador = $dados['id_espectador'];
 
-        $deletarCadeiraErro = false;
+        // var_dump($dados);
+        // exit();
+
+        $deletarAgendamentos = false;
 
         //Deleta da tabela
-        $this->db->query("DELETE FROM tb_cadeira_rodas WHERE id_cadeira_rodas = :id_cadeira_rodas");
-        $this->db->bind("id_cadeira_rodas", $id_cadeira);
+        $this->db->query("DELETE FROM tb_agenda_brinquedo WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id_espectador);
         if (!$this->db->executa()) {
-            $deletarCadeiraErro = true;
+            $deletarAgendamentos = true;
         }
 
-        if ($deletarCadeiraErro) {
+        if ($deletarAgendamentos) {
             return false;
         } else {
             return true;

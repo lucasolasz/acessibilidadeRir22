@@ -59,7 +59,7 @@
                                     <a class="nav-link dropdown-toggle li-a-artcor" data-bs-toggle="dropdown" role="button">Controles</a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Cadeiras</a></li>
-                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Plataforma</a></li>
+                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="#">Plataforma</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/BrinquedosController">Brinquedos</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/Paginas/guardaVolumes">Guarda Volume</a></li>
                                     </ul>

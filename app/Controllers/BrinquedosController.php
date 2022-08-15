@@ -38,7 +38,7 @@ class BrinquedosController extends Controller
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if (isset($formulario)) {     
+        if (isset($formulario)) {
 
             //Converte valores vazios para NULL para salvar no banco
             $dados['cboEspectador'] = !$formulario['cboEspectador'] == "" ? $formulario['cboEspectador'] : NULL;
@@ -58,10 +58,9 @@ class BrinquedosController extends Controller
                     'horaRodaGigante' => $horaRodaGigante,
                     'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
                     'quinzeMinCabum' => $quinzeMinCabum
-                ];    
+                ];
 
                 $dados['espectador_erro'] = "Selecione um espectador";
-
             } else {
 
                 if ($this->brinquedosModel->armazenarAgendamentoBrinquedo($dados)) {
@@ -76,7 +75,7 @@ class BrinquedosController extends Controller
         } else {
 
             $dados = [
-                
+
                 'espectador' => $espectador,
                 'brinquedos' => $brinquedos,
                 'horaTirolesa' => $horaTirolesa,
@@ -92,7 +91,7 @@ class BrinquedosController extends Controller
 
     public function editar($id)
     {
-        
+
         $agendamento = $this->brinquedosModel->lerAgendamentoPorId($id);
         $brinquedos = $this->brinquedosModel->visualizarBrinquedos();
         $horaTirolesa = $this->brinquedosModel->visualizarHoraTirolesa();
@@ -108,24 +107,37 @@ class BrinquedosController extends Controller
 
         if (isset($formulario)) {
 
-            var_dump($formulario);
-            exit();
+            // var_dump($formulario);
+            // exit();
+
+            $dados = ['fk_espectador' => $id];
+            //Brinquedos agendados
+            $dados['cboHoraTirolesa'] = isset($formulario['cboHoraTirolesa']) ? $formulario['cboHoraTirolesa'] : NULL;
+            $dados['cboTrintaMinMontanhaRussa'] = isset($formulario['cboTrintaMinMontanhaRussa']) ? $formulario['cboTrintaMinMontanhaRussa'] : NULL;
+            $dados['cboQuinzeMinCabum'] = isset($formulario['cboQuinzeMinCabum']) ? $formulario['cboQuinzeMinCabum'] : NULL;
+            $dados['cboHoraRodaGigante'] = isset($formulario['cboHoraRodaGigante']) ? $formulario['cboHoraRodaGigante'] : NULL;
+
+            //Brinquedos não agendados
+            $dados['chkBrinquedo'] = isset($formulario['chkBrinquedo']) ? $formulario['chkBrinquedo'] : NULL;
+            $dados['cboHoraTirolesaNA'] = !$formulario['cboHoraTirolesaNA'] == "" ? $formulario['cboHoraTirolesaNA'] : NULL;
+            $dados['cboTrintaMinMontanhaRussaNA'] = !$formulario['cboTrintaMinMontanhaRussaNA'] == "" ? $formulario['cboTrintaMinMontanhaRussaNA'] : NULL;
+            $dados['cboQuinzeMinCabumNA'] = !$formulario['cboQuinzeMinCabumNA'] == "" ? $formulario['cboQuinzeMinCabumNA'] : NULL;
+            $dados['cboHoraRodaGiganteNA'] = !$formulario['cboHoraRodaGiganteNA'] == "" ? $formulario['cboHoraRodaGiganteNA'] : NULL;
 
 
-            $dados = [
-                'txtCadeiraRodas' => trim($formulario['txtCadeiraRodas']),
-                'id_cadeira_rodas' => $id
-            ];
 
-            if ($this->brinquedosModel->editarAgendamento($dados)) {
+            // var_dump($dados);
+            // exit();            
+
+            if ($this->brinquedosModel->editarAgendamentoBrinquedo($dados)) {
 
 
 
                 Alertas::mensagem('brinquedos', 'Agendamento atualizado com sucesso');
-                Redirecionamento::redirecionar('CadeiraRodasController');
+                Redirecionamento::redirecionar('BrinquedosController');
             } else {
                 Alertas::mensagem('brinquedos', 'Não foi possível atualizar o agendamento', 'alert alert-danger');
-                Redirecionamento::redirecionar('CadeiraRodasController');
+                Redirecionamento::redirecionar('BrinquedosController');
             }
         } else {
 
@@ -143,48 +155,61 @@ class BrinquedosController extends Controller
         $this->view('brinquedos/editar', $dados);
     }
 
+
+    public function apagarAgendamento($id_brinquedo)
+    {
+
+
+        $dados = [
+            'id_brinquedo' => $id_brinquedo,
+            'id_espectador' => $_GET['id_espectador']
+        ];
+
+        if ($this->brinquedosModel->apagarAgendamentoPorId($dados)) {
+
+
+            if (empty($this->brinquedosModel->lerAgendamentoPorId($dados['id_espectador']))) {
+
+                Alertas::mensagem('brinquedos', 'Todos os agendamentos foram removidos com sucesso.');
+                Redirecionamento::redirecionar('BrinquedosController');
+
+            } else {
+                Alertas::mensagem('remocaoAgendamento', 'Remoção do agendamento do brinquedo realizado com sucesso.');
+                Redirecionamento::redirecionar('BrinquedosController/editar/' . $dados['id_espectador']);
+            }
+
+        } else {
+            Alertas::mensagem('remocaoAgendamento', 'Não foi possível remover o agendamento do brinquedo', 'alert alert-danger');
+            Redirecionamento::redirecionar('BrinquedosController/editar/' . $dados['id_espectador']);
+        }
+    }
+
     public function deletar($id)
     {
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
 
         $dados = [
-            'id_cadeira' => $id,
+            'id_espectador' => $id,
         ];
 
         $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
 
         if ($id && $metodo == 'POST') {
 
-            if ($this->cadeiraRodasModel->deletarCadeira($dados)) {
+            if ($this->brinquedosModel->apagarAgendamentos($dados)) {
 
                 //Para exibir mensagem success , não precisa informar o tipo de classe
-                Alertas::mensagem('cadeiraRodas', 'Cadeira deletada com sucesso');
-                Redirecionamento::redirecionar('CadeiraRodasController');
+                Alertas::mensagem('brinquedos', 'Agendamentos deletados com sucesso');
+                Redirecionamento::redirecionar('BrinquedosController');
             } else {
-                Alertas::mensagem('cadeiraRodas', 'Não foi possível deletar a cadeira', 'alert alert-danger');
-                Redirecionamento::redirecionar('CadeiraRodasController');
+                Alertas::mensagem('brinquedos', 'Não foi possível apagar os agendamentos do usuário', 'alert alert-danger');
+                Redirecionamento::redirecionar('BrinquedosController');
             }
         } else {
-            Alertas::mensagem('cadeiraRodas', 'Não foi possível deletar a cadeira', 'alert alert-danger');
-            Redirecionamento::redirecionar('CadeiraRodasController');
+            Alertas::mensagem('brinquedos', 'Não foi possível apagar os agendamentos do usuário', 'alert alert-danger');
+            Redirecionamento::redirecionar('BrinquedosController');
         }
     }
-
-    public function deletarImagem($id)
-    {
-        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
-
-        $dados = [
-            'fotoAdesao' => $fotoAdesao
-        ];
-
-        if ($this->espectadorModel->deletarFoto($dados)) {
-            Alertas::mensagem('imagem', 'Imagem deletada com sucesso.');
-            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
-        } else {
-            Alertas::mensagem('imagem', 'Não foi deletar a imagem', 'alert alert-danger');
-            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
-        }
-    }
+   
 }
