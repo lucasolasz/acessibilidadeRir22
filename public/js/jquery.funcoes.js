@@ -94,3 +94,47 @@ function chkAcessoServico(id_condicao) {
 
     }
 }
+
+function disableHorarioTiroleza(chk_brinquedo) {
+
+    $("#divHoraTirolesa").hide(200);
+
+    if (chk_brinquedo == 1) {
+        $("#divHoraTirolesa").show(200);
+
+    }
+}
+
+function disableHorarioMontanhaRussa(chk_brinquedo) {
+
+    $("#divTrintaMontanhaRussa").hide(200);
+
+    if (chk_brinquedo == 2) {
+        $("#divTrintaMontanhaRussa").show(200);
+
+    }
+}
+
+function disableHorarioCabum(chk_brinquedo) {
+
+    console.log('oi');
+
+    $("#divQuinzeCabum").hide(200);
+
+    if (chk_brinquedo == 3) {
+        $("#divQuinzeCabum").show(200);
+
+    }
+}
+
+function disableHorarioRodaGigante(chk_brinquedo) {
+
+    $("#divHoraRodaGigante").hide(200);
+
+    if (chk_brinquedo == 4) {
+        $("#divHoraRodaGigante").show(200);
+
+    }
+}
+
+

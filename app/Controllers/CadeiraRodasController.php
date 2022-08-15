@@ -81,8 +81,6 @@ class CadeiraRodasController extends Controller
 
             if ($this->cadeiraRodasModel->editarCadeiraRodas($dados)) {
 
-                echo 'cheguei';
-
                 Alertas::mensagem('cadeiraRodas', 'Cadeira atualizada com sucesso');
                 Redirecionamento::redirecionar('CadeiraRodasController');
             } else {

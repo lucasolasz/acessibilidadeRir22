@@ -13,6 +13,8 @@
     <script src="<?= URL ?>/public/js/jquery.funcoes.js"></script>
     <script src="<?= URL ?>/public/js/qcTimepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" />
     <link href="<?= URL ?>/public/css/estilos.css" rel="stylesheet">
     <title><?= APP_NOME ?></title>
 </head>
@@ -50,18 +52,18 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/UsuariosController">Usuários</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Espectador</a></li>
-                                       
+
                                     </ul>
                                 </li>
                                 <li class="dropdown">
                                     <a class="nav-link dropdown-toggle li-a-artcor" data-bs-toggle="dropdown" role="button">Controles</a>
                                     <ul class="dropdown-menu">
-                                    <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Cadeiras</a></li>
+                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Cadeiras</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Plataforma</a></li>
-                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/CadeiraRodasController">Brinquedos</a></li>
+                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/BrinquedosController">Brinquedos</a></li>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/Paginas/guardaVolumes">Guarda Volume</a></li>
                                     </ul>
-                                </li>                                  
+                                </li>
                             <?php } ?>
                             <!-- <li class="nav-item">
                                 <a class="nav-link li-a-artcor" href="<?= URL . '/Paginas/sobre' ?>">Brinquedos</a>
