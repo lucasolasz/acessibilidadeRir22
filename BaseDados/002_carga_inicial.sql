@@ -29,8 +29,8 @@ INSERT INTO `tb_condicao` (`id_condicao`, `ds_condicao`) VALUES
 	(3, 'Gestante'),
 	(4, 'Idoso'),
   (5, 'Lactante'),
-	(6, 'Obeso');
-
+	(6, 'Obeso'),
+  (7, 'Diabético');
 
 
 CREATE TABLE IF NOT EXISTS `tb_tipo_deficiencia` (
@@ -83,6 +83,18 @@ INSERT INTO `tb_acesso_servico` (`id_acesso_servico`, `ds_acesso_servico`) VALUE
 	(3, 'Banheiro'),
 	(4, 'Cadeira de Rodas'),
 	(5, 'Guarda volume');
+  
+
+--Solicitado pela débora 16/08/2022
+ALTER TABLE tb_acesso_servico ADD ordem TINYINT DEFAULT NULL NULL;
+
+UPDATE tb_acesso_servico SET ordem=3 WHERE id_acesso_servico=1;
+UPDATE tb_acesso_servico SET ordem=2 WHERE id_acesso_servico=2;
+UPDATE tb_acesso_servico SET ordem=1 WHERE id_acesso_servico=3;
+UPDATE tb_acesso_servico SET ordem=4 WHERE id_acesso_servico=4;
+UPDATE tb_acesso_servico SET ordem=5 WHERE id_acesso_servico=5;
+--
+
 
 CREATE TABLE IF NOT EXISTS `tb_cadeira_rodas` (
   `id_cadeira_rodas` int(2) unsigned NOT NULL AUTO_INCREMENT,

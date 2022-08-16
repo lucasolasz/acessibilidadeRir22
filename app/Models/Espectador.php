@@ -262,7 +262,7 @@ class Espectador
             }
         }
 
-        var_dump($dados['txtDeficienciaFisica']);
+        // var_dump($dados['txtDeficienciaFisica']);
         // exit();
        
 
@@ -612,7 +612,7 @@ class Espectador
     public function lerAcessoServico()
     {
 
-        $this->db->query("SELECT * FROM tb_acesso_servico ORDER BY ds_acesso_servico");
+        $this->db->query("SELECT * FROM tb_acesso_servico ORDER BY ordem");
 
         return $this->db->resultados();
     }
