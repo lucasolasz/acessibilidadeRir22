@@ -81,7 +81,7 @@ function chkAcessoServico(id_condicao) {
     $('#chkAcessoServico1').prop('checked', false);
 
 
-    if (id_condicao == 2 || id_condicao == 3 || id_condicao == 4 || id_condicao == 5 || id_condicao == 6) {
+    if (id_condicao > 1) {
 
         $('#chkAcessoServico3').prop('checked', true);
         $('#chkAcessoServico2').prop('checked', true);

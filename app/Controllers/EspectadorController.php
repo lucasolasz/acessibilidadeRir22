@@ -161,7 +161,7 @@ class EspectadorController extends Controller
                 
             ];
 
-
+            
 
             $dados['fk_acompanhante'] = !$espectador->fk_acompanhante == NULL ? $espectador->fk_acompanhante : NULL;
             $dados['txtIdade'] = !$formulario['txtIdade'] == "" ? $formulario['txtIdade'] : NULL;

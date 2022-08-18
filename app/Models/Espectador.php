@@ -21,6 +21,18 @@ class Espectador
         return $this->db->resultados();
     }
 
+    public function visualizarEspectadorNaoAgendado()
+    {
+        $this->db->query("SELECT * FROM tb_espectador te 
+        WHERE te.id_espectador 
+        NOT IN (SELECT DISTINCT(id_espectador) FROM tb_espectador te2 JOIN tb_agenda_brinquedo tab ON te2.id_espectador = tab.fk_espectador)
+        ORDER BY ds_nome_espectador");
+
+        return $this->db->resultados();
+    }
+
+
+
     public function existeEspectador($dados)
     {
         $this->db->query("SELECT ds_documento_espectador FROM tb_espectador WHERE ds_documento_espectador = :ds_documento_espectador");
@@ -168,11 +180,12 @@ class Espectador
 
                 if ($upload->getResultado()) {
 
-                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario)");
+                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
                     $this->db->bind("fk_espectador", $ultimoIdEpectador);
                     $this->db->bind("nm_path_arquivo", $novoDiretorio);
                     $this->db->bind("nm_arquivo", $nomeArquivo);
                     $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                    $this->db->bind("chk_termo_brinquedo", 'N');
                     if (!$this->db->executa()) {
                         $armazenaEspectadorErro = true;
                     }
@@ -213,10 +226,9 @@ class Espectador
                 if (!$this->db->executa()) {
                     $editarEspectadorErro = true;
                 }
-                
+
                 //Nulo para atualizar a linha do espectador
                 $dados['fk_acompanhante'] = NULL;
-
             } else {
 
                 $this->db->query("UPDATE tb_acompanhante SET 
@@ -264,7 +276,7 @@ class Espectador
 
         // var_dump($dados['txtDeficienciaFisica']);
         // exit();
-       
+
 
         //Update do espectador
         $this->db->query("UPDATE tb_espectador SET
@@ -316,7 +328,6 @@ class Espectador
                     $editarEspectadorErro = true;
                 }
             }
-
         } else {
 
             //Apaga se não tiver opção escolhida
@@ -326,7 +337,7 @@ class Espectador
 
 
             if (!$dados['cboCadeiraDerodas'] == NULL) {
-                
+
                 $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = :fk_cadeira_rodas WHERE id_espectador = :id_espectador");
                 $this->db->bind("fk_cadeira_rodas", NULL);
                 $this->db->bind("id_espectador", $dados['id_espectador']);
@@ -468,11 +479,12 @@ class Espectador
 
                 if ($upload->getResultado()) {
 
-                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario)");
+                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
                     $this->db->bind("fk_espectador", $dados['id_espectador']);
                     $this->db->bind("nm_path_arquivo", $novoDiretorio);
                     $this->db->bind("nm_arquivo", $nomeArquivo);
                     $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                    $this->db->bind("chk_termo_brinquedo", 'N');
                     if (!$this->db->executa()) {
                         $editarEspectadorErro = true;
                     }
@@ -604,7 +616,7 @@ class Espectador
     public function lerCondicao()
     {
 
-        $this->db->query("SELECT * FROM tb_condicao ORDER BY ds_condicao");
+        $this->db->query("SELECT * FROM tb_condicao ORDER BY ordem");
 
         return $this->db->resultados();
     }
@@ -700,7 +712,7 @@ class Espectador
 
     public function lerAnexosPorId($id)
     {
-        $this->db->query("SELECT * FROM tb_anexo WHERE fk_espectador = :fk_espectador");
+        $this->db->query("SELECT * FROM tb_anexo WHERE fk_espectador = :fk_espectador AND chk_termo_brinquedo = 'N'");
 
         $this->db->bind("fk_espectador", $id);
 

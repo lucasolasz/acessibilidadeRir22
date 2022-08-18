@@ -82,6 +82,57 @@ class Brinquedos
         }
 
 
+        if (!$dados['fileTermoResponsabilidade'] == "") {
+
+            $pastaArquivo = "espectador_id_" . $dados['cboEspectador'];
+            $upload = new Upload();
+
+            $upload->imagem($dados['fileTermoResponsabilidade'], NULL, 'temp');
+
+            if (!$upload->getErro() == NULL) {
+                return false;
+                // echo $upload->getErro() . '<br>';
+            } else {
+
+                //Inicio do processamento de compressao
+                $nomeArquivo = $upload->getResultado();
+
+                //Path da imagem que foi feito upload  (pasta temp)           
+                $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                //Cria pasta dos arquivos individualmente de acordo com id
+                if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                    mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                }
+                $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                //Monta o diretorio destino da pagina comprimida
+                $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                //Executa a compressao
+                ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                //Invoca metodo para deletar o arquivo temporario
+                $upload->deletarArquivo(null, $path_arquivo);
+
+                if ($upload->getResultado()) {
+
+                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                    $this->db->bind("fk_espectador", $dados['cboEspectador']);
+                    $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                    $this->db->bind("nm_arquivo", $nomeArquivo);
+                    $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                    $this->db->bind("chk_termo_brinquedo", 'S');
+                    if (!$this->db->executa()) {
+                        $armazenaBrinquedoErro = true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+
+
         if ($armazenaBrinquedoErro) {
             return false;
         } else {
@@ -92,6 +143,9 @@ class Brinquedos
     public function editarAgendamentoBrinquedo($dados)
     {
         $editarBrinquedoErro = false;
+
+        // var_dump($dados);
+        // exit();
 
         if (!$dados['chkBrinquedo'] == NULL) {
 
@@ -111,7 +165,7 @@ class Brinquedos
                 }
             }
         }
- 
+
 
         if (!$dados['cboHoraTirolesa'] == NULL) {
 
@@ -125,7 +179,7 @@ class Brinquedos
             }
         }
 
-        
+
         if (!$dados['cboTrintaMinMontanhaRussa'] == NULL) {
 
             $this->db->query("UPDATE tb_agenda_brinquedo SET 
@@ -148,8 +202,8 @@ class Brinquedos
             if (!$this->db->executa()) {
                 $editarBrinquedoErro = true;
             }
-        }       
-       
+        }
+
 
         if (!$dados['cboHoraRodaGigante'] == NULL) {
 
@@ -161,7 +215,73 @@ class Brinquedos
             if (!$this->db->executa()) {
                 $editarBrinquedoErro = true;
             }
-        }       
+        }
+
+
+        if (!$dados['fileTermoResponsabilidade'] == "") {
+
+            //Se entrar aqui na edição, está sendo feita uma substituição         
+            $pastaArquivo = "espectador_id_" . $dados['fk_espectador'];
+            $upload = new Upload();
+
+            if (!empty($dados['termoResponsabilidade'])) {
+
+                //Deleta registro da imagem no banco
+                $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador AND chk_termo_brinquedo = 'S'");
+                $this->db->bind("fk_espectador", $dados['fk_espectador']);
+                $this->db->executa();
+
+                //Usado para deletar o arquivo fisico no diretorio
+                $path_arquivo_anterior = $dados['termoResponsabilidade'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['termoResponsabilidade'][0]->nm_arquivo;
+
+                //Invoca metodo para deletar o arquivo anterior para ser substituido
+                $upload->deletarArquivo(null, $path_arquivo_anterior);
+            }
+
+            $upload->imagem($dados['fileTermoResponsabilidade'], NULL, 'temp');
+
+            if (!$upload->getErro() == NULL) {
+                return false;
+                // echo $upload->getErro() . '<br>';
+            } else {
+
+                //Inicio do processamento de compressao
+                $nomeArquivo = $upload->getResultado();
+
+                //Path da imagem que foi feito upload  (pasta temp)           
+                $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                //Cria pasta dos arquivos individualmente de acordo com id
+                if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                    mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                }
+                $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                //Monta o diretorio destino da pagina comprimida
+                $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                //Executa a compressao
+                ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                //Invoca metodo para deletar o arquivo temporario
+                $upload->deletarArquivo(null, $path_arquivo);
+
+                if ($upload->getResultado()) {
+
+                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                    $this->db->bind("fk_espectador", $dados['fk_espectador']);
+                    $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                    $this->db->bind("nm_arquivo", $nomeArquivo);
+                    $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                    $this->db->bind("chk_termo_brinquedo", 'S');
+                    if (!$this->db->executa()) {
+                        $editarBrinquedoErro = true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
 
 
         if ($editarBrinquedoErro) {
@@ -192,6 +312,16 @@ class Brinquedos
         }
     }
 
+    public function lerAnexosPorId($id)
+    {
+
+        $this->db->query("SELECT * FROM tb_anexo WHERE fk_espectador = :fk_espectador AND chk_termo_brinquedo = 'S'");
+
+        $this->db->bind("fk_espectador", $id);
+
+        return $this->db->resultados();
+    }
+
 
 
     public function lerAgendamentoPorId($id)
@@ -215,8 +345,12 @@ class Brinquedos
     {
         $id_espectador = $dados['id_espectador'];
 
-        // var_dump($dados);
-        // exit();
+        //Precisei colcoar desta forma, pois a função deletarFoto precisa receber um array que possui o array termoResponsabilidade
+        $dadosResponsa = ['termoResponsabilidade' => $dados['termoResponsabilidade']];
+
+        if (!empty($dadosResponsa)) {
+            $this->deletarFoto($dadosResponsa);
+        }
 
         $deletarAgendamentos = false;
 
@@ -231,6 +365,27 @@ class Brinquedos
             return false;
         } else {
             return true;
+        }
+    }
+
+
+    public function deletarFoto($dados)
+    {
+        //Monta string do diretório da imagem
+        $path_arquivo = $dados['termoResponsabilidade'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['termoResponsabilidade'][0]->nm_arquivo;
+
+        $upload = new Upload();
+        $upload->deletarArquivo(null, $path_arquivo);
+
+        //Deleta da tabela
+        $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
+        $this->db->bind("id_anexo", $dados['termoResponsabilidade'][0]->id_anexo);
+
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

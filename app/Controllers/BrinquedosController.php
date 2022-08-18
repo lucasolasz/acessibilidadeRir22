@@ -29,7 +29,7 @@ class BrinquedosController extends Controller
 
     public function cadastrar()
     {
-        $espectador = $this->espectadorModel->visualizarEspectador();
+        $espectador = $this->espectadorModel->visualizarEspectadorNaoAgendado();
         $brinquedos = $this->brinquedosModel->visualizarBrinquedos();
         $horaTirolesa = $this->brinquedosModel->visualizarHoraTirolesa();
         $horaRodaGigante = $this->brinquedosModel->visualizarHoraRogaGigante();
@@ -48,6 +48,8 @@ class BrinquedosController extends Controller
             $dados['cboHoraRodaGigante'] = !$formulario['cboHoraRodaGigante'] == "" ? $formulario['cboHoraRodaGigante'] : NULL;
             $dados['chkBrinquedo'] = isset($formulario['chkBrinquedo']) ? $formulario['chkBrinquedo'] : NULL;
 
+            //Termo responsabilidade
+            $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
 
             if ($dados['cboEspectador'] == NULL) {
 
@@ -98,17 +100,13 @@ class BrinquedosController extends Controller
         $horaRodaGigante = $this->brinquedosModel->visualizarHoraRogaGigante();
         $trintaMinMontanhaRussa = $this->brinquedosModel->visualizarTrintaMinMontanhaRussa();
         $quinzeMinCabum = $this->brinquedosModel->visualizarQuinzeMinCabum();
-
-        // var_dump($agendamento);
-        // exit();
+        $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
 
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         if (isset($formulario)) {
 
-            // var_dump($formulario);
-            // exit();
 
             $dados = ['fk_espectador' => $id];
             //Brinquedos agendados
@@ -124,14 +122,14 @@ class BrinquedosController extends Controller
             $dados['cboQuinzeMinCabumNA'] = !$formulario['cboQuinzeMinCabumNA'] == "" ? $formulario['cboQuinzeMinCabumNA'] : NULL;
             $dados['cboHoraRodaGiganteNA'] = !$formulario['cboHoraRodaGiganteNA'] == "" ? $formulario['cboHoraRodaGiganteNA'] : NULL;
 
+            //Termo responsabilidade input
+            $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
 
+            //Termo anexo
+            $dados['termoResponsabilidade'] = $termoResponsabilidade;
 
-            // var_dump($dados);
-            // exit();            
 
             if ($this->brinquedosModel->editarAgendamentoBrinquedo($dados)) {
-
-
 
                 Alertas::mensagem('brinquedos', 'Agendamento atualizado com sucesso');
                 Redirecionamento::redirecionar('BrinquedosController');
@@ -147,7 +145,8 @@ class BrinquedosController extends Controller
                 'horaTirolesa' => $horaTirolesa,
                 'horaRodaGigante' => $horaRodaGigante,
                 'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                'quinzeMinCabum' => $quinzeMinCabum
+                'quinzeMinCabum' => $quinzeMinCabum,
+                'termoResponsabilidade' => $termoResponsabilidade
             ];
         }
 
@@ -172,12 +171,10 @@ class BrinquedosController extends Controller
 
                 Alertas::mensagem('brinquedos', 'Todos os agendamentos foram removidos com sucesso.');
                 Redirecionamento::redirecionar('BrinquedosController');
-
             } else {
                 Alertas::mensagem('remocaoAgendamento', 'Remoção do agendamento do brinquedo realizado com sucesso.');
                 Redirecionamento::redirecionar('BrinquedosController/editar/' . $dados['id_espectador']);
             }
-
         } else {
             Alertas::mensagem('remocaoAgendamento', 'Não foi possível remover o agendamento do brinquedo', 'alert alert-danger');
             Redirecionamento::redirecionar('BrinquedosController/editar/' . $dados['id_espectador']);
@@ -188,9 +185,11 @@ class BrinquedosController extends Controller
     {
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
+        $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
 
         $dados = [
             'id_espectador' => $id,
+            'termoResponsabilidade' => $termoResponsabilidade
         ];
 
         $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
@@ -211,5 +210,21 @@ class BrinquedosController extends Controller
             Redirecionamento::redirecionar('BrinquedosController');
         }
     }
-   
+
+    public function deletarImagem($id)
+    {
+        $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
+
+        $dados = [
+            'termoResponsabilidade' => $termoResponsabilidade
+        ];
+
+        if ($this->brinquedosModel->deletarFoto($dados)) {
+            Alertas::mensagem('imagemResponsabilidade', 'Imagem deletada com sucesso.');
+            Redirecionamento::redirecionar('BrinquedosController/editar/' . $termoResponsabilidade[0]->fk_espectador);
+        } else {
+            Alertas::mensagem('imagemResponsabilidade', 'Não foi deletar a imagem', 'alert alert-danger');
+            Redirecionamento::redirecionar('BrinquedosController/editar/' . $termoResponsabilidade[0]->fk_espectador);
+        }
+    }
 }

@@ -18,7 +18,7 @@ $brinquedosAgendados = [];
             <h2>Editar Agendamento</h2>
             <small>Preencha o formulário abaixo para editar o agendamento</small>
 
-            <form name="cadastrar" method="POST" action="<?= URL . '/BrinquedosController/editar/' . $dados['agendamento'][0]->id_espectador ?>">
+            <form name="cadastrar" method="POST" action="<?= URL . '/BrinquedosController/editar/' . $dados['agendamento'][0]->id_espectador ?>" enctype="multipart/form-data">
 
 
                 <div class="mb-3 mt-3 row">
@@ -221,6 +221,48 @@ $brinquedosAgendados = [];
                             <?php } ?>
                         </select>
                     </div>
+                </div>
+
+                <?= Alertas::mensagem('imagemResponsabilidade') ?>
+
+                <?php if (!empty($dados['termoResponsabilidade'])) { ?>
+                    <hr>
+
+
+                    <?php foreach ($dados['termoResponsabilidade'] as $termoResponsabilidade) { ?>
+                        <div class="text-center m-3">
+                            <p><b>Termo responsabilidade</b></p>
+                            <small>Clique na imagem para ampliar</small>
+                            <button type="button" class="bordaImagem" data-bs-toggle="modal" data-bs-target="#fullScreenModal"> <img src="<?= URL . DIRECTORY_SEPARATOR . $termoResponsabilidade->nm_path_arquivo . DIRECTORY_SEPARATOR . $termoResponsabilidade->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $termoResponsabilidade->nm_arquivo ?>"></button>
+
+                            <a href="<?= URL . '/BrinquedosController/deletarImagem/' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger mt-1"> Excluir imagem <i class="bi bi-trash-fill"></i></a>
+                        </div>
+                    <?php } ?>
+
+                    <!-- FullScreen Modal -->
+                    <div class="modal fade" id="fullScreenModal" tabindex="-1" aria-labelledby="fullScreenModal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="fullScreenModal">Termo responsabilidade espectador: <?= ucfirst($dados['agendamento'][0]->ds_nome_espectador) ?></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?= URL . DIRECTORY_SEPARATOR . $termoResponsabilidade->nm_path_arquivo . DIRECTORY_SEPARATOR . $termoResponsabilidade->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $termoResponsabilidade->nm_arquivo ?>">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <small>Para substituir o termo atual, envie outra foto abaixo:</small>
+                    <hr>
+                <?php } ?>
+
+                <div class="mb-3">
+                    <label for="fileTermoResponsabilidade" class="form-label">Termo de responsabilidade:</label>
+                    <input class="form-control" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">
                 </div>
 
                 <div class="row">

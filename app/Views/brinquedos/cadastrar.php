@@ -14,7 +14,7 @@
             <h2>Cadastrar Novo Agendamento</h2>
             <small>Preencha o formulário abaixo para cadastrar um novo evento</small>
 
-            <form name="cadastrar" method="POST" action="<?= URL ?>/BrinquedosController/cadastrar">
+            <form name="cadastrar" method="POST" action="<?= URL ?>/BrinquedosController/cadastrar" enctype="multipart/form-data">
 
                 <div class="mb-3 mt-3">
                     <label for="cboEspectador" class="form-label">Espectador:</label>
@@ -95,6 +95,11 @@
                             <?php } ?>
                         </select>
                     </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fileTermoResponsabilidade" class="form-label">Termo de responsabilidade:</label>
+                    <input class="form-control" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">                    
                 </div>
 
                 <div class="row">
