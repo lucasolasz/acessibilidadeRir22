@@ -41,7 +41,7 @@ class EspectadorController extends Controller
 
         if (isset($formulario)) {
 
-          
+
             $dados = [
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
                 'txtDocumento' => trim($formulario['txtDocumento']),
@@ -128,7 +128,7 @@ class EspectadorController extends Controller
         $relacAcessoServico = $this->espectadorModel->relacAcessoServicoPorid($id);
         $relacGuardaVolumes = $this->espectadorModel->relacGuardaVolumesPorid($id);
         $relacTipoDeficiencia = $this->espectadorModel->relacTipoDeficienciaPorid($id);
-        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);        
+        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
 
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -158,10 +158,10 @@ class EspectadorController extends Controller
                 'cadeiraDeRodasUsadas' => $cadeiraDeRodasUsadas,
                 'fotoAdesao' => $fotoAdesao,
                 'tipoDeficienciaFisica' => $tipoDeficienciaFisica
-                
+
             ];
 
-            
+
 
             $dados['fk_acompanhante'] = !$espectador->fk_acompanhante == NULL ? $espectador->fk_acompanhante : NULL;
             $dados['txtIdade'] = !$formulario['txtIdade'] == "" ? $formulario['txtIdade'] : NULL;
@@ -245,6 +245,23 @@ class EspectadorController extends Controller
             Redirecionamento::redirecionar('EspectadorController');
         }
     }
+
+    public function buscaAjax()
+    {
+
+        //Retorna o valor da direita caso o valor da esquerda seja ou não esteja settado (null coalesce operator)
+        $dados['ds_nome_espectador'] = $_POST['ds_nome_espectador'] ?? "" ;        
+
+        $resultado = $this->espectadorModel->pesquisarEspectador($dados);
+
+        $dados = [
+            'resultado' => $resultado
+        ];
+
+        //Retorna view crua
+        $this->viewCrua('espectador/buscaAjax', $dados);
+    }
+
 
     public function deletarImagem($id)
     {

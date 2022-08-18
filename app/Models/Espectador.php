@@ -32,6 +32,16 @@ class Espectador
     }
 
 
+    public function pesquisarEspectador($dados)
+    {
+        $this->db->query("SELECT * FROM tb_espectador te 
+        LEFT JOIN tb_condicao tc ON tc.id_condicao = te.fk_condicao
+        LEFT JOIN tb_usuario tu ON tu.id_usuario = te.fk_usuario
+        WHERE te.ds_nome_espectador LIKE concat('%',:ds_nome_espectador,'%')");
+        $this->db->bind("ds_nome_espectador", $dados['ds_nome_espectador']);
+        return $this->db->resultados();
+    }
+
 
     public function existeEspectador($dados)
     {
