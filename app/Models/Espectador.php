@@ -672,6 +672,22 @@ class Espectador
         return $this->db->resultados();
     }
 
+
+    public function lerEspectadorPorIdBrinquedo($id)
+    {
+
+        $this->db->query("SELECT * FROM tb_espectador te 
+        LEFT JOIN tb_condicao tc ON tc.id_condicao = te.fk_condicao
+        LEFT JOIN tb_usuario tu ON tu.id_usuario = te.fk_usuario
+        WHERE te.id_espectador = :id_espectador
+        ORDER BY ds_nome_espectador");
+
+        $this->db->bind("id_espectador", $id);
+
+
+        return $this->db->resultados();
+    }
+
     public function lerEspectadorPorId($id)
     {
         $this->db->query("SELECT * FROM tb_espectador te 

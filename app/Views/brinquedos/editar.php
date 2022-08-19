@@ -22,7 +22,7 @@ $brinquedosAgendados = [];
 
 
                 <div class="mb-3 mt-3 row">
-                    <label for="txtEspectador" class="col-md-3 col-form-label">Espectador: </label>
+                    <label for="txtEspectador" class="col-md-4 col-form-label">Espectador: </label>
                     <div class="col-sm-8">
                         <input type="text" readonly class="form-control-plaintext" id="txtEspectador" value="<?= ucfirst($dados['agendamento'][0]->ds_nome_espectador) ?>">
                     </div>

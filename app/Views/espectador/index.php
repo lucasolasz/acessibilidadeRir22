@@ -11,15 +11,15 @@
                     <h5 class="tituloIndex">Espectador</h5>
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Pesquisar espectador" aria-label="Search" name="pesquisarEspectador" id="pesquisarEspectador">
+                        <a href="<?= URL ?>/EspectadorController/cadastrar" class="btn btn-artcor">Novo Espectador</a>
                     </form>
-                    <a href="<?= URL ?>/EspectadorController/cadastrar" class="btn btn-artcor">Novo Espectador</a>
                 </div>
             </nav>
 
         </div>
         <div class="card-body">
             <div>
-                <div id="resultadoVisita"></div>
+                <div id="resultadoEspectador"></div>
             </div>
         </div>
     </div>
@@ -45,17 +45,17 @@
 
     function pesquisarEspectador(ds_nome_espectador) {
         $.ajax({
-            url: '<?php echo URL . '/EspectadorController/buscaAjax' ?>',
+            url: '<?php echo URL . '/EspectadorController/buscaAjaxEspectador' ?>',
             type: 'POST',
             data: {
                 ds_nome_espectador: ds_nome_espectador
             },
             success: function(data) {
                 // loading_hide();
-                $("#resultadoVisita").html(data)
+                $("#resultadoEspectador").html(data)
             },
             error: function(data) {
-                console.log("Ocorreu erro ao BUSCAR visitante via AJAX.");
+                console.log("Ocorreu erro ao BUSCAR espectador via AJAX.");
                 // $('#cboCidade').html("Houve um erro ao carregar");
             }
         });

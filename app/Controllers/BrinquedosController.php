@@ -27,9 +27,10 @@ class BrinquedosController extends Controller
         $this->view('brinquedos/index', $dados);
     }
 
-    public function cadastrar()
+    public function cadastrar($id = null)
     {
-        $espectador = $this->espectadorModel->visualizarEspectadorNaoAgendado();
+        // $espectador = $this->espectadorModel->visualizarEspectadorNaoAgendado();
+        $espectador = $this->espectadorModel->lerEspectadorPorId($id);
         $brinquedos = $this->brinquedosModel->visualizarBrinquedos();
         $horaTirolesa = $this->brinquedosModel->visualizarHoraTirolesa();
         $horaRodaGigante = $this->brinquedosModel->visualizarHoraRogaGigante();
@@ -41,7 +42,7 @@ class BrinquedosController extends Controller
         if (isset($formulario)) {
 
             //Converte valores vazios para NULL para salvar no banco
-            $dados['cboEspectador'] = !$formulario['cboEspectador'] == "" ? $formulario['cboEspectador'] : NULL;
+            $dados['hidIdExpectador'] = !$formulario['hidIdExpectador'] == "" ? $formulario['hidIdExpectador'] : NULL;
             $dados['cboHoraTirolesa'] = !$formulario['cboHoraTirolesa'] == "" ? $formulario['cboHoraTirolesa'] : NULL;
             $dados['cboTrintaMinMontanhaRussa'] = !$formulario['cboTrintaMinMontanhaRussa'] == "" ? $formulario['cboTrintaMinMontanhaRussa'] : NULL;
             $dados['cboQuinzeMinCabum'] = !$formulario['cboQuinzeMinCabum'] == "" ? $formulario['cboQuinzeMinCabum'] : NULL;
@@ -51,19 +52,19 @@ class BrinquedosController extends Controller
             //Termo responsabilidade
             $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
 
-            if ($dados['cboEspectador'] == NULL) {
+            // if ($dados['cboEspectador'] == NULL) {
 
-                $dados = [
-                    'espectador' => $espectador,
-                    'brinquedos' => $brinquedos,
-                    'horaTirolesa' => $horaTirolesa,
-                    'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum
-                ];
+            //     $dados = [
+            //         'espectador' => $espectador,
+            //         'brinquedos' => $brinquedos,
+            //         'horaTirolesa' => $horaTirolesa,
+            //         'horaRodaGigante' => $horaRodaGigante,
+            //         'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+            //         'quinzeMinCabum' => $quinzeMinCabum
+            //     ];
 
-                $dados['espectador_erro'] = "Selecione um espectador";
-            } else {
+            //     $dados['espectador_erro'] = "Selecione um espectador";
+            // } else {
 
                 if ($this->brinquedosModel->armazenarAgendamentoBrinquedo($dados)) {
 
@@ -73,7 +74,7 @@ class BrinquedosController extends Controller
                     Alertas::mensagem('brinquedos', 'Não foi possível agendar o brinquedo', 'alert alert-danger');
                     Redirecionamento::redirecionar('BrinquedosController');
                 }
-            }
+            // }
         } else {
 
             $dados = [

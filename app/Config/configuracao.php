@@ -14,4 +14,4 @@ define('URL', '/acessibilidadeRir22');
 
 define('APP_NOME', 'Acessibilidade Rock in Rio 2022');
 
-define('APP_VERSAO', '1.5.13');
+define('APP_VERSAO', '1.6.14');

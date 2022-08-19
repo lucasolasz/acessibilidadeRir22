@@ -119,7 +119,7 @@ function disableHorarioMontanhaRussa(chk_brinquedo) {
 
 function disableHorarioCabum(chk_brinquedo) {
 
-    console.log('oi');
+    // console.log('oi');
 
     $("#divQuinzeCabum").hide(200);
 

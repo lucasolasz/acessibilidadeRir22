@@ -8,7 +8,7 @@
 
             <h5 class="tituloIndex">Agendamento Brinquedos
                 <div style="float: right;">
-                    <a href="<?= URL ?>/BrinquedosController/cadastrar" class="btn btn-artcor">Novo Agendamento</a>
+                    <a href="<?= URL ?>/EspectadorController" class="btn btn-artcor">Novo Agendamento</a>
                 </div>
             </h5>
 
@@ -30,7 +30,7 @@
                     <tbody>
                         <?php foreach ($dados['agendamentos'] as $agendamentos) { ?>
                             <tr>
-                                <td><?= $agendamentos->ds_nome_espectador ?></td>
+                                <td><?= ucfirst($agendamentos->ds_nome_espectador) ?></td>
                                 <td><?= $agendamentos->ds_nome_acompanhante ?></td>
                                 <td><?= $agendamentos->ds_condicao ?></td>
                                 <?php

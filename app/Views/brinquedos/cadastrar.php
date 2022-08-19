@@ -1,4 +1,4 @@
-<div class="col-xl-4 col-md-6 mx-auto p-5">
+<div class="col-xl-6 col-md-6 mx-auto p-5">
 
 
     <nav aria-label="breadcrumb">
@@ -8,7 +8,6 @@
         </ol>
     </nav>
 
-
     <div class="card">
         <div class="card-body">
             <h2>Cadastrar Novo Agendamento</h2>
@@ -16,17 +15,12 @@
 
             <form name="cadastrar" method="POST" action="<?= URL ?>/BrinquedosController/cadastrar" enctype="multipart/form-data">
 
-                <div class="mb-3 mt-3">
-                    <label for="cboEspectador" class="form-label">Espectador:</label>
-                    <select class="<?= $dados['espectador_erro'] ? 'is-invalid' : '' ?>" id="cboEspectador" placeholder="Procure o espectador" name="cboEspectador">
-                        <option value=""></option>
-                        <?php foreach ($dados['espectador'] as $espectador) { ?>
-
-                            <option value="<?= $espectador->id_espectador ?>"><?= ucfirst($espectador->ds_nome_espectador) ?></option>
-
-                        <?php } ?>
-                    </select>
-                    <div class="invalid-feedback"><?= $dados['espectador_erro'] ?></div>
+                <div class="mb-3 mt-3 row">
+                    <label for="txtEspectador" class="col-md-4 col-form-label">Espectador: </label>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control-plaintext" name="txtEspectador" id="txtEspectador" value="<?= ucfirst($dados['espectador']->ds_nome_espectador) ?>">
+                        <input type="hidden" name="hidIdExpectador" value="<?= $dados['espectador']->id_espectador ?>">
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -99,7 +93,7 @@
 
                 <div class="mb-3">
                     <label for="fileTermoResponsabilidade" class="form-label">Termo de responsabilidade:</label>
-                    <input class="form-control" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">                    
+                    <input class="form-control" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">
                 </div>
 
                 <div class="row">

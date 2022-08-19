@@ -7,7 +7,9 @@
                 <th scope="col">Acessos/Serviços</th>
                 <th scope="col">Cadastrado por</th>
                 <th scope="col">Data Criação</th>
-                <th scope="col">Ações</th>
+                <th scope="col">Editar</th>
+                <th scope="col" class="text-center">Agendar Brinquedo</th>
+                <th scope="col">Apagar</th>
             </tr>
         </thead>
         <tbody>
@@ -16,7 +18,7 @@
             if (empty($dados['resultado'])) { ?>
 
                 <tr>
-                    <td colspan="6" class="align-middle">Nenhum espectador cadastrado</td>
+                    <td colspan="8" class="align-middle">Nenhum espectador encontrado</td>
                 </tr>
 
             <?php  }
@@ -50,7 +52,29 @@
                     <td><?= Checa::dataHoraFormatBr($resultado->criado_em) ?></td>
 
 
-                    <td><a href="<?= URL . '/EspectadorController/editar/' . $resultado->id_espectador ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
+                    <td>
+                        <a href="<?= URL . '/EspectadorController/editar/' . $resultado->id_espectador ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                    </td>
+
+                    <td class="text-center">
+
+                        <?php
+                        $especJaAgendado = false;
+                        foreach ($dados['fk_espectador_brinquedo'] as $fk_espectador_brinquedo) {
+
+                            if ($fk_espectador_brinquedo->id_espectador == $resultado->id_espectador) {
+                                $especJaAgendado = true;
+                            }
+                        }
+
+                        if ($especJaAgendado) { ?>
+
+                            <a href="<?= URL . '/BrinquedosController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-regular fa-calendar"></i> Já agendado. Visualizar</a>
+
+                        <?php } else { ?>
+                            <a href="<?= URL . '/BrinquedosController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-regular fa-calendar"></i> Novo</a>
+                        <?php } ?>
+                    </td>
                     <td>
                         <form action="<?= URL . '/EspectadorController/deletar/' . $resultado->id_espectador ?>" method="POST">
                             <button type="submit" class="btn btn-danger"><span><i class="bi bi-trash-fill"></i></span></button>

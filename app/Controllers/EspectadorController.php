@@ -13,6 +13,7 @@ class EspectadorController extends Controller
         }
 
         $this->espectadorModel = $this->model("Espectador");
+        $this->brinquedosModel = $this->model("Brinquedos");
     }
 
     //Método padrão que é invocado ao chamar a controller
@@ -220,11 +221,25 @@ class EspectadorController extends Controller
 
         $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
         $espectador = $this->espectadorModel->lerEspectadorPorId($id);
+        $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
+        $agendamento = $this->brinquedosModel->lerAgendamentoPorId($id);
 
+        //Dados para deleção dos agendamentos
+        $dados = [            
+            'id_espectador' => $id,            
+            'termoResponsabilidade' => $termoResponsabilidade
+        ];
+
+        //Deleta os agendamentos
+        if (!empty($agendamento)) {
+
+            $this->brinquedosModel->apagarAgendamentos($dados);
+        }
+
+        //Dados para deletar o espectador
         $dados = [
             'fotoAdesao' => $fotoAdesao,
             'id_espectador' => $id,
-            'espectador' => $espectador
         ];
 
         $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
@@ -246,20 +261,22 @@ class EspectadorController extends Controller
         }
     }
 
-    public function buscaAjax()
+    public function buscaAjaxEspectador()
     {
 
-        //Retorna o valor da direita caso o valor da esquerda seja ou não esteja settado (null coalesce operator)
-        $dados['ds_nome_espectador'] = $_POST['ds_nome_espectador'] ?? "" ;        
+        //Retorna o valor da direita caso o valor da esquerda esteja ou não esteja settado (null coalesce operator)
+        $dados['ds_nome_espectador'] = $_POST['ds_nome_espectador'] ?? "";
 
         $resultado = $this->espectadorModel->pesquisarEspectador($dados);
+        $fk_espectador_brinquedo = $this->brinquedosModel->visualizarAgendamntos();
 
         $dados = [
-            'resultado' => $resultado
+            'resultado' => $resultado,
+            'fk_espectador_brinquedo' => $fk_espectador_brinquedo
         ];
 
         //Retorna view crua
-        $this->viewCrua('espectador/buscaAjax', $dados);
+        $this->viewCrua('espectador/buscaAjaxEspectador', $dados);
     }
 
 

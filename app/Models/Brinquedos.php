@@ -67,7 +67,7 @@ class Brinquedos
             foreach ($dados['chkBrinquedo'] as $chkBrinquedo) {
 
                 $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_trinta_min, fk_quinze_min) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_trinta_min, :fk_quinze_min)");
-                $this->db->bind("fk_espectador", $dados['cboEspectador']);
+                $this->db->bind("fk_espectador", $dados['hidIdExpectador']);
                 $this->db->bind("fk_brinquedo", $chkBrinquedo);
                 $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesa']);
                 $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);
@@ -84,7 +84,7 @@ class Brinquedos
 
         if (!$dados['fileTermoResponsabilidade'] == "") {
 
-            $pastaArquivo = "espectador_id_" . $dados['cboEspectador'];
+            $pastaArquivo = "espectador_id_" . $dados['hidIdExpectador'];
             $upload = new Upload();
 
             $upload->imagem($dados['fileTermoResponsabilidade'], NULL, 'temp');
@@ -118,7 +118,7 @@ class Brinquedos
                 if ($upload->getResultado()) {
 
                     $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
-                    $this->db->bind("fk_espectador", $dados['cboEspectador']);
+                    $this->db->bind("fk_espectador", $dados['hidIdExpectador']);
                     $this->db->bind("nm_path_arquivo", $novoDiretorio);
                     $this->db->bind("nm_arquivo", $nomeArquivo);
                     $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
@@ -347,6 +347,9 @@ class Brinquedos
 
         //Precisei colcoar desta forma, pois a função deletarFoto precisa receber um array que possui o array termoResponsabilidade
         $dadosResponsa = ['termoResponsabilidade' => $dados['termoResponsabilidade']];
+
+        // var_dump($dadosResponsa);
+        // exit();
 
         if (!empty($dadosResponsa)) {
             $this->deletarFoto($dadosResponsa);
