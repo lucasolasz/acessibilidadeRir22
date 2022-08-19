@@ -37,7 +37,8 @@ class Espectador
         $this->db->query("SELECT * FROM tb_espectador te 
         LEFT JOIN tb_condicao tc ON tc.id_condicao = te.fk_condicao
         LEFT JOIN tb_usuario tu ON tu.id_usuario = te.fk_usuario
-        WHERE te.ds_nome_espectador LIKE concat('%',:ds_nome_espectador,'%')");
+        WHERE te.ds_nome_espectador LIKE concat('%',:ds_nome_espectador,'%') 
+        ORDER BY te.criado_em DESC");
         $this->db->bind("ds_nome_espectador", $dados['ds_nome_espectador']);
         return $this->db->resultados();
     }

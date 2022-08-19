@@ -31,6 +31,10 @@ INSERT INTO tb_tipo_deficiencia_fisica (id_tipo_deficiencia_fisica,ds_tipo_defic
 
 ALTER TABLE tb_anexo ADD chk_termo_brinquedo CHAR DEFAULT NULL NULL;
 
+UPDATE acessibilidaderir.tb_brinquedo
+	SET ds_brinquedo='Kabum'
+	WHERE id_brinquedo=3;
+
 
 
 

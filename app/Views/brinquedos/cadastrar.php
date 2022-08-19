@@ -65,7 +65,7 @@
 
                 <div class="p-0 form-check" id="divQuinzeCabum">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabum" class="form-label">Horário Cabum: <small>15min em 15min</small></label>
+                        <label for="cboQuinzeMinCabum" class="form-label">Horário Kabum: <small>15min em 15min</small></label>
                         <select class="form-select" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
                             <option value=""></option>
                             <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>

@@ -197,7 +197,7 @@ $brinquedosAgendados = [];
 
                 <div class="p-0 form-check" id="divQuinzeCabum">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabumNA" class="form-label">Horário Cabum: <small>15min em 15min</small></label>
+                        <label for="cboQuinzeMinCabumNA" class="form-label">Horário Kabum: <small>15min em 15min</small></label>
                         <select class="form-select" name="cboQuinzeMinCabumNA" id="cboQuinzeMinCabumNA">
                             <option value=""></option>
                             <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
