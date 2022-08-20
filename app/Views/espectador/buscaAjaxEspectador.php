@@ -105,10 +105,6 @@
                             <a href="<?= URL . '/PlataformasController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-solid fa-chair"></i> Nova</a>
                         <?php } ?>
 
-
-
-
-
                     </td>
                     <td>
                         <form action="<?= URL . '/EspectadorController/deletar/' . $resultado->id_espectador ?>" method="POST">
