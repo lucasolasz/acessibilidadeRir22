@@ -20,7 +20,7 @@ class PlataformasController extends Controller
     {
 
         $dados = [
-            'oi' => 'oi'
+            
             // 'marcacoes' =>  $this->plataformaModel->visualizarMarcacoes()            
         ];
 
@@ -28,40 +28,101 @@ class PlataformasController extends Controller
         $this->view('plataformas/index', $dados);
     }
 
-    public function cadastrar()
+    public function cadastrar($id = null)
     {
         $visualizarPlataformaMundo = $this->plataformaModel->visualizarPlataformaMundo();
+        $visualizarMarcacoesPlataMundo = $this->plataformaModel->visualizarMarcacoesPlataMundo();
+        $visualizarPlataformaSunset = $this->plataformaModel->visualizarPlataformaSunset();
+        $visualizarMarcacoesPlataSunset = $this->plataformaModel->visualizarMarcacoesPlataSunset();
+        $espectador = $this->plataformaModel->visualizarEspectadorPeloId($id);
+
+
+        if (isset($_GET['plataforma'])) {
+            $plataformaEscolhida = $_GET['plataforma'];
+        } else {
+            $plataformaEscolhida = "";
+        }
+
+        //Conta a quantidade de espaços que o espectador pode reservar
+        $numEspaçosDisponiveis = 0;
+
+        if ($espectador->id_espectador != NULL) {
+            $numEspaçosDisponiveis += 1;
+        }
+        if ($espectador->fk_acompanhante != NULL) {
+            $numEspaçosDisponiveis += 1;
+        }
+        if ($espectador->qtd_menor_idade != NULL) {
+            $numEspaçosDisponiveis += (int)$espectador->qtd_menor_idade;
+        }
+
+        $dados = [
+            'numEspaçosDisponiveis' => $numEspaçosDisponiveis,
+            'espectador' => $espectador,
+            'visualizarPlataformaMundo' => $visualizarPlataformaMundo,
+            'visualizarMarcacoesPlataMundo' => $visualizarMarcacoesPlataMundo,
+            'visualizarPlataformaSunset' => $visualizarPlataformaSunset,
+            'visualizarMarcacoesPlataSunset' => $visualizarMarcacoesPlataSunset
+        ];
+        // }
+
+        if ($plataformaEscolhida == 'M') {
+            $this->view('plataformas/tablePlataformaMundo', $dados);
+        }
+
+        if ($plataformaEscolhida == 'S') {
+            $this->view('plataformas/tablePlataformaSunset', $dados);
+        }
+
+        if ($plataformaEscolhida == "") {
+            //Retorna para a view
+            $this->view('plataformas/cadastrar', $dados);
+        }
+    }
+
+    public function cadastrarPlataformaMundo()
+    {
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         if (isset($formulario)) {
 
-            $dados = [
-                'txtCadeiraRodas' => trim($formulario['txtCadeiraRodas'])
-            ];
+            $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
+            $dados['chkReservaMundo'] = isset($formulario['chkReservaMundo']) ? $formulario['chkReservaMundo'] : "";
 
-            if (empty($formulario['txtCadeiraRodas'])) {
-                $dados['cadeira_erro'] = "Preencha o número de uma cadeira";
+            if ($this->plataformaModel->armazenarReservaMundo($dados)) {
+
+                Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
+                Redirecionamento::redirecionar('PlataformasController');
             } else {
-                
-                if ($this->plataformaModel->armazenarCadeiraRodas($dados)) {
 
-                    Alertas::mensagem('cadeiraRodas', 'Cadeira cadastrada com sucesso');
-                    Redirecionamento::redirecionar('CadeiraRodasController');
-                } else {
-                    Alertas::mensagem('cadeiraRodas', 'Não foi possível cadastrar a cadeira', 'alert alert-danger');
-                    Redirecionamento::redirecionar('CadeiraRodasController');
-                }
+                Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController');
             }
-        } else {
-
-            $dados = [
-                'visualizarPlataformaMundo' => $visualizarPlataformaMundo
-            ];
         }
+    }
 
-        //Retorna para a view
-        $this->view('plataformas/cadastrar', $dados);
+    public function cadastrarPlataformaSunset()
+    {
+
+        $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        if (isset($formulario)) {
+
+            $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
+            $dados['chkReservaSunset'] = isset($formulario['chkReservaSunset']) ? $formulario['chkReservaSunset'] : "";
+
+            if ($this->plataformaModel->armazenarReservaSunset($dados)) {
+
+                Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
+                Redirecionamento::redirecionar('PlataformasController');
+            } else {
+
+                Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController');
+            }
+
+        }
     }
 
     public function editar($id)
@@ -89,7 +150,7 @@ class PlataformasController extends Controller
         } else {
 
             $dados = [
-                'cadeiraRodas' => $cadeiraRodas
+                'cadeiraRodas' => $cadeiraRodas,
             ];
         }
 
@@ -102,7 +163,7 @@ class PlataformasController extends Controller
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
 
-        $dados = [            
+        $dados = [
             'id_cadeira' => $id,
         ];
 

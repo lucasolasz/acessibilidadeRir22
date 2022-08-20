@@ -1,78 +1,36 @@
 <div class="mx-auto p-5">
 
-    <!-- <pre><?php var_dump($dados['visualizarPlataformaMundo']) ?></pre> -->
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= URL ?>/PlataformasController">Plataformas</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Nova marcação</li>
+            <li class="breadcrumb-item active" aria-current="page">Nova reserva</li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h2>Palco mundo</h2>
-            <small>Escolha os lugares</small>
-
+            <h2>Escolher plataforma</h2>
+            <hr>
             <form name="cadastrar" method="POST" action="<?= URL ?>/PlataformasController/cadastrar">
-                <div class="table-responsive">
-                    <table class="table text-center table-bordered table-responsive">
-                        <tbody>
-                            <tr>
-                                <td colspan="16"><b>RAMPA DE ACESSO</b></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="73"></td>
-                                <td colspan="16"><b>CORREDOR<b></td>
-                                <td rowspan="73"></td>
-                            </tr>
 
-                            <?php
-                            $aux = 0;
-
-                            foreach ($dados['visualizarPlataformaMundo'] as $visualizarPlataformaMundo) {
-
-                                $aux++;
-
-                                if ($visualizarPlataformaMundo->cor_reserva == 'A') { ?>
-                                    <td class="table-warning">
-                                        <label class="form-check-label" for="chkReservaMundo">
-                                            <?= $visualizarPlataformaMundo->num_reserva ?>
-                                            <input class="form-check-input" type="checkbox" name="chkReservaMundo[]" id="chkReservaMundo<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>" value="<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>">
-                                        </label>
-                                    </td>
-                                <?php  } elseif ($visualizarPlataformaMundo->cor_reserva == 'V') { ?>
-                                    <td class="table-danger">
-                                        <label class="form-check-label" for="chkReservaMundo">
-                                            <?= $visualizarPlataformaMundo->num_reserva ?>
-                                            <input class="form-check-input" type="checkbox" name="chkReservaMundo[]" id="chkReservaMundo<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>" value="<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>">
-                                        </label>
-                                    </td>
-                                <?php  } elseif ($visualizarPlataformaMundo->cor_reserva == 'C') { ?>
-                                    <td class="table-active">
-                                        <label class="form-check-label" for="chkReservaMundo">
-                                            <?= $visualizarPlataformaMundo->num_reserva ?>
-                                            <input class="form-check-input" type="checkbox" name="chkReservaMundo[]" id="chkReservaMundo<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>" value="<?= $visualizarPlataformaMundo->id_plataforma_mundo ?>">
-                                        </label>
-                                    </td>
-                                <?php } else { ?>
-                                    <td><?= $visualizarPlataformaMundo->num_reserva ?></td>
-                                <?php  } ?>
-
-
-                                <?php if (($aux % 16) == 0) { ?>
-                                    </tr>
-                                    <tr>
-                                <?php  }
-                            }
-
-                                ?>
-                                    <tr>
-                                        <td colspan="16"><b>CORREDOR</b></td>
-                                    </tr>
-                        </tbody>
-                    </table>
+                <div class="mb-3 mt-3 row">
+                    <h5>Espectador</h5>
+                    <div class="col-sm-8">
+                        <input type="text" readonly class="form-control-plaintext" name="txtEspectador" id="txtEspectador" value="<?= ucfirst($dados['espectador']->ds_nome_espectador) ?>">
+                        <input type="hidden" name="hidIdExpectador" value="<?= $dados['espectador']->id_espectador ?>">
+                    </div>
                 </div>
+
+                <div class="mb-3 mt-3 row">
+                    <h5>Número de reservas disponíveis: </h5><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
+                </div>
+
+                <h5 class="mb-3">Escolha a plataforma: </h5>
+
+                <a href="<?= URL . '/PlataformasController/cadastrar/' . $dados['espectador']->id_espectador . '&plataforma=M' ?>" class="btn btn-danger">Plataforma Palco mundo <i class="fa-solid fa-earth-americas"></i></a>
+
+                <a href="<?= URL . '/PlataformasController/cadastrar/' . $dados['espectador']->id_espectador . '&plataforma=S' ?>" class="btn btn-danger">Plataforma Palco Sunset <i class="fa-solid fa-sun"></i></a>
+
             </form>
         </div>
     </div>

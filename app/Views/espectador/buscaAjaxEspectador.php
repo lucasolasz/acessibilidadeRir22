@@ -8,7 +8,8 @@
                 <th scope="col">Cadastrado por</th>
                 <th scope="col">Data Criação</th>
                 <th scope="col">Editar</th>
-                <th scope="col" class="text-center">Agendar Brinquedo</th>
+                <th scope="col" class="text-center">Agendar brinquedo</th>
+                <th scope="col" class="text-center">Reservar plataforma</th>
                 <th scope="col">Apagar</th>
             </tr>
         </thead>
@@ -74,6 +75,40 @@
                         <?php } else { ?>
                             <a href="<?= URL . '/BrinquedosController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-regular fa-calendar"></i> Novo</a>
                         <?php } ?>
+                    </td>
+                    <td class="text-center">
+
+                        <?php
+                        $espctadorComMarcacoes = false;
+
+                        //Analisa se tem marcações na plataforma sunset
+                        foreach ($dados['fk_espectador_plataforma_sunset'] as $fk_espectador_plataforma_sunset) {
+
+                            if ($fk_espectador_plataforma_sunset->fk_espectador == $resultado->id_espectador) {
+                                $espctadorComMarcacoes = true;
+                            }
+                        }
+
+                        //Analisa se tem marcações na plataforma mundo
+                        foreach ($dados['fk_espectador_plataforma_mundo'] as $fk_espectador_plataforma_mundo) {
+
+                            if ($fk_espectador_plataforma_mundo->fk_espectador == $resultado->id_espectador) {
+                                $espctadorComMarcacoes = true;
+                            }
+                        }
+
+                        if ($espctadorComMarcacoes) { ?>
+
+                            <a href="<?= URL . '/PlataformasController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-solid fa-chair"></i> Já marcado. Visualizar</a>
+
+                        <?php } else { ?>
+                            <a href="<?= URL . '/PlataformasController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-solid fa-chair"></i> Nova</a>
+                        <?php } ?>
+
+
+
+
+
                     </td>
                     <td>
                         <form action="<?= URL . '/EspectadorController/deletar/' . $resultado->id_espectador ?>" method="POST">

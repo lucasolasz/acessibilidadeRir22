@@ -88,7 +88,7 @@ function chkAcessoServico(id_condicao) {
 
     }
 
-    if (id_condicao == 1){
+    if (id_condicao == 1) {
 
         $('#chkAcessoServico1').prop('checked', true);
         $('#chkAcessoServico2').prop('checked', true);
@@ -138,5 +138,20 @@ function disableHorarioRodaGigante(chk_brinquedo) {
 
     }
 }
+
+// function disablePlataformas(chk_plataforma) {
+
+//     $("#divPLataformaMundo").hide(200);
+//     $("#divPLataformaSunset").hide(200);
+
+//     if (chk_plataforma == 'M') {
+//         $("#divPLataformaMundo").show(200);
+
+//     }
+//     if (chk_plataforma == 'S') {
+//         $("#divPLataformaSunset").show(200);
+
+//     }
+// }
 
 

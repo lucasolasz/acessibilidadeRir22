@@ -14,6 +14,7 @@ class EspectadorController extends Controller
 
         $this->espectadorModel = $this->model("Espectador");
         $this->brinquedosModel = $this->model("Brinquedos");
+        $this->plataformasModel = $this->model("Plataformas");
     }
 
     //Método padrão que é invocado ao chamar a controller
@@ -269,10 +270,14 @@ class EspectadorController extends Controller
 
         $resultado = $this->espectadorModel->pesquisarEspectador($dados);
         $fk_espectador_brinquedo = $this->brinquedosModel->visualizarAgendamntos();
-
+        $fk_espectador_plataforma_sunset = $this->plataformasModel->visualizarMarcacoesPlataSunset();
+        $fk_espectador_plataforma_mundo = $this->plataformasModel->visualizarMarcacoesPlataMundo();
         $dados = [
             'resultado' => $resultado,
-            'fk_espectador_brinquedo' => $fk_espectador_brinquedo
+            'fk_espectador_brinquedo' => $fk_espectador_brinquedo,
+            'fk_espectador_plataforma_sunset' => $fk_espectador_plataforma_sunset,
+            'fk_espectador_plataforma_mundo' => $fk_espectador_plataforma_mundo
+
         ];
 
         //Retorna view crua
