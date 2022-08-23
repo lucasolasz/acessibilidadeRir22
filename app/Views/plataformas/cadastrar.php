@@ -22,15 +22,19 @@
                 </div>
 
                 <div class="mb-3 mt-3 row">
-                    <h5>Número de reservas disponíveis: </h5><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
+                    <h6>Número de reservas disponíveis plataforma SUNSET: </h6><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
                 </div>
+
+                <div class="mb-3 mt-3 row">
+                    <h6>Número de reservas disponíveis plataforma MUNDO: </h6><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
+                </div>                
 
                 <h5 class="mb-3">Escolha a plataforma: </h5>
 
-                <a href="<?= URL . '/PlataformasController/cadastrar/' . $dados['espectador']->id_espectador . '&plataforma=M' ?>" class="btn btn-danger">Plataforma Palco mundo <i class="fa-solid fa-earth-americas"></i></a>
-
                 <a href="<?= URL . '/PlataformasController/cadastrar/' . $dados['espectador']->id_espectador . '&plataforma=S' ?>" class="btn btn-danger">Plataforma Palco Sunset <i class="fa-solid fa-sun"></i></a>
 
+                <a href="<?= URL . '/PlataformasController/cadastrar/' . $dados['espectador']->id_espectador . '&plataforma=M' ?>" class="btn btn-danger">Plataforma Palco Mundo <i class="fa-solid fa-earth-americas"></i></a>
+                
             </form>
         </div>
     </div>
