@@ -344,4 +344,31 @@ class PlataformasController extends Controller
             Redirecionamento::redirecionar('PlataformasController');
         }
     }
+
+
+    public function limparMarcacoesSunset($id){
+
+        if ($this->plataformaModel->limparMarcacoesSunset($id)) {
+
+            Alertas::mensagem('plataforma', 'Limpeza das marcações realizada com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível realizar a limpeza das marcações', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
+
+    }
+
+    public function limparMarcacoesMundo($id){
+
+        if ($this->plataformaModel->limparMarcacoesMundo($id)) {
+
+            Alertas::mensagem('plataforma', 'Limpeza das marcações realizada com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível realizar a limpeza das marcações', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
+
+    }
 }

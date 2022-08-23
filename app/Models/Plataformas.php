@@ -234,9 +234,7 @@ class Plataformas
 
         $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", 'S');
-        $this->db->bind("id_espectador", $id);
-        $this->db->executa();
-
+        $this->db->bind("id_espectador", $id);       
         if ($this->db->executa()) {
             return true;
         } else {
@@ -249,8 +247,7 @@ class Plataformas
 
         $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", NULL);
-        $this->db->bind("id_espectador", $id);
-        $this->db->executa();
+        $this->db->bind("id_espectador", $id);        
 
         if ($this->db->executa()) {
             return true;
@@ -265,7 +262,6 @@ class Plataformas
         $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_mundo", 'S');
         $this->db->bind("id_espectador", $id);
-        $this->db->executa();
 
         if ($this->db->executa()) {
             return true;
@@ -280,7 +276,36 @@ class Plataformas
         $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_mundo", NULL);
         $this->db->bind("id_espectador", $id);
-        $this->db->executa();
+        
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function limparMarcacoesSunset($id){
+
+        //Realiza o checkout das marcações sunset
+        $this->checkOutEspectadorSunset($id);
+
+        $this->db->query("DELETE FROM tb_marcacoes_sunset WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id);
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function limparMarcacoesMundo($id){
+
+        //Realiza o checkout das marcações mundo
+        $this->checkOutEspectadorMundo($id);
+
+        $this->db->query("DELETE FROM tb_marcacoes_mundo WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id);
 
         if ($this->db->executa()) {
             return true;
