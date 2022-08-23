@@ -234,31 +234,17 @@ class PlataformasController extends Controller
         }
     }
 
-    public function deletar($id)
+    public function deletarGeral($id)
     {
 
-        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if ($this->plataformaModel->deletarGeral($id)) {
 
-        $dados = [
-            'id_cadeira' => $id,
-        ];
-
-        $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
-
-        if ($id && $metodo == 'POST') {
-
-            if ($this->plataformaModel->deletarCadeira($dados)) {
-
-                //Para exibir mensagem success , não precisa informar o tipo de classe
-                Alertas::mensagem('cadeiraRodas', 'Cadeira deletada com sucesso');
-                Redirecionamento::redirecionar('CadeiraRodasController');
-            } else {
-                Alertas::mensagem('cadeiraRodas', 'Não foi possível deletar a cadeira', 'alert alert-danger');
-                Redirecionamento::redirecionar('CadeiraRodasController');
-            }
+            //Para exibir mensagem success , não precisa informar o tipo de classe
+            Alertas::mensagem('plataforma', 'Todas as marcações foram removidas');
+            Redirecionamento::redirecionar('PlataformasController');
         } else {
-            Alertas::mensagem('cadeiraRodas', 'Não foi possível deletar a cadeira', 'alert alert-danger');
-            Redirecionamento::redirecionar('CadeiraRodasController');
+            Alertas::mensagem('plataforma', 'Não foi possível remover todas as marcações', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
         }
     }
 
@@ -346,7 +332,8 @@ class PlataformasController extends Controller
     }
 
 
-    public function limparMarcacoesSunset($id){
+    public function limparMarcacoesSunset($id)
+    {
 
         if ($this->plataformaModel->limparMarcacoesSunset($id)) {
 
@@ -356,10 +343,10 @@ class PlataformasController extends Controller
             Alertas::mensagem('plataforma', 'Não foi possível realizar a limpeza das marcações', 'alert alert-danger');
             Redirecionamento::redirecionar('PlataformasController');
         }
-
     }
 
-    public function limparMarcacoesMundo($id){
+    public function limparMarcacoesMundo($id)
+    {
 
         if ($this->plataformaModel->limparMarcacoesMundo($id)) {
 
@@ -369,6 +356,5 @@ class PlataformasController extends Controller
             Alertas::mensagem('plataforma', 'Não foi possível realizar a limpeza das marcações', 'alert alert-danger');
             Redirecionamento::redirecionar('PlataformasController');
         }
-
     }
 }

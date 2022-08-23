@@ -11,7 +11,8 @@
                 <th scope="col">Marcações</th>
                 <th scope="col">Checkin entrada Mundo</th>
                 <th scope="col">Limpa Mundo</th>
-                <th scope="col">Ações</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Apagar tudo</th>
             </tr>
         </thead>
         <tbody>
@@ -85,6 +86,7 @@
                         <a href="<?= URL . '/PlataformasController/limparMarcacoesMundo/' . $resultado->id_espectador ?>" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i></a>
                     </td>
                     <td><a href="<?= URL . '/PlataformasController/editar/' . $resultado->id_espectador ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
+                    <td class="text-center"><a href="<?= URL . '/PlataformasController/deletarGeral/' . $resultado->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a></td>
                 </tr>
             <?php  } ?>
         </tbody>

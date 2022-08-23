@@ -234,7 +234,7 @@ class Plataformas
 
         $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", 'S');
-        $this->db->bind("id_espectador", $id);       
+        $this->db->bind("id_espectador", $id);
         if ($this->db->executa()) {
             return true;
         } else {
@@ -247,7 +247,7 @@ class Plataformas
 
         $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", NULL);
-        $this->db->bind("id_espectador", $id);        
+        $this->db->bind("id_espectador", $id);
 
         if ($this->db->executa()) {
             return true;
@@ -276,7 +276,7 @@ class Plataformas
         $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_mundo", NULL);
         $this->db->bind("id_espectador", $id);
-        
+
         if ($this->db->executa()) {
             return true;
         } else {
@@ -284,7 +284,8 @@ class Plataformas
         }
     }
 
-    public function limparMarcacoesSunset($id){
+    public function limparMarcacoesSunset($id)
+    {
 
         //Realiza o checkout das marcações sunset
         $this->checkOutEspectadorSunset($id);
@@ -299,7 +300,8 @@ class Plataformas
         }
     }
 
-    public function limparMarcacoesMundo($id){
+    public function limparMarcacoesMundo($id)
+    {
 
         //Realiza o checkout das marcações mundo
         $this->checkOutEspectadorMundo($id);
@@ -312,5 +314,17 @@ class Plataformas
         } else {
             return false;
         }
+    }
+
+    public function deletarGeral($id)
+    {
+
+        //Limpa todas as marcações das duas plataformas
+        if($this->limparMarcacoesSunset($id) && $this->limparMarcacoesMundo($id)){
+            return true;
+        } else {
+            return false;
+        }     
+        
     }
 }
