@@ -47,8 +47,11 @@
                     ?>
                     <td><?= $marcacoesSunsetLimpo ?></td>
                     <td class="text-center">
-                        <a href="<?= URL . '/PlataformasController/entradaEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
-
+                        <?php if ($resultado->chk_entrada_sunset == 'S') { ?>
+                            <a href="<?= URL . '/PlataformasController/checkOutEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                        <?php } else { ?>
+                            <a href="<?= URL . '/PlataformasController/checkInEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+                        <?php } ?>
                     </td>
                     <td class="text-center">
                         <a href="<?= URL . '/PlataformasController/limparMarcacoesSunset/' . $resultado->id_espectador ?>" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i></a>
@@ -72,7 +75,11 @@
                     ?>
                     <td><?= $marcacoesMundoLimpo ?></td>
                     <td class="text-center">
-                        <a href="<?= URL . '/PlataformasController/entradaEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                        <?php if ($resultado->chk_entrada_mundo == 'S') { ?>
+                            <a href="<?= URL . '/PlataformasController/checkOutEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                        <?php } else { ?>
+                            <a href="<?= URL . '/PlataformasController/checkInEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+                        <?php } ?>
                     </td>
                     <td class="text-center">
                         <a href="<?= URL . '/PlataformasController/limparMarcacoesMundo/' . $resultado->id_espectador ?>" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i></a>

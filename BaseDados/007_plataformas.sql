@@ -486,3 +486,7 @@ KEY fk_plataforma_sunset_tb_plataforma_sunset (fk_plataforma_sunset),
 CONSTRAINT fk_espectador_tb_marcacoes_sunset FOREIGN KEY (fk_espectador) REFERENCES tb_espectador (id_espectador),
 CONSTRAINT fk_plataforma_sunset_tb_marcacoes_sunset FOREIGN KEY (fk_plataforma_sunset) REFERENCES tb_plataforma_sunset (id_plataforma_sunset)
 ) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8;
+
+ALTER TABLE tb_espectador ADD chk_entrada_sunset CHAR DEFAULT NULL NULL;
+
+ALTER TABLE tb_espectador ADD chk_entrada_mundo CHAR DEFAULT NULL NULL;

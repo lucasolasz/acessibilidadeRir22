@@ -70,7 +70,7 @@
 
                         if ($especJaAgendado) { ?>
 
-                            <a href="<?= URL . '/BrinquedosController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-regular fa-calendar"></i> Já agendado. Visualizar</a>
+                            <a href="<?= URL . '/BrinquedosController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-regular fa-calendar"></i> Visualizar</a>
 
                         <?php } else { ?>
                             <a href="<?= URL . '/BrinquedosController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-regular fa-calendar"></i> Novo</a>
@@ -99,7 +99,7 @@
 
                         if ($espctadorComMarcacoes) { ?>
 
-                            <a href="<?= URL . '/PlataformasController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-solid fa-chair"></i> Já marcado. Visualizar</a>
+                            <a href="<?= URL . '/PlataformasController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-solid fa-chair"></i> Visualizar</a>
 
                         <?php } else { ?>
                             <a href="<?= URL . '/PlataformasController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-solid fa-chair"></i> Nova</a>

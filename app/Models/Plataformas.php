@@ -19,10 +19,12 @@ class Plataformas
         return $this->db->resultados();
     }
 
+
+    //Para quando a pesquisa for pelo nome do espectador
     public function pesquisarEspectadorPlataforma($dados)
     {
 
-        $this->db->query("SELECT DISTINCT te.id_espectador AS id_espectador, te.ds_nome_espectador AS ds_nome_espectador, tmm.fk_espectador AS id_espec_mundo, tms.fk_espectador AS id_espec_sunset 
+        $this->db->query("SELECT DISTINCT te.id_espectador AS id_espectador, te.ds_nome_espectador AS ds_nome_espectador, tmm.fk_espectador AS id_espec_mundo, tms.fk_espectador AS id_espec_sunset, te.chk_entrada_sunset as chk_entrada_sunset, te.chk_entrada_mundo as chk_entrada_mundo
         FROM tb_espectador te 
         LEFT JOIN tb_marcacoes_mundo tmm ON tmm.fk_espectador = te.id_espectador        
         LEFT JOIN tb_marcacoes_sunset tms ON tms.fk_espectador = te.id_espectador
@@ -32,14 +34,15 @@ class Plataformas
         return $this->db->resultados();
     }
 
+    //Para quando a pesquisa for pelo nome da marcação
     public function pesquisarMarcacao($dados)
     {
         $this->db->query("SELECT * FROM (
-            SELECT tpm.num_reserva, te.id_espectador, te.ds_nome_espectador FROM tb_plataforma_mundo tpm
+            SELECT tpm.num_reserva, te.id_espectador, te.ds_nome_espectador, te.chk_entrada_sunset, te.chk_entrada_mundo FROM tb_plataforma_mundo tpm
             JOIN tb_marcacoes_mundo tmm ON tmm.fk_plataforma_mundo = tpm.id_plataforma_mundo
             JOIN tb_espectador te ON te.id_espectador = tmm.fk_espectador 
             UNION
-            SELECT tps.num_reserva, te2.id_espectador, te2.ds_nome_espectador FROM tb_plataforma_sunset tps
+            SELECT tps.num_reserva, te2.id_espectador, te2.ds_nome_espectador, te2.chk_entrada_sunset, chk_entrada_mundo FROM tb_plataforma_sunset tps
             JOIN tb_marcacoes_sunset tms ON tms.fk_plataforma_sunset = tps.id_plataforma_sunset
             JOIN tb_espectador te2 ON te2.id_espectador = tms.fk_espectador 
             ) AS marcacoes
@@ -224,5 +227,65 @@ class Plataformas
         $this->db->query("SELECT count(*) as contagem FROM tb_marcacoes_sunset tmm WHERE fk_espectador = :id_espectador");
         $this->db->bind("id_espectador", $id);
         return $this->db->resultado();
+    }
+
+    public function checkInEspectadorSunset($id)
+    {
+
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
+        $this->db->bind("chk_entrada_sunset", 'S');
+        $this->db->bind("id_espectador", $id);
+        $this->db->executa();
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkOutEspectadorSunset($id)
+    {
+
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
+        $this->db->bind("chk_entrada_sunset", NULL);
+        $this->db->bind("id_espectador", $id);
+        $this->db->executa();
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkInEspectadorMundo($id)
+    {
+
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
+        $this->db->bind("chk_entrada_mundo", 'S');
+        $this->db->bind("id_espectador", $id);
+        $this->db->executa();
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkOutEspectadorMundo($id)
+    {
+
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
+        $this->db->bind("chk_entrada_mundo", NULL);
+        $this->db->bind("id_espectador", $id);
+        $this->db->executa();
+
+        if ($this->db->executa()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

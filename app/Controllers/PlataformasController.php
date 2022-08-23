@@ -262,22 +262,7 @@ class PlataformasController extends Controller
         }
     }
 
-    public function deletarImagem($id)
-    {
-        $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
 
-        $dados = [
-            'fotoAdesao' => $fotoAdesao
-        ];
-
-        if ($this->espectadorModel->deletarFoto($dados)) {
-            Alertas::mensagem('imagem', 'Imagem deletada com sucesso.');
-            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
-        } else {
-            Alertas::mensagem('imagem', 'Não foi deletar a imagem', 'alert alert-danger');
-            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
-        }
-    }
 
     public function buscaAjaxPlataformaEspectador()
     {
@@ -306,5 +291,57 @@ class PlataformasController extends Controller
 
         //Retorna view crua
         $this->viewCrua('plataformas/buscaAjaxPlataformaEspectador', $dados);
+    }
+
+    public function checkInEspectadorSunset($id)
+    {
+
+        if ($this->plataformaModel->checkInEspectadorSunset($id)) {
+
+            Alertas::mensagem('plataforma', 'Checkin Sunset realizado com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível dar checkin', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
+    }
+
+    public function checkOutEspectadorSunset($id)
+    {
+
+        if ($this->plataformaModel->checkOutEspectadorSunset($id)) {
+
+            Alertas::mensagem('plataforma', 'Checkout realizado com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível dar checkout', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
+    }
+
+    public function checkInEspectadorMundo($id)
+    {
+
+        if ($this->plataformaModel->checkInEspectadorMundo($id)) {
+
+            Alertas::mensagem('plataforma', 'Checkin Mundo realizado com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível dar checkin', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
+    }
+
+    public function checkOutEspectadorMundo($id)
+    {
+
+        if ($this->plataformaModel->checkOutEspectadorMundo($id)) {
+
+            Alertas::mensagem('plataforma', 'Checkout realizado com sucesso');
+            Redirecionamento::redirecionar('PlataformasController');
+        } else {
+            Alertas::mensagem('plataforma', 'Não foi possível dar checkout', 'alert alert-danger');
+            Redirecionamento::redirecionar('PlataformasController');
+        }
     }
 }
