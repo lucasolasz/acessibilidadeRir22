@@ -2,7 +2,7 @@
 
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
-include './../app/config/configuracao.php';
+include './../app/Config/configuracao.php';
 include './../app/autoload.php';
 
 // include APP . '/views/topo.php';
