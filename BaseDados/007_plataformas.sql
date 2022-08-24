@@ -502,3 +502,34 @@ INSERT INTO tb_acesso_servico (id_acesso_servico,ds_acesso_servico,ordem)
 INSERT INTO tb_acesso_servico (id_acesso_servico,ds_acesso_servico,ordem)
 	VALUES (7,'Audiodescrição',7);
 
+
+DELETE FROM tb_cadeira_rodas
+	WHERE id_cadeira_rodas=1;
+DELETE FROM tb_cadeira_rodas
+	WHERE id_cadeira_rodas=2;
+DELETE FROM tb_cadeira_rodas
+	WHERE id_cadeira_rodas=3;
+
+
+INSERT INTO tb_cadeira_rodas (id_cadeira_rodas, num_cadeira_rodas) VALUES
+(1,"1"),
+(2,"2"),
+(3,"3"),
+(4,"4"),
+(5,"5"),
+(6,"6"),
+(7,"7"),
+(8,"8"),
+(9,"9"),
+(10,"10"),
+(11,"11"),
+(12,"12"),
+(13,"13"),
+(14,"14"),
+(15,"15"),
+(16,"16"),
+(17,"17"),
+(18,"18"),
+(19,"19"),
+(20,"20");
+
