@@ -282,6 +282,8 @@ $brinquedosAgendados = [];
         $("#divTrintaMontanhaRussa").hide();
         $("#divQuinzeCabum").hide();
         $("#divHoraRodaGigante").hide();
+
+        countChecked();
     });
 
 
@@ -308,4 +310,36 @@ $brinquedosAgendados = [];
         chk_brinquedo = $("#chkBrinquedo4:checked").val();
         disableHorarioRodaGigante(chk_brinquedo);
     });
+
+    //Chama função após algum clique em checkbox
+    $(":checkbox").click(countChecked);
+
+    //Armazena a contagem total dos campos checked no carregamento da página
+    total = <?= count($brinquedosAgendados) ?>
+
+    function countChecked() {
+
+        if (total < 2) {
+            //Atribui o total de reservas que o espectador possui
+            var limiteReservas = 2
+
+            //Iguala o contador dos campos checked com o total do carregamento da página
+            //Dando a ideia que "sempre começa em 0", pois independente da quantidade de checkeds ele irá subtrair do total
+            adicao = total + $("input:checked").length 
+
+            console.log('adicao= ', adicao);
+            // console.log('contagem decrescente de vagas= ', contagem)
+           
+
+            if (adicao == limiteReservas) {
+                $(':checkbox:not(:checked)').attr('disabled', true);
+            } else {
+                $(':checkbox:not(:checked)').attr('disabled', false);
+            }
+        } else {
+
+            $(':checkbox:not(:checked)').attr('disabled', true);
+        }
+
+    }
 </script>

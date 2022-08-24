@@ -167,8 +167,11 @@ class BrinquedosController extends Controller
 
         if ($this->brinquedosModel->apagarAgendamentoPorId($dados)) {
 
-
+            //Se vazio, todos os agendamentos foram removidos
             if (empty($this->brinquedosModel->lerAgendamentoPorId($dados['id_espectador']))) {
+
+                //Se vazio ja remove a o termo de responsabilidade
+                $this->deletarImagem($dados['id_espectador']);
 
                 Alertas::mensagem('brinquedos', 'Todos os agendamentos foram removidos com sucesso.');
                 Redirecionamento::redirecionar('BrinquedosController');
