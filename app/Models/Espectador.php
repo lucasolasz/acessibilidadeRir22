@@ -61,154 +61,160 @@ class Espectador
     {
         $armazenaEspectadorErro = false;
 
-        // var_dump($dados['txtDeficienciaFisica']);
-        // exit();
+        $this->db->beginTransaction();
 
-        if (!$dados['txtNomeAcompanhante'] == "" || !$dados['txtDocumentoAcompanhante'] == "") {
-            $this->db->query("INSERT INTO tb_acompanhante (ds_nome_acompanhante, ds_documento_acompanhante, tel_acompanhante, chk_menor_idade, qtd_menor_idade) VALUES (:ds_nome_acompanhante, :ds_documento_acompanhante, :tel_acompanhante, :chk_menor_idade, :qtd_menor_idade)");
-            $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
-            $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
-            $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
-            $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
-            $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+        try {
+
+            if (!$dados['txtNomeAcompanhante'] == "" || !$dados['txtDocumentoAcompanhante'] == "") {
+                $this->db->query("INSERT INTO tb_acompanhante (ds_nome_acompanhante, ds_documento_acompanhante, tel_acompanhante, chk_menor_idade, qtd_menor_idade) VALUES (:ds_nome_acompanhante, :ds_documento_acompanhante, :tel_acompanhante, :chk_menor_idade, :qtd_menor_idade)");
+                $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
+                $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
+                $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
+                $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
+                $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+                if (!$this->db->executa()) {
+                    $armazenaEspectadorErro = true;
+                }
+
+                //Id do Acompanhante cadastrado
+                $fk_acompanhante = $this->db->ultimoIdInserido();
+            } else {
+                $fk_acompanhante = NULL;
+            }
+
+            //Insert do espectador
+            $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica) VALUES (:ds_nome_espectador,
+            :ds_documento_espectador,
+            :ds_descricao_deficiencia,
+            :tel_espectador,
+            :idade_espectador,
+            :chk_kit_livre,
+            :fk_condicao,
+            :chk_acompanhante,
+            :fk_acompanhante,
+            :fk_cadeira_rodas,
+            :fk_usuario,
+            :fk_tipo_deficiencia_fisica)");
+
+            $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
+            $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
+            $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
+            $this->db->bind("tel_espectador", $dados['txtTelefone']);
+            $this->db->bind("idade_espectador", $dados['txtIdade']);
+            $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
+            $this->db->bind("fk_condicao", $dados['radioCondicao']);
+            $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
+            $this->db->bind("fk_acompanhante", $fk_acompanhante);
+            $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
+            $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+            $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
             if (!$this->db->executa()) {
                 $armazenaEspectadorErro = true;
             }
 
-            //Id do Acompanhante cadastrado
-            $fk_acompanhante = $this->db->ultimoIdInserido();
-        } else {
-            $fk_acompanhante = NULL;
-        }
-
-        //Insert do espectador
-        $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica) VALUES (:ds_nome_espectador,
-        :ds_documento_espectador,
-        :ds_descricao_deficiencia,
-        :tel_espectador,
-        :idade_espectador,
-        :chk_kit_livre,
-        :fk_condicao,
-        :chk_acompanhante,
-        :fk_acompanhante,
-        :fk_cadeira_rodas,
-        :fk_usuario,
-        :fk_tipo_deficiencia_fisica)");
-
-        $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
-        $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
-        $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
-        $this->db->bind("tel_espectador", $dados['txtTelefone']);
-        $this->db->bind("idade_espectador", $dados['txtIdade']);
-        $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
-        $this->db->bind("fk_condicao", $dados['radioCondicao']);
-        $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
-        $this->db->bind("fk_acompanhante", $fk_acompanhante);
-        $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
-        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
-        $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
-        if (!$this->db->executa()) {
-            $armazenaEspectadorErro = true;
-        }
-
-        $ultimoIdEpectador = $this->db->ultimoIdInserido();
+            $ultimoIdEpectador = $this->db->ultimoIdInserido();
 
 
-        if (!$dados['chkAcessoServico'] == "") {
+            if (!$dados['chkAcessoServico'] == "") {
 
-            foreach ($dados['chkAcessoServico'] as $chkAcessoServico) {
+                foreach ($dados['chkAcessoServico'] as $chkAcessoServico) {
 
-                $this->db->query("INSERT INTO tb_relac_acesso_servico (fk_acesso_servico, fk_espectador) VALUES (:fk_acesso_servico, :fk_espectador)");
-                $this->db->bind("fk_acesso_servico", $chkAcessoServico);
-                $this->db->bind("fk_espectador", $ultimoIdEpectador);
-                if (!$this->db->executa()) {
-                    $armazenaEspectadorErro = true;
-                }
-            }
-        }
-
-        if (!$dados['chkGuardaVolume'] == "") {
-
-            foreach ($dados['chkGuardaVolume'] as $chkGuardaVolume) {
-
-                $this->db->query("INSERT INTO tb_relac_guarda_volumes (fk_guarda_volumes, fk_espectador) VALUES (:fk_guarda_volumes, :fk_espectador)");
-                $this->db->bind("fk_guarda_volumes", $chkGuardaVolume);
-                $this->db->bind("fk_espectador", $ultimoIdEpectador);
-                if (!$this->db->executa()) {
-                    $armazenaEspectadorErro = true;
-                }
-            }
-        }
-
-        if (!$dados['chkTipoDeficiencia'] == "") {
-
-            foreach ($dados['chkTipoDeficiencia'] as $chkTipoDeficiencia) {
-
-                $this->db->query("INSERT INTO tb_relac_tipo_deficiencia (fk_tipo_deficiencia, fk_espectador) VALUES (:fk_tipo_deficiencia, :fk_espectador)");
-                $this->db->bind("fk_tipo_deficiencia", $chkTipoDeficiencia);
-                $this->db->bind("fk_espectador", $ultimoIdEpectador);
-                if (!$this->db->executa()) {
-                    $armazenaEspectadorErro = true;
-                }
-            }
-        }
-
-        //Realiza as operações de anexo, se houver anexo
-        // var_dump($dados['fileTermoAdesao']);
-
-        if (!$dados['fileTermoAdesao']['name'] == "") {
-
-            $pastaArquivo = "espectador_id_" . $ultimoIdEpectador;
-            $upload = new Upload();
-
-            $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
-
-            if (!$upload->getErro() == NULL) {
-                return false;
-                // echo $upload->getErro() . '<br>';
-            } else {
-
-                //Inicio do processamento de compressao
-                $nomeArquivo = $upload->getResultado();
-
-                //Path da imagem que foi feito upload  (pasta temp)           
-                $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                //Cria pasta dos arquivos individualmente de acordo com id
-                if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
-                    mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
-                }
-                $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
-
-                //Monta o diretorio destino da pagina comprimida
-                $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                //Executa a compressao
-                ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
-
-                //Invoca metodo para deletar o arquivo temporario
-                $upload->deletarArquivo(null, $path_arquivo);
-
-                if ($upload->getResultado()) {
-
-                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                    $this->db->query("INSERT INTO tb_relac_acesso_servico (fk_acesso_servico, fk_espectador) VALUES (:fk_acesso_servico, :fk_espectador)");
+                    $this->db->bind("fk_acesso_servico", $chkAcessoServico);
                     $this->db->bind("fk_espectador", $ultimoIdEpectador);
-                    $this->db->bind("nm_path_arquivo", $novoDiretorio);
-                    $this->db->bind("nm_arquivo", $nomeArquivo);
-                    $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
-                    $this->db->bind("chk_termo_brinquedo", 'N');
                     if (!$this->db->executa()) {
                         $armazenaEspectadorErro = true;
                     }
-                } else {
-                    return false;
                 }
             }
+
+            if (!$dados['chkGuardaVolume'] == "") {
+
+                foreach ($dados['chkGuardaVolume'] as $chkGuardaVolume) {
+
+                    $this->db->query("INSERT INTO tb_relac_guarda_volumes (fk_guarda_volumes, fk_espectador) VALUES (:fk_guarda_volumes, :fk_espectador)");
+                    $this->db->bind("fk_guarda_volumes", $chkGuardaVolume);
+                    $this->db->bind("fk_espectador", $ultimoIdEpectador);
+                    if (!$this->db->executa()) {
+                        $armazenaEspectadorErro = true;
+                    }
+                }
+            }
+
+            if (!$dados['chkTipoDeficiencia'] == "") {
+
+                foreach ($dados['chkTipoDeficiencia'] as $chkTipoDeficiencia) {
+
+                    $this->db->query("INSERT INTO tb_relac_tipo_deficiencia (fk_tipo_deficiencia, fk_espectador) VALUES (:fk_tipo_deficiencia, :fk_espectador)");
+                    $this->db->bind("fk_tipo_deficiencia", $chkTipoDeficiencia);
+                    $this->db->bind("fk_espectador", $ultimoIdEpectador);
+                    if (!$this->db->executa()) {
+                        $armazenaEspectadorErro = true;
+                    }
+                }
+            }
+
+            //Realiza as operações de anexo, se houver anexo
+            // var_dump($dados['fileTermoAdesao']);
+
+            if (!$dados['fileTermoAdesao']['name'] == "") {
+
+                $pastaArquivo = "espectador_id_" . $ultimoIdEpectador;
+                $upload = new Upload();
+
+                $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
+
+                if (!$upload->getErro() == NULL) {
+                    return false;
+                    // echo $upload->getErro() . '<br>';
+                } else {
+
+                    //Inicio do processamento de compressao
+                    $nomeArquivo = $upload->getResultado();
+
+                    //Path da imagem que foi feito upload  (pasta temp)           
+                    $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                    //Cria pasta dos arquivos individualmente de acordo com id
+                    if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                        mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                    }
+                    $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                    //Monta o diretorio destino da pagina comprimida
+                    $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                    //Executa a compressao
+                    ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                    //Invoca metodo para deletar o arquivo temporario
+                    $upload->deletarArquivo(null, $path_arquivo);
+
+                    if ($upload->getResultado()) {
+
+                        $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                        $this->db->bind("fk_espectador", $ultimoIdEpectador);
+                        $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                        $this->db->bind("nm_arquivo", $nomeArquivo);
+                        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                        $this->db->bind("chk_termo_brinquedo", 'N');
+                        if (!$this->db->executa()) {
+                            $armazenaEspectadorErro = true;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->db->rollback();
+            return false;
         }
 
         if ($armazenaEspectadorErro) {
             return false;
         } else {
+            $this->db->commit();
             return true;
         }
     }
@@ -218,296 +224,306 @@ class Espectador
     {
         $editarEspectadorErro = false;
 
-        if (!$dados['fk_acompanhante'] == NULL) {
+        $this->db->beginTransaction();
 
-            if ($dados['chkAcompanhante'] == 'N') {
+        try {
+
+            if (!$dados['fk_acompanhante'] == NULL) {
+
+                if ($dados['chkAcompanhante'] == 'N') {
 
 
-                //Desvincula chave estrangeira do acompanhante
-                $this->db->query("UPDATE tb_espectador SET fk_acompanhante = :fk_acompanhante WHERE id_espectador = :id_espectador");
-                $this->db->bind("fk_acompanhante", NULL);
-                $this->db->bind("id_espectador", $dados['id_espectador']);
-                if (!$this->db->executa()) {
-                    $editarEspectadorErro = true;
-                }
+                    //Desvincula chave estrangeira do acompanhante
+                    $this->db->query("UPDATE tb_espectador SET fk_acompanhante = :fk_acompanhante WHERE id_espectador = :id_espectador");
+                    $this->db->bind("fk_acompanhante", NULL);
+                    $this->db->bind("id_espectador", $dados['id_espectador']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
 
-                //Apaga o acompanhante
-                $this->db->query("DELETE FROM tb_acompanhante WHERE id_acompanhante = :fk_acompanhante");
-                $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
-                if (!$this->db->executa()) {
-                    $editarEspectadorErro = true;
-                }
+                    //Apaga o acompanhante
+                    $this->db->query("DELETE FROM tb_acompanhante WHERE id_acompanhante = :fk_acompanhante");
+                    $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
 
-                //Nulo para atualizar a linha do espectador
-                $dados['fk_acompanhante'] = NULL;
-            } else {
+                    //Nulo para atualizar a linha do espectador
+                    $dados['fk_acompanhante'] = NULL;
+                } else {
 
-                $this->db->query("UPDATE tb_acompanhante SET 
-                ds_nome_acompanhante = :ds_nome_acompanhante,
-                ds_documento_acompanhante = :ds_documento_acompanhante,
-                tel_acompanhante = :tel_acompanhante,
-                chk_menor_idade = :chk_menor_idade,
-                qtd_menor_idade = :qtd_menor_idade
-                WHERE id_acompanhante = :fk_acompanhante");
+                    $this->db->query("UPDATE tb_acompanhante SET 
+                    ds_nome_acompanhante = :ds_nome_acompanhante,
+                    ds_documento_acompanhante = :ds_documento_acompanhante,
+                    tel_acompanhante = :tel_acompanhante,
+                    chk_menor_idade = :chk_menor_idade,
+                    qtd_menor_idade = :qtd_menor_idade
+                    WHERE id_acompanhante = :fk_acompanhante");
 
-                $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
-                $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
-                $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
-                $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
-                $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
-                $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
-                if (!$this->db->executa()) {
-                    $editarEspectadorErro = true;
-                }
-            }
-        } else {
-
-            //Adiciona um acompanhante caso não tenha acompanhante na edição
-            if ($dados['chkAcompanhante'] == 'S') {
-
-                if (!$dados['txtNomeAcompanhante'] == "" or !$dados['txtDocumentoAcompanhante'] == "") {
-
-                    $this->db->query("INSERT INTO tb_acompanhante (ds_nome_acompanhante, ds_documento_acompanhante, tel_acompanhante, chk_menor_idade, qtd_menor_idade) VALUES (:ds_nome_acompanhante, :ds_documento_acompanhante, :tel_acompanhante, :chk_menor_idade, :qtd_menor_idade)");
                     $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
                     $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
                     $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
                     $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
                     $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+                    $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
                     if (!$this->db->executa()) {
                         $editarEspectadorErro = true;
                     }
-
-                    //Id do Acompanhante cadastrado
-                    $fk_acompanhante = $this->db->ultimoIdInserido();
                 }
+            } else {
 
-                $dados['fk_acompanhante'] = $fk_acompanhante;
+                //Adiciona um acompanhante caso não tenha acompanhante na edição
+                if ($dados['chkAcompanhante'] == 'S') {
+
+                    if (!$dados['txtNomeAcompanhante'] == "" or !$dados['txtDocumentoAcompanhante'] == "") {
+
+                        $this->db->query("INSERT INTO tb_acompanhante (ds_nome_acompanhante, ds_documento_acompanhante, tel_acompanhante, chk_menor_idade, qtd_menor_idade) VALUES (:ds_nome_acompanhante, :ds_documento_acompanhante, :tel_acompanhante, :chk_menor_idade, :qtd_menor_idade)");
+                        $this->db->bind("ds_nome_acompanhante", $dados['txtNomeAcompanhante']);
+                        $this->db->bind("ds_documento_acompanhante", $dados['txtDocumentoAcompanhante']);
+                        $this->db->bind("tel_acompanhante", $dados['txtTelefoneAcompanhante']);
+                        $this->db->bind("chk_menor_idade", $dados['chkAcompanhanteMenor']);
+                        $this->db->bind("qtd_menor_idade", $dados['cboQuantidadeMenor']);
+                        if (!$this->db->executa()) {
+                            $editarEspectadorErro = true;
+                        }
+
+                        //Id do Acompanhante cadastrado
+                        $fk_acompanhante = $this->db->ultimoIdInserido();
+                    }
+
+                    $dados['fk_acompanhante'] = $fk_acompanhante;
+                }
             }
-        }
 
-        // var_dump($dados['txtDeficienciaFisica']);
-        // exit();
-
-
-        //Update do espectador
-        $this->db->query("UPDATE tb_espectador SET
-        ds_nome_espectador = :ds_nome_espectador,
-        ds_documento_espectador = :ds_documento_espectador,
-        ds_descricao_deficiencia = :ds_descricao_deficiencia,
-        tel_espectador = :tel_espectador,
-        idade_espectador = :idade_espectador,
-        chk_kit_livre = :chk_kit_livre,
-        fk_condicao = :fk_condicao, 
-        chk_acompanhante = :chk_acompanhante, 
-        fk_acompanhante = :fk_acompanhante, 
-        fk_cadeira_rodas = :fk_cadeira_rodas,
-        fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica
-        WHERE id_espectador = :id_espectador");
-
-        $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
-        $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
-        $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
-        $this->db->bind("tel_espectador", $dados['txtTelefone']);
-        $this->db->bind("idade_espectador", $dados['txtIdade']);
-        $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
-        $this->db->bind("fk_condicao", $dados['radioCondicao']);
-        $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
-        $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
-        $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
-        $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
-        $this->db->bind("id_espectador", $dados['id_espectador']);
-        if (!$this->db->executa()) {
-            $editarEspectadorErro = true;
-        }
+            // var_dump($dados['txtDeficienciaFisica']);
+            // exit();
 
 
-        if (!$dados['chkAcessoServico'] == "") {
+            //Update do espectador
+            $this->db->query("UPDATE tb_espectador SET
+            ds_nome_espectador = :ds_nome_espectador,
+            ds_documento_espectador = :ds_documento_espectador,
+            ds_descricao_deficiencia = :ds_descricao_deficiencia,
+            tel_espectador = :tel_espectador,
+            idade_espectador = :idade_espectador,
+            chk_kit_livre = :chk_kit_livre,
+            fk_condicao = :fk_condicao, 
+            chk_acompanhante = :chk_acompanhante, 
+            fk_acompanhante = :fk_acompanhante, 
+            fk_cadeira_rodas = :fk_cadeira_rodas,
+            fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica
+            WHERE id_espectador = :id_espectador");
 
-            //Apaga os anteriores e salva as novas opções escolhidas
-            $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
+            $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
+            $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
+            $this->db->bind("ds_descricao_deficiencia", $dados['txtDeficienciaFisica']);
+            $this->db->bind("tel_espectador", $dados['txtTelefone']);
+            $this->db->bind("idade_espectador", $dados['txtIdade']);
+            $this->db->bind("chk_kit_livre", $dados['chkKitLivre']);
+            $this->db->bind("fk_condicao", $dados['radioCondicao']);
+            $this->db->bind("chk_acompanhante", $dados['chkAcompanhante']);
+            $this->db->bind("fk_acompanhante", $dados['fk_acompanhante']);
+            $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
+            $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
+            $this->db->bind("id_espectador", $dados['id_espectador']);
             if (!$this->db->executa()) {
                 $editarEspectadorErro = true;
             }
 
-            foreach ($dados['chkAcessoServico'] as $chkAcessoServico) {
 
-                $this->db->query("INSERT INTO tb_relac_acesso_servico (fk_acesso_servico, fk_espectador) VALUES (:fk_acesso_servico, :fk_espectador)");
-                $this->db->bind("fk_acesso_servico", $chkAcessoServico);
+            if (!$dados['chkAcessoServico'] == "") {
+
+                //Apaga os anteriores e salva as novas opções escolhidas
+                $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
                 $this->db->bind("fk_espectador", $dados['id_espectador']);
                 if (!$this->db->executa()) {
                     $editarEspectadorErro = true;
                 }
+
+                foreach ($dados['chkAcessoServico'] as $chkAcessoServico) {
+
+                    $this->db->query("INSERT INTO tb_relac_acesso_servico (fk_acesso_servico, fk_espectador) VALUES (:fk_acesso_servico, :fk_espectador)");
+                    $this->db->bind("fk_acesso_servico", $chkAcessoServico);
+                    $this->db->bind("fk_espectador", $dados['id_espectador']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
+                }
+            } else {
+
+                //Apaga se não tiver opção escolhida
+                $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
+                $this->db->executa();
+
+
+                if (!$dados['cboCadeiraDerodas'] == NULL) {
+
+                    $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = :fk_cadeira_rodas WHERE id_espectador = :id_espectador");
+                    $this->db->bind("fk_cadeira_rodas", NULL);
+                    $this->db->bind("id_espectador", $dados['id_espectador']);
+                    $this->db->executa();
+                }
+
+                if (!empty($dados['fotoAdesao'])) {
+
+                    //Usado para deletar o arquivo fisico no diretorio
+                    $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+                    $upload = new Upload();
+                    $upload->deletarArquivo(null, $path_arquivo_anterior);
+
+                    //Deleta registro da imagem no banco
+                    $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador");
+                    $this->db->bind("fk_espectador", $dados['id_espectador']);
+                    $this->db->executa();
+                }
             }
-        } else {
-
-            //Apaga se não tiver opção escolhida
-            $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
-            $this->db->executa();
 
 
-            if (!$dados['cboCadeiraDerodas'] == NULL) {
+            if (!$dados['chkGuardaVolume'] == "") {
 
-                $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = :fk_cadeira_rodas WHERE id_espectador = :id_espectador");
-                $this->db->bind("fk_cadeira_rodas", NULL);
+                //Apaga os anteriores e salva as novas opções escolhidas
+                $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+
+
+                foreach ($dados['chkGuardaVolume'] as $chkGuardaVolume) {
+
+                    $this->db->query("INSERT INTO tb_relac_guarda_volumes (fk_guarda_volumes, fk_espectador) VALUES (:fk_guarda_volumes, :fk_espectador)");
+                    $this->db->bind("fk_guarda_volumes", $chkGuardaVolume);
+                    $this->db->bind("fk_espectador", $dados['id_espectador']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
+                }
+            } else {
+
+                //Apaga se não tiver opção escolhida
+                $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+
+                //Apaga se não tiver opção escolhida
+                $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_acesso_servico = :fk_acesso_servico");
+                $this->db->bind("fk_acesso_servico", 5);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+            }
+
+            if (!$dados['chkTipoDeficiencia'] == "") {
+
+                //Apaga os anteriores e salva as novas opções escolhidas
+                $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+
+                foreach ($dados['chkTipoDeficiencia'] as $chkTipoDeficiencia) {
+
+                    $this->db->query("INSERT INTO tb_relac_tipo_deficiencia (fk_tipo_deficiencia, fk_espectador) VALUES (:fk_tipo_deficiencia, :fk_espectador)");
+                    $this->db->bind("fk_tipo_deficiencia", $chkTipoDeficiencia);
+                    $this->db->bind("fk_espectador",  $dados['id_espectador']);
+                    if (!$this->db->executa()) {
+                        $editarEspectadorErro = true;
+                    }
+                }
+            } else {
+
+                //Apaga se não tiver opção escolhida
+                $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
+                if (!$this->db->executa()) {
+                    $editarEspectadorErro = true;
+                }
+
+                $this->db->query("UPDATE tb_espectador SET ds_descricao_deficiencia = :ds_descricao_deficiencia, fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica WHERE id_espectador = :id_espectador");
+                $this->db->bind("ds_descricao_deficiencia", NULL);
+                $this->db->bind("fk_tipo_deficiencia_fisica", NULL);
                 $this->db->bind("id_espectador", $dados['id_espectador']);
                 $this->db->executa();
             }
 
-            if (!empty($dados['fotoAdesao'])) {
+            if (!$dados['fileTermoAdesao']['name'] == "") {
 
-                //Usado para deletar o arquivo fisico no diretorio
-                $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+                //Se entrar aqui na edição, está sendo feita uma substituição
+
+                $pastaArquivo = "espectador_id_" . $dados['id_espectador'];
                 $upload = new Upload();
-                $upload->deletarArquivo(null, $path_arquivo_anterior);
 
-                //Deleta registro da imagem no banco
-                $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador");
-                $this->db->bind("fk_espectador", $dados['id_espectador']);
-                $this->db->executa();
-            }
-        }
-
-
-        if (!$dados['chkGuardaVolume'] == "") {
-
-            //Apaga os anteriores e salva as novas opções escolhidas
-            $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
-            }
-
-
-            foreach ($dados['chkGuardaVolume'] as $chkGuardaVolume) {
-
-                $this->db->query("INSERT INTO tb_relac_guarda_volumes (fk_guarda_volumes, fk_espectador) VALUES (:fk_guarda_volumes, :fk_espectador)");
-                $this->db->bind("fk_guarda_volumes", $chkGuardaVolume);
-                $this->db->bind("fk_espectador", $dados['id_espectador']);
-                if (!$this->db->executa()) {
-                    $editarEspectadorErro = true;
-                }
-            }
-        } else {
-
-            //Apaga se não tiver opção escolhida
-            $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
-            }
-
-            //Apaga se não tiver opção escolhida
-            $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_acesso_servico = :fk_acesso_servico");
-            $this->db->bind("fk_acesso_servico", 5);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
-            }
-        }
-
-        if (!$dados['chkTipoDeficiencia'] == "") {
-
-            //Apaga os anteriores e salva as novas opções escolhidas
-            $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
-            }
-
-            foreach ($dados['chkTipoDeficiencia'] as $chkTipoDeficiencia) {
-
-                $this->db->query("INSERT INTO tb_relac_tipo_deficiencia (fk_tipo_deficiencia, fk_espectador) VALUES (:fk_tipo_deficiencia, :fk_espectador)");
-                $this->db->bind("fk_tipo_deficiencia", $chkTipoDeficiencia);
-                $this->db->bind("fk_espectador",  $dados['id_espectador']);
-                if (!$this->db->executa()) {
-                    $editarEspectadorErro = true;
-                }
-            }
-        } else {
-
-            //Apaga se não tiver opção escolhida
-            $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_espectador", $dados['id_espectador']);
-            if (!$this->db->executa()) {
-                $editarEspectadorErro = true;
-            }
-
-            $this->db->query("UPDATE tb_espectador SET ds_descricao_deficiencia = :ds_descricao_deficiencia, fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica WHERE id_espectador = :id_espectador");
-            $this->db->bind("ds_descricao_deficiencia", NULL);
-            $this->db->bind("fk_tipo_deficiencia_fisica", NULL);
-            $this->db->bind("id_espectador", $dados['id_espectador']);
-            $this->db->executa();
-        }
-
-        if (!$dados['fileTermoAdesao']['name'] == "") {
-
-            //Se entrar aqui na edição, está sendo feita uma substituição
-
-            $pastaArquivo = "espectador_id_" . $dados['id_espectador'];
-            $upload = new Upload();
-
-            if (!empty($dados['fotoAdesao'])) {
-                //Deleta registro da imagem no banco
-                $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador");
-                $this->db->bind("fk_espectador", $dados['id_espectador']);
-                $this->db->executa();
-
-                //Usado para deletar o arquivo fisico no diretorio
-                $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
-
-                //Invoca metodo para deletar o arquivo anterior para ser substituido
-                $upload->deletarArquivo(null, $path_arquivo_anterior);
-            }
-
-            $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
-
-            if (!$upload->getErro() == NULL) {
-                return false;
-                // echo $upload->getErro() . '<br>';
-            } else {
-
-                //Inicio do processamento de compressao
-                $nomeArquivo = $upload->getResultado();
-
-                //Path da imagem que foi feito upload  (pasta temp)           
-                $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                //Cria pasta dos arquivos individualmente de acordo com id
-                if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
-                    mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
-                }
-                $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
-
-                //Monta o diretorio destino da pagina comprimida
-                $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                //Executa a compressao
-                ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
-
-                //Invoca metodo para deletar o arquivo temporario
-                $upload->deletarArquivo(null, $path_arquivo);
-
-                if ($upload->getResultado()) {
-
-                    $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                if (!empty($dados['fotoAdesao'])) {
+                    //Deleta registro da imagem no banco
+                    $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador");
                     $this->db->bind("fk_espectador", $dados['id_espectador']);
-                    $this->db->bind("nm_path_arquivo", $novoDiretorio);
-                    $this->db->bind("nm_arquivo", $nomeArquivo);
-                    $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
-                    $this->db->bind("chk_termo_brinquedo", 'N');
-                    if (!$this->db->executa()) {
-                        $editarEspectadorErro = true;
-                    }
-                } else {
+                    $this->db->executa();
+
+                    //Usado para deletar o arquivo fisico no diretorio
+                    $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+
+                    //Invoca metodo para deletar o arquivo anterior para ser substituido
+                    $upload->deletarArquivo(null, $path_arquivo_anterior);
+                }
+
+                $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
+
+                if (!$upload->getErro() == NULL) {
                     return false;
+                    // echo $upload->getErro() . '<br>';
+                } else {
+
+                    //Inicio do processamento de compressao
+                    $nomeArquivo = $upload->getResultado();
+
+                    //Path da imagem que foi feito upload  (pasta temp)           
+                    $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                    //Cria pasta dos arquivos individualmente de acordo com id
+                    if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                        mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                    }
+                    $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                    //Monta o diretorio destino da pagina comprimida
+                    $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                    //Executa a compressao
+                    ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                    //Invoca metodo para deletar o arquivo temporario
+                    $upload->deletarArquivo(null, $path_arquivo);
+
+                    if ($upload->getResultado()) {
+
+                        $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                        $this->db->bind("fk_espectador", $dados['id_espectador']);
+                        $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                        $this->db->bind("nm_arquivo", $nomeArquivo);
+                        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                        $this->db->bind("chk_termo_brinquedo", 'N');
+                        if (!$this->db->executa()) {
+                            $editarEspectadorErro = true;
+                        }
+                    } else {
+                        return false;
+                    }
                 }
             }
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+            return false;
         }
 
         if ($editarEspectadorErro) {
             return false;
         } else {
+            $this->db->commit();
             return true;
         }
     }
@@ -518,97 +534,100 @@ class Espectador
 
         $deletarEspectadorErro = false;
 
-        // var_dump($id_espectador);
-        // exit();
+        $this->db->beginTransaction();
 
-        // var_dump($pastaPrincipal);
-        // var_dump($dados['fotoAdesao'][0]->nm_path_arquivo);
-        // exit();
+        try {
 
-        if (!empty($dados['fotoAdesao'])) {
 
-            $pastaPrincipal = $dados['fotoAdesao'][0]->nm_path_arquivo;
+            if (!empty($dados['fotoAdesao'])) {
 
-            $path_arquivo = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+                $pastaPrincipal = $dados['fotoAdesao'][0]->nm_path_arquivo;
 
-            $upload = new Upload();
-            $upload->deletarArquivo(null, $path_arquivo);
+                $path_arquivo = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
 
-            //Deleta da tabela
-            $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
-            $this->db->bind("id_anexo", $dados['fotoAdesao'][0]->id_anexo);
+                $upload = new Upload();
+                $upload->deletarArquivo(null, $path_arquivo);
+
+                //Deleta da tabela
+                $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
+                $this->db->bind("id_anexo", $dados['fotoAdesao'][0]->id_anexo);
+                if (!$this->db->executa()) {
+                    $deletarEspectadorErro = true;
+                }
+
+                //Apaga a pasta apos estar vazia
+                rmdir($pastaPrincipal);
+            } else {
+
+                //Captura do id do espectador para deletar a pasta vazia
+                $pastaAdesaoEspec = "uploads" . DIRECTORY_SEPARATOR . "espectador_id_" . $id_espectador;
+
+                if (file_exists($pastaAdesaoEspec)) {
+                    //Apaga a pasta vazia 
+                    rmdir($pastaAdesaoEspec);
+                }
+            }
+
+            $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
             if (!$this->db->executa()) {
                 $deletarEspectadorErro = true;
             }
 
-            //Apaga a pasta apos estar vazia
-            rmdir($pastaPrincipal);
-        } else {
-
-            //Captura do id do espectador para deletar a pasta vazia
-            $pastaAdesaoEspec = "uploads" . DIRECTORY_SEPARATOR . "espectador_id_" . $id_espectador;
-
-            if (file_exists($pastaAdesaoEspec)) {
-                //Apaga a pasta vazia 
-                rmdir($pastaAdesaoEspec);
-            }
-        }
-
-
-        $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_agenda_brinquedo WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_marcacoes_mundo WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_marcacoes_sunset WHERE fk_espectador = :fk_espectador");
-        $this->db->bind("fk_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        $this->db->query("DELETE FROM tb_espectador WHERE id_espectador = :id_espectador");
-        $this->db->bind("id_espectador", $id_espectador);
-        if (!$this->db->executa()) {
-            $deletarEspectadorErro = true;
-        }
-
-        if (!$dados['espectador']->fk_acompanhante == NULL) {
-
-            $this->db->query("DELETE FROM tb_acompanhante WHERE id_acompanhante = :id_acompanhante");
-            $this->db->bind("id_acompanhante", $dados['espectador']->fk_acompanhante);
+            $this->db->query("DELETE FROM tb_relac_guarda_volumes WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
             if (!$this->db->executa()) {
                 $deletarEspectadorErro = true;
             }
+
+            $this->db->query("DELETE FROM tb_relac_tipo_deficiencia WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
+            if (!$this->db->executa()) {
+                $deletarEspectadorErro = true;
+            }
+
+            $this->db->query("DELETE FROM tb_agenda_brinquedo WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
+            if (!$this->db->executa()) {
+                $deletarEspectadorErro = true;
+            }
+
+            $this->db->query("DELETE FROM tb_marcacoes_mundo WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
+            if (!$this->db->executa()) {
+                $deletarEspectadorErro = true;
+            }
+
+            $this->db->query("DELETE FROM tb_marcacoes_sunset WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_espectador", $id_espectador);
+            if (!$this->db->executa()) {
+                $deletarEspectadorErro = true;
+            }
+
+            $this->db->query("DELETE FROM tb_espectador WHERE id_espectador = :id_espectador");
+            $this->db->bind("id_espectador", $id_espectador);
+            if (!$this->db->executa()) {
+                $deletarEspectadorErro = true;
+            }
+
+            if (!$dados['espectador']->fk_acompanhante == NULL) {
+
+                $this->db->query("DELETE FROM tb_acompanhante WHERE id_acompanhante = :id_acompanhante");
+                $this->db->bind("id_acompanhante", $dados['espectador']->fk_acompanhante);
+                if (!$this->db->executa()) {
+                    $deletarEspectadorErro = true;
+                }
+            }
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+            return false;
         }
 
         if ($deletarEspectadorErro) {
             return false;
         } else {
+            $this->db->commit();
             return true;
         }
     }

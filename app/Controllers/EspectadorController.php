@@ -83,7 +83,7 @@ class EspectadorController extends Controller
                 Alertas::mensagem('espectador', 'Espectador cadastrado com sucesso');
                 Redirecionamento::redirecionar('EspectadorController/index');
             } else {
-                Alertas::mensagem('espectador', 'Não foi possível cadastrar o espectador', 'alert alert-danger');
+                Alertas::mensagem('espectador', 'Não foi possível cadastrar o espectador. Tente novamente', 'alert alert-danger');
                 Redirecionamento::redirecionar('EspectadorController');
             }
         } else {
@@ -188,7 +188,7 @@ class EspectadorController extends Controller
                 Alertas::mensagem('espectador', 'Espectador atualizado com sucesso');
                 Redirecionamento::redirecionar('EspectadorController');
             } else {
-                Alertas::mensagem('espectador', 'Não foi possível atualizar o espectador', 'alert alert-danger');
+                Alertas::mensagem('espectador', 'Não foi possível atualizar o espectador. Tente novamente', 'alert alert-danger');
                 Redirecionamento::redirecionar('EspectadorController');
             }
         } else {
@@ -254,11 +254,11 @@ class EspectadorController extends Controller
                 Alertas::mensagem('espectador', 'Espectador deletado com sucesso');
                 Redirecionamento::redirecionar('EspectadorController');
             } else {
-                Alertas::mensagem('espectador', 'Não foi possível deletar o espectador', 'alert alert-danger');
+                Alertas::mensagem('espectador', 'Não foi possível deletar o espectador. Tente novamente', 'alert alert-danger');
                 Redirecionamento::redirecionar('EspectadorController');
             }
         } else {
-            Alertas::mensagem('espectador', 'Não foi possível deletar o espectador', 'alert alert-danger');
+            Alertas::mensagem('espectador', 'Não foi possível deletar o espectador. Tente novamente', 'alert alert-danger');
             Redirecionamento::redirecionar('EspectadorController');
         }
     }
