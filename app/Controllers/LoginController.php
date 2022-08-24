@@ -76,6 +76,7 @@ class LoginController extends Controller
         $_SESSION['id_usuario'] = $usuario->id_usuario;
         $_SESSION['ds_nome_usuario'] = $usuario->ds_nome_usuario;
         $_SESSION['ds_email_usuario'] = $usuario->ds_email_usuario;
+        $_SESSION['fk_perfil_usuario'] = $usuario->fk_perfil_usuario;
 
         Redirecionamento::redirecionar('Paginas/home');
     }

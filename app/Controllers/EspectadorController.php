@@ -227,7 +227,7 @@ class EspectadorController extends Controller
 
         //Dados para deleção dos agendamentos
         $dados = [            
-            'id_espectador' => $id,            
+            'id_espectador' => $id,          
             'termoResponsabilidade' => $termoResponsabilidade
         ];
 
@@ -240,6 +240,7 @@ class EspectadorController extends Controller
         //Dados para deletar o espectador
         $dados = [
             'fotoAdesao' => $fotoAdesao,
+            'espectador' => $espectador,
             'id_espectador' => $id,
         ];
 

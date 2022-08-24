@@ -47,13 +47,13 @@
                                 <a class="li-a-artcor nav-link" aria-current="page" href="<?= URL ?>">Home</a>
                             </li>
                             <?php if (isset($_SESSION['id_usuario'])) { ?>
-                                <!-- <li class="nav-item">
-                                    <a class="li-a-artcor nav-link" aria-current="page" href="<?= URL ?>/EspectadorController/cadastrar">Novo Espectador</a>
-                                </li> -->
+
                                 <li class="dropdown">
                                     <a class="nav-link dropdown-toggle li-a-artcor" data-bs-toggle="dropdown" role="button">Cadastro</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/UsuariosController">Usuários</a></li>
+                                        <?php if ($_SESSION['fk_perfil_usuario'] == 1) { ?>
+                                            <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/UsuariosController">Usuários</a></li>
+                                        <?php } ?>
                                         <li><a class="dropdown-artcor nav-link dropdown-item" aria-current="page" href="<?= URL ?>/EspectadorController">Espectador</a></li>
 
                                     </ul>
@@ -68,9 +68,7 @@
                                     </ul>
                                 </li>
                             <?php } ?>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link li-a-artcor" href="<?= URL . '/Paginas/sobre' ?>">Brinquedos</a>
-                            </li> -->
+
                         </ul>
 
 

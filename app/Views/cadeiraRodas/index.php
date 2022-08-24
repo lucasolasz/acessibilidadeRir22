@@ -31,7 +31,7 @@
                         if (empty($dados['cadeiraRodas'])) { ?>
 
                             <tr>
-                                <td colspan="2" class="align-middle">Nenhuma cadeira cadastrada</td>
+                                <td colspan="4" class="align-middle">Nenhuma cadeira cadastrada</td>
                             </tr>
 
                         <?php  }
@@ -50,11 +50,13 @@
                                 </td>
                                 </td>
                                 <td><a href="<?= URL . '/CadeiraRodasController/editar/' . $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
-                                <td>
-                                    <form action="<?= URL . '/CadeiraRodasController/deletar/' . $cadeiraRodas->id_cadeira_rodas ?>" method="POST">
-                                        <button type="submit" class="btn btn-danger"><span><i class="bi bi-trash-fill"></i></span></button>
-                                    </form>
-                                </td>
+                                <?php if ($_SESSION['fk_perfil_usuario'] == 1) { ?>
+                                    <td>
+                                        <form action="<?= URL . '/CadeiraRodasController/deletar/' . $cadeiraRodas->id_cadeira_rodas ?>" method="POST">
+                                            <button type="submit" class="btn btn-danger"><span><i class="bi bi-trash-fill"></i></span></button>
+                                        </form>
+                                    </td>
+                                <?php } ?>
                             </tr>
 
                             <!-- FullScreen Modal -->

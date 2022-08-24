@@ -28,7 +28,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($dados['agendamentos'] as $agendamentos) { ?>
+                        <?php
+                        // Exibe mensagem caso não tenha nenhum evento
+                        if (empty($dados['agendamentos'])) { ?>
+
+                            <tr>
+                                <td colspan="6" class="align-middle">Nenhum agendamento cadastrado</td>
+                            </tr>
+
+                        <?php  }
+
+                        foreach ($dados['agendamentos'] as $agendamentos) { ?>
                             <tr>
                                 <td><?= ucfirst($agendamentos->ds_nome_espectador) ?></td>
                                 <td><?= $agendamentos->ds_nome_acompanhante ?></td>

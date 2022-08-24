@@ -573,6 +573,24 @@ class Espectador
             $deletarEspectadorErro = true;
         }
 
+        $this->db->query("DELETE FROM tb_agenda_brinquedo WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id_espectador);
+        if (!$this->db->executa()) {
+            $deletarEspectadorErro = true;
+        }
+
+        $this->db->query("DELETE FROM tb_marcacoes_mundo WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id_espectador);
+        if (!$this->db->executa()) {
+            $deletarEspectadorErro = true;
+        }
+
+        $this->db->query("DELETE FROM tb_marcacoes_sunset WHERE fk_espectador = :fk_espectador");
+        $this->db->bind("fk_espectador", $id_espectador);
+        if (!$this->db->executa()) {
+            $deletarEspectadorErro = true;
+        }
+
         $this->db->query("DELETE FROM tb_espectador WHERE id_espectador = :id_espectador");
         $this->db->bind("id_espectador", $id_espectador);
         if (!$this->db->executa()) {

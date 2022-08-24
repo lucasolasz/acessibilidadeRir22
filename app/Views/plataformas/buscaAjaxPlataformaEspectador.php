@@ -22,7 +22,7 @@
             if (empty($dados['resultado'])) { ?>
 
                 <tr>
-                    <td colspan="10" class="align-middle">Nenhum espectador encontrado</td>
+                    <td colspan="11" class="align-middle">Nenhum espectador encontrado</td>
                 </tr>
 
             <?php  }
