@@ -29,7 +29,7 @@
 
             foreach ($dados['resultado'] as $resultado) { ?>
                 <tr>
-                    <td><?= ucfirst($resultado->ds_nome_espectador) ?></td>
+                    <td><a href=" <?= URL . '/EspectadorController/editar/' . $resultado->id_espectador ?>"><?= ucfirst($resultado->ds_nome_espectador) ?></a></td>
                     <td>Sunset</td>
 
                     <?php

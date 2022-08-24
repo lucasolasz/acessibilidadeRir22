@@ -40,8 +40,8 @@
 
                         foreach ($dados['agendamentos'] as $agendamentos) { ?>
                             <tr>
-                                <td><?= ucfirst($agendamentos->ds_nome_espectador) ?></td>
-                                <td><?= $agendamentos->ds_nome_acompanhante ?></td>
+                                <td><a href=" <?= URL . '/EspectadorController/editar/' . $agendamentos->id_espectador ?>"><?= ucfirst($agendamentos->ds_nome_espectador) ?></a></td>
+                                <td><?= ucfirst($agendamentos->ds_nome_acompanhante) ?></td>
                                 <td><?= $agendamentos->ds_condicao ?></td>
                                 <?php
 
