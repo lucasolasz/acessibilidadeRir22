@@ -31,7 +31,7 @@
                     <td><?= ucfirst($resultado->ds_nome_espectador) ?></td>
                     <td><?= ucfirst($resultado->ds_condicao) ?></td>
 
-                    <?php
+                    <?php                    
 
                     $db = new Database();
                     $db->query("SELECT * FROM tb_relac_acesso_servico tras
@@ -41,9 +41,19 @@
                     $resultados = $db->resultados();
 
                     $acessosServicos = '';
+                    $temPlataforma = false;
+                    $disablePlataforma = '';
 
                     foreach ($resultados as $resultados) {
                         $acessosServicos = $acessosServicos .  ' | ' . $resultados->ds_acesso_servico;
+
+                        if($resultados->fk_acesso_servico == 1){
+                            $temPlataforma = true;
+                        }
+                    }
+
+                    if(!$temPlataforma){
+                        $disablePlataforma = 'disabled';
                     }
 
                     $acessoServicosLimpo = substr($acessosServicos, 3);
@@ -102,7 +112,7 @@
                             <a href="<?= URL . '/PlataformasController/editar/' . $resultado->id_espectador ?>" class="btn btn-light"><i class="fa-solid fa-chair"></i> Visualizar</a>
 
                         <?php } else { ?>
-                            <a href="<?= URL . '/PlataformasController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="fa-solid fa-chair"></i> Nova</a>
+                            <a href="<?= URL . '/PlataformasController/cadastrar/' . $resultado->id_espectador ?>" class="btn btn-success <?= $disablePlataforma ?>"><i class="fa-solid fa-chair"></i> Nova</a>
                         <?php } ?>
 
                     </td>
