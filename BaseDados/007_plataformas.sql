@@ -490,3 +490,15 @@ CONSTRAINT fk_plataforma_sunset_tb_marcacoes_sunset FOREIGN KEY (fk_plataforma_s
 ALTER TABLE tb_espectador ADD chk_entrada_sunset CHAR DEFAULT NULL NULL;
 
 ALTER TABLE tb_espectador ADD chk_entrada_mundo CHAR DEFAULT NULL NULL;
+
+
+UPDATE tb_condicao
+	SET ds_condicao='Comorbidade'
+	WHERE id_condicao=7;
+
+
+INSERT INTO tb_acesso_servico (id_acesso_servico,ds_acesso_servico,ordem)
+	VALUES (6,'Sinta o som',6);
+INSERT INTO tb_acesso_servico (id_acesso_servico,ds_acesso_servico,ordem)
+	VALUES (7,'Audiodescrição',7);
+
