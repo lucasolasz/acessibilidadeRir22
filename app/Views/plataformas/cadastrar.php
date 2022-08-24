@@ -22,11 +22,11 @@
                 </div>
 
                 <div class="mb-3 mt-3 row">
-                    <h6>Número de reservas disponíveis plataforma SUNSET: </h6><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
+                    <h6>Número de reservas disponíveis plataforma SUNSET: </h6><span class="numReservas">Total: <?= $dados['numEspaçosDisponiveis'] ?></span>
                 </div>
 
                 <div class="mb-3 mt-3 row">
-                    <h6>Número de reservas disponíveis plataforma MUNDO: </h6><span class="numReservas"><?= $dados['numEspaçosDisponiveis'] ?></span>
+                    <h6>Número de reservas disponíveis plataforma MUNDO: </h6><span class="numReservas">Total: <?= $dados['numEspaçosDisponiveis'] ?></span>
                 </div>                
 
                 <h5 class="mb-3">Escolha a plataforma: </h5>

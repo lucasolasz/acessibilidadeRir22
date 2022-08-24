@@ -21,16 +21,50 @@
                     </div>
                 </div>
 
-                <div class="mb-3 mt-3 row">
-                    <h6>Número de reservas disponíveis plataforma SUNSET: </h6><span class="numReservas"><?= $dados['contagemMarcacoesSunset'] ?></span>
-                </div>
+                <?php
+                $marcacoesSunset = '';
+
+                foreach ($dados['visualizarMarcacoesPlataSunset'] as $visualizarMarcacoesPlataSunset) {
+
+                    if ($visualizarMarcacoesPlataSunset->fk_espectador ==  $dados['espectador']->id_espectador) {
+
+                        $marcacoesSunset = $marcacoesSunset . ' / ' . $visualizarMarcacoesPlataSunset->num_reserva;
+                    }
+                }
+
+                $marcacoesSunsetLimpo = substr($marcacoesSunset, 3);
+
+                ?>
 
                 <div class="mb-3 mt-3 row">
-                    <h6>Número de reservas disponíveis plataforma MUNDO: </h6><span class="numReservas"><?= $dados['contagemMarcacoesMundo'] ?></span>
+                    <h6>Número de reservas disponíveis plataforma SUNSET: </h6>
+                    <span class="numReservas">Total restante: <?= $dados['contagemMarcacoesSunset'] ?></span>
+                    <span>Marcações feitas: <?= $marcacoesSunsetLimpo ?></span>
+                </div>
+
+                <?php
+                $marcacoesMundo = '';
+
+                foreach ($dados['visualizarMarcacoesPlataMundo'] as $visualizarMarcacoesPlataMundo) {
+
+                    if ($visualizarMarcacoesPlataMundo->fk_espectador ==  $dados['espectador']->id_espectador) {
+
+                        $marcacoesMundo = $marcacoesMundo . ' / ' . $visualizarMarcacoesPlataMundo->num_reserva;
+                    }
+                }
+
+                $marcacoesMundoLimpo = substr($marcacoesMundo, 3);
+
+                ?>
+
+                <div class="mb-3 mt-3 row">
+                    <h6>Número de reservas disponíveis plataforma MUNDO: </h6>
+                    <span class="numReservas">Total restante: <?= $dados['contagemMarcacoesMundo'] ?></span>
+                    <span>Marcações feitas: <?= $marcacoesMundoLimpo ?></span>
                 </div>
 
                 <h5 class="mb-3">Escolha a plataforma para visualizar as marcações: </h5>
-                
+
                 <a href="<?= URL . '/PlataformasController/editar/' . $dados['espectador']->id_espectador . '&plataforma=S' ?>" class="btn btn-danger">Plataforma Palco Sunset <i class="fa-solid fa-sun"></i></a>
 
                 <a href="<?= URL . '/PlataformasController/editar/' . $dados['espectador']->id_espectador . '&plataforma=M' ?>" class="btn btn-danger">Plataforma Palco mundo <i class="fa-solid fa-earth-americas"></i></a>
