@@ -25,6 +25,8 @@
 
                 <h5>Número de reservas disponíveis: </h5><span class="numReservas"><?= $dados['contagemMarcacoesMundo'] ?></span>
 
+                <p class="mt-3"></p><?= Alertas::mensagem('erroMarcacaoMundo') ?>
+
                 <div class="table-responsive mt-3">
                     <table class="table text-center table-bordered table-responsive">
                         <tbody>

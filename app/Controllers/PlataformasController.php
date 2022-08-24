@@ -91,14 +91,22 @@ class PlataformasController extends Controller
             $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
             $dados['chkReservaMundo'] = isset($formulario['chkReservaMundo']) ? $formulario['chkReservaMundo'] : "";
 
-            if ($this->plataformaModel->armazenarReservaMundo($dados)) {
 
-                Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
-                Redirecionamento::redirecionar('PlataformasController');
+            if ($this->plataformaModel->validaMarcacoesMundo($dados)) {
+
+                Alertas::mensagem('erroMarcacaoMundo', 'Uma ou mais marcações já foram reservadas por outro espectador. Por favor escolha outra(s)', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController/cadastrar/' . $dados['id_espectador'] . '&plataforma=M');
             } else {
 
-                Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
-                Redirecionamento::redirecionar('PlataformasController');
+                if ($this->plataformaModel->armazenarReservaMundo($dados)) {
+
+                    Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController');
+                } else {
+
+                    Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController');
+                }
             }
         }
     }
@@ -113,14 +121,22 @@ class PlataformasController extends Controller
             $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
             $dados['chkReservaSunset'] = isset($formulario['chkReservaSunset']) ? $formulario['chkReservaSunset'] : "";
 
-            if ($this->plataformaModel->armazenarReservaSunset($dados)) {
 
-                Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
-                Redirecionamento::redirecionar('PlataformasController');
+            if ($this->plataformaModel->validaMarcacoesSunset($dados)) {
+
+                Alertas::mensagem('erroMarcacaoSunset', 'Uma ou mais marcações já foram reservadas por outro espectador. Por favor escolha outra(s)', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController/cadastrar/' . $dados['id_espectador'] . '&plataforma=S');
             } else {
 
-                Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
-                Redirecionamento::redirecionar('PlataformasController');
+                if ($this->plataformaModel->armazenarReservaSunset($dados)) {
+
+                    Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController');
+                } else {
+
+                    Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController');
+                }
             }
         }
     }
@@ -200,14 +216,21 @@ class PlataformasController extends Controller
             $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
             $dados['chkReservaMundo'] = isset($formulario['chkReservaMundo']) ? $formulario['chkReservaMundo'] : "";
 
-            if ($this->plataformaModel->editarReservaMundo($dados)) {
+            if ($this->plataformaModel->validaMarcacoesMundo($dados)) {
 
-                Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
-                Redirecionamento::redirecionar('PlataformasController');
+                Alertas::mensagem('erroMarcacaoMundo', 'Uma ou mais marcações já foram reservadas por outro espectador. Por favor escolha outra(s)', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController/cadastrar/' . $dados['id_espectador'] . '&plataforma=M');
             } else {
 
-                Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
-                Redirecionamento::redirecionar('PlataformasController');
+                if ($this->plataformaModel->editarReservaMundo($dados)) {
+
+                    Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController');
+                } else {
+
+                    Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController');
+                }
             }
         }
     }
@@ -222,14 +245,21 @@ class PlataformasController extends Controller
             $dados['id_espectador'] = isset($formulario['hidIdExpectador']) ? $formulario['hidIdExpectador'] : NULL;
             $dados['chkReservaSunset'] = isset($formulario['chkReservaSunset']) ? $formulario['chkReservaSunset'] : "";
 
-            if ($this->plataformaModel->editarReservaSunset($dados)) {
+            if ($this->plataformaModel->validaMarcacoesSunset($dados)) {
 
-                Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
-                Redirecionamento::redirecionar('PlataformasController');
+                Alertas::mensagem('erroMarcacaoSunset', 'Uma ou mais marcações já foram reservadas por outro espectador. Por favor escolha outra(s)', 'alert alert-danger');
+                Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador'] . '&plataforma=S');
             } else {
 
-                Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
-                Redirecionamento::redirecionar('PlataformasController');
+                if ($this->plataformaModel->editarReservaSunset($dados)) {
+
+                    Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController');
+                } else {
+
+                    Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController');
+                }
             }
         }
     }

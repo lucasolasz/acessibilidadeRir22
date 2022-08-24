@@ -320,11 +320,53 @@ class Plataformas
     {
 
         //Limpa todas as marcações das duas plataformas
-        if($this->limparMarcacoesSunset($id) && $this->limparMarcacoesMundo($id)){
+        if ($this->limparMarcacoesSunset($id) && $this->limparMarcacoesMundo($id)) {
             return true;
         } else {
             return false;
-        }     
-        
+        }
+    }
+
+
+    public function validaMarcacoesMundo($dados)
+    {
+
+        if (!$dados['chkReservaMundo'] == "") {
+
+            foreach ($dados['chkReservaMundo'] as $chkReservaMundo) {
+
+                $this->db->query("SELECT fk_plataforma_mundo FROM tb_marcacoes_mundo tmm WHERE fk_plataforma_mundo = :fk_plataforma_mundo");
+                $this->db->bind("fk_plataforma_mundo", $chkReservaMundo);
+                $result = $this->db->resultado();
+            }
+
+            if($result){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
+    public function validaMarcacoesSunset($dados)
+    {
+
+        if (!$dados['chkReservaSunset'] == "") {
+
+            foreach ($dados['chkReservaSunset'] as $chkReservaSunset) {
+
+                $this->db->query("SELECT fk_plataforma_sunset FROM tb_marcacoes_sunset tms WHERE fk_plataforma_sunset = :fk_plataforma_sunset");
+                $this->db->bind("fk_plataforma_sunset", $chkReservaSunset);
+                $result = $this->db->resultado();
+            }
+
+            if($result){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }
