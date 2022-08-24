@@ -165,7 +165,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="txtDocumentoAcompanhante" class="form-label">Documento Acompanhante: *</label>
-                        <input type="text" class="form-control" name="txtDocumentoAcompanhante" id="txtDocumentoAcompanhante" value="" maxlength="11">
+                        <input type="text" class="form-control" name="txtDocumentoAcompanhante" id="txtDocumentoAcompanhante" value="" maxlength="11" placeholder="Somente números">
                     </div>
 
                     <div class="mb-3">
@@ -272,7 +272,32 @@
         $("#divQtmenores").hide();
         $("#divCadeiraRodas").hide();
         $("#divGuardaVolumes").hide();
+
+        $("#txtDocumento").keyup(function() {
+            $("#txtDocumento").val(this.value.match(/[0-9]*/));
+        });
+
+        $("#txtTelefone").keyup(function() {
+            $("#txtTelefone").val(this.value.match(/[0-9]*/));
+        });
+
+        $("#txtTelefoneAcompanhante").keyup(function() {
+            $("#txtTelefoneAcompanhante").val(this.value.match(/[0-9]*/));
+        });
+
+        $("#txtDocumentoAcompanhante").keyup(function() {
+            $("#txtDocumentoAcompanhante").val(this.value.match(/[0-9]*/));
+        });
+
+        $("#txtIdade").keyup(function() {
+            $("#txtIdade").val(this.value.match(/[0-9]*/));
+        });    
+
+
     });
+
+
+
 
     //Monitora campo condição
     $("input[name=radioCondicao]").click(function() {

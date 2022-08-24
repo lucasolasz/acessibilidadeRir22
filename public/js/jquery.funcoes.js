@@ -138,20 +138,3 @@ function disableHorarioRodaGigante(chk_brinquedo) {
 
     }
 }
-
-// function disablePlataformas(chk_plataforma) {
-
-//     $("#divPLataformaMundo").hide(200);
-//     $("#divPLataformaSunset").hide(200);
-
-//     if (chk_plataforma == 'M') {
-//         $("#divPLataformaMundo").show(200);
-
-//     }
-//     if (chk_plataforma == 'S') {
-//         $("#divPLataformaSunset").show(200);
-
-//     }
-// }
-
-
