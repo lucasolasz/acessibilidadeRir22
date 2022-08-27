@@ -97,7 +97,7 @@
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn btn-artcor">Salvar marcações</button>
+                <button type="submit" class="btn btn btn-artcor">Salvar marcações</button>                
             </form>
         </div>
     </div>

@@ -335,8 +335,9 @@ class Plataformas
 
             foreach ($dados['chkReservaMundo'] as $chkReservaMundo) {
 
-                $this->db->query("SELECT fk_plataforma_mundo FROM tb_marcacoes_mundo tmm WHERE fk_plataforma_mundo = :fk_plataforma_mundo");
+                $this->db->query("SELECT fk_plataforma_mundo FROM tb_marcacoes_mundo tmm WHERE fk_plataforma_mundo = :fk_plataforma_mundo AND fk_espectador <> :fk_espectador");
                 $this->db->bind("fk_plataforma_mundo", $chkReservaMundo);
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
                 $result = $this->db->resultado();
             }
 
@@ -356,8 +357,9 @@ class Plataformas
 
             foreach ($dados['chkReservaSunset'] as $chkReservaSunset) {
 
-                $this->db->query("SELECT fk_plataforma_sunset FROM tb_marcacoes_sunset tms WHERE fk_plataforma_sunset = :fk_plataforma_sunset");
+                $this->db->query("SELECT fk_plataforma_sunset FROM tb_marcacoes_sunset tms WHERE fk_plataforma_sunset = :fk_plataforma_sunset AND fk_espectador <> :fk_espectador");
                 $this->db->bind("fk_plataforma_sunset", $chkReservaSunset);
+                $this->db->bind("fk_espectador", $dados['id_espectador']);
                 $result = $this->db->resultado();
             }
 

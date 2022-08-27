@@ -37,9 +37,20 @@ class BrinquedosController extends Controller
         $trintaMinMontanhaRussa = $this->brinquedosModel->visualizarTrintaMinMontanhaRussa();
         $quinzeMinCabum = $this->brinquedosModel->visualizarQuinzeMinCabum();
 
+        
+        $temErroCadastro = false;
+        $horarioErroCadastro = '';
+
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         if (isset($formulario)) {
+
+            $dados = ['fk_espectador' => $id];
+
+            $dados['cboHoraTirolesaNA'] = NULL;
+            $dados['cboTrintaMinMontanhaRussaNA'] = NULL;
+            $dados['cboQuinzeMinCabumNA'] = NULL;
+            $dados['cboHoraRodaGiganteNA'] = NULL;
 
             //Converte valores vazios para NULL para salvar no banco
             $dados['hidIdExpectador'] = !$formulario['hidIdExpectador'] == "" ? $formulario['hidIdExpectador'] : NULL;
@@ -52,20 +63,83 @@ class BrinquedosController extends Controller
             //Termo responsabilidade
             $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
 
-            // if ($dados['cboEspectador'] == NULL) {
 
-            //     $dados = [
-            //         'espectador' => $espectador,
-            //         'brinquedos' => $brinquedos,
-            //         'horaTirolesa' => $horaTirolesa,
-            //         'horaRodaGigante' => $horaRodaGigante,
-            //         'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-            //         'quinzeMinCabum' => $quinzeMinCabum
-            //     ];
 
-            //     $dados['espectador_erro'] = "Selecione um espectador";
-            // } else {
+            if ($dados['fileTermoResponsabilidade'] == "") {
 
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                ];
+
+                $dados['termoErro'] = 'Necessário o envio de um termo de responsabilidade';
+            } elseif(!$this->brinquedosModel->validaHorariosTirolsa($dados)) {
+
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                ];
+                
+                $horarioErroCadastro = "Tirolesa";
+                $temErroCadastro = true;
+
+            } elseif(!$this->brinquedosModel->validaHorariosMontanha($dados)){
+
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                ];
+
+                $horarioErroCadastro = "Montanha Russa";
+                $temErroCadastro = true;
+            } elseif(!$this->brinquedosModel->validaHorariosKabum($dados)) {
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                ];
+
+                $horarioErroCadastro = "Kabum";
+                $temErroCadastro = true;
+            } elseif(!$this->brinquedosModel->validaHorariosRodaGigante($dados)){
+                
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                ];
+
+                $horarioErroCadastro = "Roda Gigante";
+                $temErroCadastro = true;
+            }
+            
+            
+            
+            else {
+                // exit();
                 if ($this->brinquedosModel->armazenarAgendamentoBrinquedo($dados)) {
 
                     Alertas::mensagem('brinquedos', 'Agendamento cadastrado com sucesso');
@@ -74,7 +148,7 @@ class BrinquedosController extends Controller
                     Alertas::mensagem('brinquedos', 'Não foi possível agendar o brinquedo', 'alert alert-danger');
                     Redirecionamento::redirecionar('BrinquedosController');
                 }
-            // }
+            }
         } else {
 
             $dados = [
@@ -84,8 +158,14 @@ class BrinquedosController extends Controller
                 'horaTirolesa' => $horaTirolesa,
                 'horaRodaGigante' => $horaRodaGigante,
                 'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                'quinzeMinCabum' => $quinzeMinCabum
+                'quinzeMinCabum' => $quinzeMinCabum,
+                'termoErro' => '',
+                'tirolesaErro' => ''
             ];
+        }
+
+        if ($temErroCadastro) {
+            Alertas::mensagem('horarioErroCadastrar', 'Horário selecionado do brinquedo <b>' . $horarioErroCadastro . '</b> já em uso. <br> Favor escolher outro', 'alert alert-danger');
         }
 
         //Retorna para a view
@@ -103,6 +183,8 @@ class BrinquedosController extends Controller
         $quinzeMinCabum = $this->brinquedosModel->visualizarQuinzeMinCabum();
         $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
 
+        $temErroEditar = false;
+        $horarioErroEditar = '';
 
         $formulario = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -127,16 +209,91 @@ class BrinquedosController extends Controller
             $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
 
             //Termo anexo
-            $dados['termoResponsabilidade'] = $termoResponsabilidade;
+            $dados['termoResponsabilidade'] = empty($termoResponsabilidade) ? "" : $termoResponsabilidade;
 
 
-            if ($this->brinquedosModel->editarAgendamentoBrinquedo($dados)) {
+            if ($dados['fileTermoResponsabilidade'] == "" && $dados['termoResponsabilidade'] == "") {
 
-                Alertas::mensagem('brinquedos', 'Agendamento atualizado com sucesso');
-                Redirecionamento::redirecionar('BrinquedosController');
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+
+                $dados['termoErro'] = "Necessário o envio de um termo de responsabilidade";
+            } else if (!$this->brinquedosModel->validaHorariosTirolsa($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['tirolesaErro'] = "Horário Tirolesa já esta em uso";
+                $horarioErroEditar = "Tirolesa";
+                $temErroEditar = true;
+            } elseif (!$this->brinquedosModel->validaHorariosMontanha($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['montanhaErro'] = "Horário Montanha Russa já esta em uso";
+                $horarioErroEditar = "Montanha russa";
+                $temErroEditar = true;
+            } elseif (!$this->brinquedosModel->validaHorariosKabum($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['kabumErro'] = "Horário Kabum já esta em uso";
+                $horarioErroEditar = "Kabum";
+                $temErroEditar = true;
+            } elseif (!$this->brinquedosModel->validaHorariosRodaGigante($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
+                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['rodaGiganteErro'] = "Horário Roda Gigante já esta em uso";
+                $horarioErroEditar = "Roda Gigante";
+                $temErroEditar = true;
             } else {
-                Alertas::mensagem('brinquedos', 'Não foi possível atualizar o agendamento', 'alert alert-danger');
-                Redirecionamento::redirecionar('BrinquedosController');
+
+                // var_dump($dados);
+                // exit();
+
+                if ($this->brinquedosModel->editarAgendamentoBrinquedo($dados)) {
+
+                    Alertas::mensagem('brinquedos', 'Agendamento atualizado com sucesso');
+                    Redirecionamento::redirecionar('BrinquedosController');
+                } else {
+                    Alertas::mensagem('brinquedos', 'Não foi possível atualizar o agendamento', 'alert alert-danger');
+                    Redirecionamento::redirecionar('BrinquedosController');
+                }
             }
         } else {
 
@@ -147,9 +304,15 @@ class BrinquedosController extends Controller
                 'horaRodaGigante' => $horaRodaGigante,
                 'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
                 'quinzeMinCabum' => $quinzeMinCabum,
-                'termoResponsabilidade' => $termoResponsabilidade
+                'termoResponsabilidade' => $termoResponsabilidade,
+                'termoErro' => ''
             ];
         }
+
+        if ($temErroEditar) {
+            Alertas::mensagem('horarioErroEditar', 'Horário selecionado do brinquedo <b>' . $horarioErroEditar . '</b> já em uso. <br> Favor escolher outro', 'alert alert-danger');
+        }
+
 
         //Retorna para a view
         $this->view('brinquedos/editar', $dados);

@@ -101,11 +101,11 @@ class PlataformasController extends Controller
                 if ($this->plataformaModel->armazenarReservaMundo($dados)) {
 
                     Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 } else {
 
                     Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 }
             }
         }
@@ -131,11 +131,11 @@ class PlataformasController extends Controller
                 if ($this->plataformaModel->armazenarReservaSunset($dados)) {
 
                     Alertas::mensagem('plataforma', 'Marcações realizadas com sucesso');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 } else {
 
                     Alertas::mensagem('plataforma', 'Não foi possível realizar as marcações', 'alert alert-danger');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 }
             }
         }
@@ -224,12 +224,12 @@ class PlataformasController extends Controller
 
                 if ($this->plataformaModel->editarReservaMundo($dados)) {
 
-                    Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Alertas::mensagem('plataformaEditar', 'Marcações atualizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 } else {
 
-                    Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Alertas::mensagem('plataformaEditar', 'Não foi possível atualizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 }
             }
         }
@@ -253,12 +253,12 @@ class PlataformasController extends Controller
 
                 if ($this->plataformaModel->editarReservaSunset($dados)) {
 
-                    Alertas::mensagem('plataforma', 'Marcações atualizadas com sucesso');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Alertas::mensagem('plataformaEditar', 'Marcações atualizadas com sucesso');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 } else {
 
-                    Alertas::mensagem('plataforma', 'Não foi possível atualizar as marcações', 'alert alert-danger');
-                    Redirecionamento::redirecionar('PlataformasController');
+                    Alertas::mensagem('plataformaEditar', 'Não foi possível atualizar as marcações', 'alert alert-danger');
+                    Redirecionamento::redirecionar('PlataformasController/editar/' . $dados['id_espectador']);
                 }
             }
         }

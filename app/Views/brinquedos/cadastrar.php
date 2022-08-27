@@ -1,5 +1,7 @@
 <div class="col-xl-6 col-md-6 mx-auto p-5">
 
+    <?= Alertas::mensagem('horarioErroCadastrar') ?>
+
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -13,7 +15,7 @@
             <h2>Cadastrar Novo Agendamento</h2>
             <small>Preencha o formulário abaixo para cadastrar um novo evento</small>
 
-            <form name="cadastrar" method="POST" action="<?= URL ?>/BrinquedosController/cadastrar" enctype="multipart/form-data">
+            <form name="cadastrar" method="POST" action="<?= URL . "/BrinquedosController/cadastrar/" . $dados['espectador']->id_espectador ?>" enctype="multipart/form-data">
 
                 <div class="mb-3 mt-3 row">
                     <label for="txtEspectador" class="col-md-4 col-form-label">Espectador: </label>
@@ -37,7 +39,7 @@
 
                 <div class="p-0 form-check" id="divHoraTirolesa">
                     <div class="mb-3 mt-3">
-                        <label for="cboHoraTirolesa" class="form-label">Horário tirolesa: <small>1h em 1h</small></label>
+                        <label for="cboHoraTirolesa" class="form-label">Horário tirolesa:</label>
                         <select class="form-select" name="cboHoraTirolesa" id="cboHoraTirolesa">
                             <option value=""></option>
                             <?php foreach ($dados['horaTirolesa'] as $horaTirolesa) { ?>
@@ -51,7 +53,7 @@
 
                 <div class="p-0 form-check" id="divTrintaMontanhaRussa">
                     <div class="mb-3 mt-3">
-                        <label for="cboTrintaMinMontanhaRussa" class="form-label">Horário montanha russa: <small>30min em 30min</small></label>
+                        <label for="cboTrintaMinMontanhaRussa" class="form-label">Horário montanha russa:</label>
                         <select class="form-select" name="cboTrintaMinMontanhaRussa" id="cboTrintaMinMontanhaRussa">
                             <option value=""></option>
                             <?php foreach ($dados['trintaMinMontanhaRussa'] as $trintaMinMontanhaRussa) { ?>
@@ -65,7 +67,7 @@
 
                 <div class="p-0 form-check" id="divQuinzeCabum">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabum" class="form-label">Horário Kabum: <small>15min em 15min</small></label>
+                        <label for="cboQuinzeMinCabum" class="form-label">Horário Kabum:</label>
                         <select class="form-select" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
                             <option value=""></option>
                             <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
@@ -79,7 +81,7 @@
 
                 <div class="p-0 form-check" id="divHoraRodaGigante">
                     <div class="mb-3 mt-3">
-                        <label for="cboHoraRodaGigante" class="form-label">Horário roda gigante: <small>1h em 1h</small></label>
+                        <label for="cboHoraRodaGigante" class="form-label">Horário roda gigante:</label>
                         <select class="form-select" name="cboHoraRodaGigante" id="cboHoraRodaGigante">
                             <option value=""></option>
                             <?php foreach ($dados['horaRodaGigante'] as $horaRodaGigante) { ?>
@@ -93,7 +95,8 @@
 
                 <div class="mb-3">
                     <label for="fileTermoResponsabilidade" class="form-label">Termo de responsabilidade:</label>
-                    <input class="form-control" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">
+                    <input class="form-control <?= $dados['termoErro'] ? 'is-invalid' : '' ?>" type="file" id="fileTermoResponsabilidade" name="fileTermoResponsabilidade">
+                    <div class="invalid-feedback"><?= $dados['termoErro'] ?></div>
                 </div>
 
                 <div class="row">
@@ -143,44 +146,6 @@
         chk_brinquedo = $("#chkBrinquedo4:checked").val();
         disableHorarioRodaGigante(chk_brinquedo);
     });
-
-    //Chama função após algum clique em checkbox
-    $(":checkbox").click(countChecked);
-
-    //Armazena a contagem total dos campos checked no carregamento da página
-    total = $("input:checked").length
-
-    function countChecked() {
-
-        // console.log('total fixo= ', total);
-        // console.log('total checados= ', $("input:checked").length)
-
-        //Atribui o total de reservas que o espectador possui
-        var limiteReservas = 2
-
-        //Iguala o contador dos campos checked com o total do carregamento da página
-        //Dando a ideia que "sempre começa em 0", pois independente da quantidade de checkeds ele irá subtrair do total
-        subtracao = $("input:checked").length - total
-
-        //Contagem decrescente para exibir na tela quantos reservas ainda restam
-        contagem = limiteReservas - subtracao
-
-
-        // console.log('subtracao= ', subtracao);
-        // console.log('contagem decrescente de vagas= ', contagem)
-
-        if (contagem == 0) {
-            $(".numReservas").html("<i class='fonteVermelha'>Todas as reservas disponíveis foram marcadas</i>")
-        } else {
-            $(".numReservas").html(contagem)
-        }
-
-        if (subtracao == limiteReservas) {
-            $(':checkbox:not(:checked)').attr('disabled', true);
-        } else {
-            $(':checkbox:not(:checked)').attr('disabled', false);
-        }
-    }
 
     //Chama função após algum clique em checkbox
     $(":checkbox").click(countChecked);

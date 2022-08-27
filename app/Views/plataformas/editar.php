@@ -1,5 +1,7 @@
 <div class="mx-auto p-5">
 
+    <?= Alertas::mensagem('plataformaEditar') ?>
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= URL ?>/PlataformasController">Plataformas</a></li>

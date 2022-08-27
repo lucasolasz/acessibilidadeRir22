@@ -291,7 +291,7 @@
 
         $("#txtIdade").keyup(function() {
             $("#txtIdade").val(this.value.match(/[0-9]*/));
-        });    
+        });
 
 
     });
@@ -341,5 +341,17 @@
     $("#chkTipoDeficiencia1").click(function() {
         chk_tipo_deficiencia = $("#chkTipoDeficiencia1:checked").val();
         disableTipoDeficienciaFisica(chk_tipo_deficiencia);
+    });
+
+    //Monitora campo chk tipo deficiencia
+    $("#chkTipoDeficiencia3").click(function() {
+        chk_tipo_deficiencia = $("#chkTipoDeficiencia3:checked").val();
+        disableSintaOSom(chk_tipo_deficiencia);
+    });
+
+    //Monitora campo chk tipo deficiencia
+    $("#chkTipoDeficiencia2").click(function() {
+        chk_tipo_deficiencia = $("#chkTipoDeficiencia2:checked").val();
+        disableAudioDescricao(chk_tipo_deficiencia);
     });
 </script>

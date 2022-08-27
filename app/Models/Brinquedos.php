@@ -224,7 +224,7 @@ class Brinquedos
             $pastaArquivo = "espectador_id_" . $dados['fk_espectador'];
             $upload = new Upload();
 
-            if (!empty($dados['termoResponsabilidade'])) {
+            if (!$dados['termoResponsabilidade'] == "") {
 
                 //Deleta registro da imagem no banco
                 $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador AND chk_termo_brinquedo = 'S'");
@@ -390,5 +390,93 @@ class Brinquedos
         } else {
             return false;
         }
+    }
+
+    public function validaHorariosTirolsa($dados)
+    {
+
+        if (!$dados['cboHoraTirolesa'] == NULL or !$dados['cboHoraTirolesaNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_hora_tirolesa FROM tb_agenda_brinquedo WHERE (fk_hora_tirolesa = :fk_hora_tirolesa or fk_hora_tirolesa = :fk_hora_tirolesaNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesa']);        
+            $this->db->bind("fk_hora_tirolesaNA", $dados['cboHoraTirolesaNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function validaHorariosMontanha($dados)
+    {
+
+        if (!$dados['cboTrintaMinMontanhaRussa'] == NULL or !$dados['cboTrintaMinMontanhaRussaNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_trinta_min FROM tb_agenda_brinquedo WHERE (fk_trinta_min = :fk_trinta_min or fk_trinta_min = :fk_trinta_minNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussa']);        
+            $this->db->bind("fk_trinta_minNA", $dados['cboTrintaMinMontanhaRussaNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function validaHorariosKabum($dados)
+    {
+
+        if (!$dados['cboQuinzeMinCabum'] == NULL or !$dados['cboQuinzeMinCabumNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_quinze_min FROM tb_agenda_brinquedo WHERE (fk_quinze_min = :fk_quinze_min or fk_quinze_min = :fk_quinze_minNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabum']);        
+            $this->db->bind("fk_quinze_minNA", $dados['cboQuinzeMinCabumNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function validaHorariosRodaGigante($dados)
+    {
+
+        if (!$dados['cboHoraRodaGigante'] == NULL or !$dados['cboHoraRodaGiganteNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_hora_roda_gigante FROM tb_agenda_brinquedo WHERE (fk_hora_roda_gigante = :fk_hora_roda_gigante or fk_hora_roda_gigante = :fk_hora_roda_giganteNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);        
+            $this->db->bind("fk_hora_roda_giganteNA", $dados['cboHoraRodaGiganteNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
     }
 }
