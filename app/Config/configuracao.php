@@ -19,8 +19,8 @@ define('APP', dirname(dirname(__FILE__)));
 
 // define('URL', '/acessibilidadeRir22');
 
-define('URL', 'http://setoracessibilidade.com.br');
+define('URL', 'https://setoracessibilidade.com.br');
 
 define('APP_NOME', 'Setor Acessibilidade');
 
-define('APP_VERSAO', '1.8.36');
+define('APP_VERSAO', '1.8.37');

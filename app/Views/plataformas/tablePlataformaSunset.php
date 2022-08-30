@@ -31,13 +31,13 @@
                     <table class="table text-center table-bordered table-responsive">
                         <tbody>
                             <tr>
-                                <td class="table-dark" colspan="17">PALCO SUNSET</td>
+                                <td class="table-dark" colspan="17"><b>PALCO SUNSET</b></td>
                             </tr>
                             <tr>
-
+                                <td rowspan="12" style="writing-mode: vertical-rl; text-align: center; vertical-align:middle"><b>CORREDOR</b></td>
                                 <td colspan="17"></td>
+                                <td rowspan="12" style="writing-mode: vertical-rl; text-align: center; vertical-align:middle"><b>CORREDOR</b></td>
                                 <td rowspan="12" style="writing-mode: vertical-rl; text-align: center; vertical-align:middle"><b>RAMPA DE ACESSO</b></td>
-
                             </tr>
 
 
@@ -83,7 +83,7 @@
                                 <?php  } ?>
 
 
-                                <?php if (($aux % 16) == 0) { ?>
+                                <?php if (($aux % 14) == 0) { ?>
                                     </tr>
                                     <tr>
                                 <?php  }

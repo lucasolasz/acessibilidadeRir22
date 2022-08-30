@@ -37,9 +37,9 @@
                                 <td colspan="18"><b>RAMPA DE ACESSO</b></td>
                             </tr>
                             <tr>
-                                <td rowspan="73"></td>
+                                <td rowspan="73" style="writing-mode: vertical-rl; text-align: center; vertical-align:middle"><b>CORREDOR</b></td>
                                 <td colspan="16"><b>CORREDOR<b></td>
-                                <td rowspan="73"></td>
+                                <td rowspan="73" style="writing-mode: vertical-lr; text-align: center; vertical-align:middle"><b>CORREDOR</b></td>
                             </tr>
 
                             <?php
@@ -97,7 +97,7 @@
                         </tbody>
                     </table>
                 </div>
-                <button type="submit" class="btn btn btn-artcor">Salvar marcações</button>                
+                <button type="submit" class="btn btn btn-artcor">Salvar marcações</button>
             </form>
         </div>
     </div>
