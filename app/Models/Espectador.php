@@ -83,7 +83,7 @@ class Espectador
             }
 
             //Insert do espectador
-            $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica) VALUES (:ds_nome_espectador,
+            $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica, ds_email_espectador) VALUES (:ds_nome_espectador,
             :ds_documento_espectador,
             :ds_descricao_deficiencia,
             :tel_espectador,
@@ -94,7 +94,8 @@ class Espectador
             :fk_acompanhante,
             :fk_cadeira_rodas,
             :fk_usuario,
-            :fk_tipo_deficiencia_fisica)");
+            :fk_tipo_deficiencia_fisica,
+            :ds_email_espectador)");
 
             $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
             $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
@@ -108,6 +109,7 @@ class Espectador
             $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
             $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
             $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
+            $this->db->bind("ds_email_espectador", $dados['txtEmail']);
             if (!$this->db->executa()) {
                 $armazenaEspectadorErro = true;
             }
@@ -155,54 +157,83 @@ class Espectador
             }
 
             //Realiza as operações de anexo, se houver anexo
-            // var_dump($dados['fileTermoAdesao']);
+            // var_dump($dados['fileTermoAdesaoIdentidade']);
+            // exit();
 
-            if (!$dados['fileTermoAdesao']['name'] == "") {
+            if (!$dados['fileTermoAdesaoIdentidade']['name'][0] == "") {
 
                 $pastaArquivo = "espectador_id_" . $ultimoIdEpectador;
                 $upload = new Upload();
+                $tamanhoArray = count($dados['fileTermoAdesaoIdentidade']['name']);
 
-                $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
+                //Array vazio para armazenar o nome das imagens que foram para pasta temp. 
+                //Array utilizado para quando retornar algum erro
+                $nomes = [];
 
-                if (!$upload->getErro() == NULL) {
-                    return false;
-                    // echo $upload->getErro() . '<br>';
-                } else {
+                for ($i = 0; $i < $tamanhoArray; $i++) {
 
-                    //Inicio do processamento de compressao
-                    $nomeArquivo = $upload->getResultado();
+                    $arrayImagem = [
+                        'name' => $dados['fileTermoAdesaoIdentidade']['name'][$i],
+                        'type' => $dados['fileTermoAdesaoIdentidade']['type'][$i],
+                        'tmp_name' => $dados['fileTermoAdesaoIdentidade']['tmp_name'][$i],
+                        'error' => $dados['fileTermoAdesaoIdentidade']['error'][$i],
+                        'size' => $dados['fileTermoAdesaoIdentidade']['size'][$i],
+                    ];
 
-                    //Path da imagem que foi feito upload  (pasta temp)           
-                    $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+                    $upload->imagem($arrayImagem, NULL, 'temp');
 
-                    //Cria pasta dos arquivos individualmente de acordo com id
-                    if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
-                        mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
-                    }
-                    $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+                    if (!$upload->getErro() == NULL) {
+                        echo $upload->getErro() . '<br>';
 
-                    //Monta o diretorio destino da pagina comprimida
-                    $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                    //Executa a compressao
-                    ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
-
-                    //Invoca metodo para deletar o arquivo temporario
-                    $upload->deletarArquivo(null, $path_arquivo);
-
-                    if ($upload->getResultado()) {
-
-                        $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
-                        $this->db->bind("fk_espectador", $ultimoIdEpectador);
-                        $this->db->bind("nm_path_arquivo", $novoDiretorio);
-                        $this->db->bind("nm_arquivo", $nomeArquivo);
-                        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
-                        $this->db->bind("chk_termo_brinquedo", 'N');
-                        if (!$this->db->executa()) {
-                            $armazenaEspectadorErro = true;
+                        foreach ($nomes as $nomes) {
+                            $upload->deletarArquivo(null, $nomes);
                         }
+
+                        break;
                     } else {
-                        return false;
+
+                        //Inicio do processamento de compressao
+                        $nomeArquivo = $upload->getResultado();
+
+                        //Path da imagem que foi feito upload  (pasta temp)           
+                        $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                        $nomes[] = $path_arquivo;
+
+                        //Cria pasta dos arquivos individualmente de acordo com id
+                        if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                            mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                        }
+                        $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                        //Monta o diretorio destino da pagina comprimida
+                        $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                        //Executa a compressao
+                        ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                        //Invoca metodo para deletar o arquivo temporario
+                        $upload->deletarArquivo(null, $path_arquivo);
+
+                        // echo $upload->getResultado() . ' da pasta temporaria';
+
+                        // echo $upload->getResultado();
+                        // exit();
+
+                        if ($upload->getResultado()) {
+
+                            $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                            $this->db->bind("fk_espectador", $ultimoIdEpectador);
+                            $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                            $this->db->bind("nm_arquivo", $nomeArquivo);
+                            $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                            $this->db->bind("chk_termo_brinquedo", 'N');
+                            if (!$this->db->executa()) {
+                                $armazenaEspectadorErro = true;
+                            }
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
@@ -311,7 +342,8 @@ class Espectador
             chk_acompanhante = :chk_acompanhante, 
             fk_acompanhante = :fk_acompanhante, 
             fk_cadeira_rodas = :fk_cadeira_rodas,
-            fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica
+            fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica,
+            ds_email_espectador = :ds_email_espectador
             WHERE id_espectador = :id_espectador");
 
             $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
@@ -326,6 +358,7 @@ class Espectador
             $this->db->bind("fk_cadeira_rodas", $dados['cboCadeiraDerodas']);
             $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
             $this->db->bind("id_espectador", $dados['id_espectador']);
+            $this->db->bind("ds_email_espectador", $dados['txtEmail']);
             if (!$this->db->executa()) {
                 $editarEspectadorErro = true;
             }
@@ -450,67 +483,81 @@ class Espectador
                 $this->db->executa();
             }
 
-            if (!$dados['fileTermoAdesao']['name'] == "") {
+            if (!$dados['fileTermoAdesaoIdentidade']['name'] == "") {
 
                 //Se entrar aqui na edição, está sendo feita uma substituição
-
                 $pastaArquivo = "espectador_id_" . $dados['id_espectador'];
                 $upload = new Upload();
+                $tamanhoArray = count($dados['fileTermoAdesaoIdentidade']['name']);
 
-                if (!empty($dados['fotoAdesao'])) {
-                    //Deleta registro da imagem no banco
-                    $this->db->query("DELETE FROM tb_anexo WHERE fk_espectador = :fk_espectador");
-                    $this->db->bind("fk_espectador", $dados['id_espectador']);
-                    $this->db->executa();
+                //Array vazio para armazenar o nome das imagens que foram para pasta temp. 
+                //Array utilizado para quando retornar algum erro
+                $nomes = [];
 
-                    //Usado para deletar o arquivo fisico no diretorio
-                    $path_arquivo_anterior = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+                for ($i = 0; $i < $tamanhoArray; $i++) {
 
-                    //Invoca metodo para deletar o arquivo anterior para ser substituido
-                    $upload->deletarArquivo(null, $path_arquivo_anterior);
-                }
+                    $arrayImagem = [
+                        'name' => $dados['fileTermoAdesaoIdentidade']['name'][$i],
+                        'type' => $dados['fileTermoAdesaoIdentidade']['type'][$i],
+                        'tmp_name' => $dados['fileTermoAdesaoIdentidade']['tmp_name'][$i],
+                        'error' => $dados['fileTermoAdesaoIdentidade']['error'][$i],
+                        'size' => $dados['fileTermoAdesaoIdentidade']['size'][$i],
+                    ];
 
-                $upload->imagem($dados['fileTermoAdesao'], NULL, 'temp');
+                    $upload->imagem($arrayImagem, NULL, 'temp');
 
-                if (!$upload->getErro() == NULL) {
-                    return false;
-                    // echo $upload->getErro() . '<br>';
-                } else {
+                    if (!$upload->getErro() == NULL) {
+                        echo $upload->getErro() . '<br>';
 
-                    //Inicio do processamento de compressao
-                    $nomeArquivo = $upload->getResultado();
-
-                    //Path da imagem que foi feito upload  (pasta temp)           
-                    $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                    //Cria pasta dos arquivos individualmente de acordo com id
-                    if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
-                        mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
-                    }
-                    $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
-
-                    //Monta o diretorio destino da pagina comprimida
-                    $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
-
-                    //Executa a compressao
-                    ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
-
-                    //Invoca metodo para deletar o arquivo temporario
-                    $upload->deletarArquivo(null, $path_arquivo);
-
-                    if ($upload->getResultado()) {
-
-                        $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
-                        $this->db->bind("fk_espectador", $dados['id_espectador']);
-                        $this->db->bind("nm_path_arquivo", $novoDiretorio);
-                        $this->db->bind("nm_arquivo", $nomeArquivo);
-                        $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
-                        $this->db->bind("chk_termo_brinquedo", 'N');
-                        if (!$this->db->executa()) {
-                            $editarEspectadorErro = true;
+                        foreach ($nomes as $nomes) {
+                            $upload->deletarArquivo(null, $nomes);
                         }
+
+                        break;
                     } else {
-                        return false;
+
+                        //Inicio do processamento de compressao
+                        $nomeArquivo = $upload->getResultado();
+
+                        //Path da imagem que foi feito upload  (pasta temp)           
+                        $path_arquivo = $upload->getPath() . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                        $nomes[] = $path_arquivo;
+
+                        //Cria pasta dos arquivos individualmente de acordo com id
+                        if (!file_exists($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo)) {
+                            mkdir($upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo, 0777);
+                        }
+                        $novoDiretorio = $upload->getPathDefault() . DIRECTORY_SEPARATOR . $pastaArquivo;
+
+                        //Monta o diretorio destino da pagina comprimida
+                        $destination_img = $novoDiretorio . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                        //Executa a compressao
+                        ComprimirFoto::comprimir($path_arquivo, $destination_img, 40);
+
+                        //Invoca metodo para deletar o arquivo temporario
+                        $upload->deletarArquivo(null, $path_arquivo);
+
+                        // echo $upload->getResultado() . ' da pasta temporaria';
+
+                        // echo $upload->getResultado();
+                        // exit();
+
+                        if ($upload->getResultado()) {
+
+                            $this->db->query("INSERT INTO tb_anexo (fk_espectador, nm_path_arquivo, nm_arquivo, fk_usuario, chk_termo_brinquedo) VALUES (:fk_espectador, :nm_path_arquivo, :nm_arquivo, :fk_usuario, :chk_termo_brinquedo)");
+                            $this->db->bind("fk_espectador", $dados['id_espectador']);
+                            $this->db->bind("nm_path_arquivo", $novoDiretorio);
+                            $this->db->bind("nm_arquivo", $nomeArquivo);
+                            $this->db->bind("fk_usuario", $_SESSION['id_usuario']);
+                            $this->db->bind("chk_termo_brinquedo", 'N');
+                            if (!$this->db->executa()) {
+                                $editarEspectadorErro = true;
+                            }
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
@@ -543,17 +590,21 @@ class Espectador
 
                 $pastaPrincipal = $dados['fotoAdesao'][0]->nm_path_arquivo;
 
-                $path_arquivo = $dados['fotoAdesao'][0]->nm_path_arquivo . DIRECTORY_SEPARATOR . $dados['fotoAdesao'][0]->nm_arquivo;
+                foreach ($dados['fotoAdesao'] as $fotoAdesao) {
 
-                $upload = new Upload();
-                $upload->deletarArquivo(null, $path_arquivo);
+                    //Monta string do diretório da imagem
+                    $path_arquivo = $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo;
 
-                //Deleta da tabela
-                $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
-                $this->db->bind("id_anexo", $dados['fotoAdesao'][0]->id_anexo);
-                if (!$this->db->executa()) {
-                    $deletarEspectadorErro = true;
-                }
+                    $upload = new Upload();
+                    $upload->deletarArquivo(null, $path_arquivo);
+
+                    //Deleta da tabela
+                    $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
+                    $this->db->bind("id_anexo", $fotoAdesao->id_anexo);
+                    if (!$this->db->executa()) {
+                        $deletarEspectadorErro = true;
+                    }
+                }                
 
                 //Apaga a pasta apos estar vazia
                 rmdir($pastaPrincipal);
@@ -774,11 +825,24 @@ class Espectador
         return $this->db->resultados();
     }
 
+    //Busca o anexo pelo id do espectador
     public function lerAnexosPorId($id)
     {
         $this->db->query("SELECT * FROM tb_anexo WHERE fk_espectador = :fk_espectador AND chk_termo_brinquedo = 'N'");
 
         $this->db->bind("fk_espectador", $id);
+
+        return $this->db->resultados();
+    }
+
+
+    //Busca o anexo pelo id do anexo
+    public function lerAnexosPorIdAnexo($id)
+    {
+
+        $this->db->query("SELECT * FROM tb_anexo WHERE id_anexo = :id_anexo AND chk_termo_brinquedo = 'N'");
+
+        $this->db->bind("id_anexo", $id);
 
         return $this->db->resultados();
     }

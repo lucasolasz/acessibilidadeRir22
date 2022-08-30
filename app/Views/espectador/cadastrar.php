@@ -32,6 +32,11 @@
                     <input type="text" class="form-control" name="txtTelefone" id="txtTelefone" value="" maxlength="11" placeholder="Somente números">
                 </div>
 
+                <div class="mb-3">
+                    <label for="txtEmail" class="form-label">E-mail: *</label>
+                    <input type="text" class="form-control" name="txtEmail" id="txtEmail" value="">
+                </div>               
+
                 <label for="radioCondicao" class="form-label">Condição: *</label>
                 <?php foreach ($dados['condicao'] as $condicao) {
                     $condicaoChecked = '';
@@ -235,8 +240,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="fileTermoAdesao" class="form-label">Termo de adesão:</label>
-                        <input class="form-control" type="file" id="fileTermoAdesao" name="fileTermoAdesao">
+                        <label for="fileTermoAdesaoIdentidade" class="form-label">Termo de adesão e identidade:</label>
+                        <input class="form-control" type="file" id="fileTermoAdesaoIdentidade" accept="image/png, image/jpeg" name="fileTermoAdesaoIdentidade[]" multiple>
                     </div>
                 </div>
 

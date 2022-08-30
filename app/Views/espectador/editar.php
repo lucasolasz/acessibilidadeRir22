@@ -64,6 +64,11 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
                     <input type="text" class="form-control" name="txtTelefone" id="txtTelefone" value="<?= $dados['espectador']->tel_espectador ?>" maxlength="11" placeholder="Somente números">
                 </div>
 
+                <div class="mb-3">
+                    <label for="txtEmail" class="form-label">E-mail: *</label>
+                    <input type="text" class="form-control" name="txtEmail" id="txtEmail" value="<?= $dados['espectador']->ds_email_espectador ?>">
+                </div>
+
                 <label for="radioCondicao" class="form-label">Condição: *</label>
                 <?php foreach ($dados['condicao'] as $condicao) {
                     $condicaoChecked = '';
@@ -334,41 +339,43 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
 
                     <?php if (!empty($dados['fotoAdesao'])) { ?>
                         <hr>
-
-
+                        <div class="text-center m-3">
+                            <p>Termo adesão e identidade</p>
+                        </div>
                         <?php foreach ($dados['fotoAdesao'] as $fotoAdesao) { ?>
                             <div class="text-center m-3">
-                                <p>Termo adesão</p>
                                 <small>Clique na imagem para ampliar</small>
-                                <button type="button" class="bordaImagem" data-bs-toggle="modal" data-bs-target="#fullScreenModal"> <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>"></button>
+                                <button type="button" class="bordaImagem" data-bs-toggle="modal" data-bs-target="#fullScreenModal<?= $fotoAdesao->id_anexo ?>"> <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>"></button>
 
-                                <a href="<?= URL . '/EspectadorController/deletarImagem/' . $dados['espectador']->id_espectador ?>" class="btn btn-danger mt-1"> Excluir imagem <i class="bi bi-trash-fill"></i></a>
+                                <a href="<?= URL . '/EspectadorController/deletarImagemUnica/' . $fotoAdesao->id_anexo ?>" class="btn btn-danger mt-1"> Excluir imagem <i class="bi bi-trash-fill"></i></a>
                             </div>
-                        <?php } ?>
 
-                        <!-- FullScreen Modal -->
-                        <div class="modal fade" id="fullScreenModal" tabindex="-1" aria-labelledby="fullScreenModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="fullScreenModal">Termo adesão espectador: <?= $dados['espectador']->ds_nome_espectador ?></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+
+                            <!-- FullScreen Modal -->
+                            <div class="modal fade" id="fullScreenModal<?= $fotoAdesao->id_anexo ?>" tabindex="-1" aria-labelledby="fullScreenModal<?= $fotoAdesao->id_anexo ?>" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="fullScreenModal<?= $fotoAdesao->id_anexo ?>">Termo adesão espectador: <?= $dados['espectador']->ds_nome_espectador ?></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?= URL . DIRECTORY_SEPARATOR . $fotoAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotoAdesao->nm_arquivo ?>" class="rounded img-fluid" alt="<?= $fotoAdesao->nm_arquivo ?>">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <small>Para substituir o termo atual, envie outra foto abaixo:</small>
+                        <?php } ?>
+                        <small>Para novas fotos, só incluir no botão abaixo</small>
                         <hr>
                     <?php } ?>
+
                     <div class="mb-3 mt-3">
-                        <label for="fileTermoAdesao" class="form-label">Termo de adesão:</label>
-                        <input class="form-control" type="file" id="fileTermoAdesao" name="fileTermoAdesao">
+                        <label for="fileTermoAdesaoIdentidade" class="form-label">Termo de adesão e identidade:</label>
+                        <input class="form-control" type="file" id="fileTermoAdesaoIdentidade" accept="image/png, image/jpeg" name="fileTermoAdesaoIdentidade[]" multiple>
                     </div>
 
                     <?php if (!$dados['espectador']->fk_cadeira_rodas == NULL) { ?>
@@ -386,6 +393,7 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
                         </div>
 
                     <?php } ?>
+
                 </div>
 
                 <div class="p-0 form-check" id="divGuardaVolumes">

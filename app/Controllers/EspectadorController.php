@@ -48,6 +48,7 @@ class EspectadorController extends Controller
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
                 'txtDocumento' => trim($formulario['txtDocumento']),
                 'txtTelefone' => trim($formulario['txtTelefone']),
+                'txtEmail' => trim($formulario['txtEmail']),
                 'chkKitLivre' => $formulario['chkKitLivre'],
                 'chkAcompanhante' => $formulario['chkAcompanhante'],
                 'txtNomeAcompanhante' => $formulario['txtNomeAcompanhante'],
@@ -72,10 +73,10 @@ class EspectadorController extends Controller
             $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
             $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
             $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
-            $dados['fileTermoAdesao'] = isset($_FILES['fileTermoAdesao']) ? $_FILES['fileTermoAdesao'] : "";
+            $dados['fileTermoAdesaoIdentidade'] = isset($_FILES['fileTermoAdesaoIdentidade']) ? $_FILES['fileTermoAdesaoIdentidade'] : "";          
 
-
-            // var_dump($dados['cboTipoDeficienciaFisica']);
+            // var_dump($dados['fileTermoAdesaoIdentidade']);
+            // var_dump($dados['fileIdentidade']);
             // exit();
 
             if ($this->espectadorModel->armazenarEspectador($dados)) {
@@ -93,6 +94,7 @@ class EspectadorController extends Controller
                 'txtDocumento' => '',
                 'txtIdade' => '',
                 'txtTelefone' => '',
+                'txtEmail' => '',
                 'radioCondicao' => '',
                 'condicao' => $condicao,
                 'acessoServico' => $acessoServico,
@@ -145,6 +147,7 @@ class EspectadorController extends Controller
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
                 'txtDocumento' => trim($formulario['txtDocumento']),
                 'txtTelefone' => trim($formulario['txtTelefone']),
+                'txtEmail' => trim($formulario['txtEmail']),
                 'chkKitLivre' => $formulario['chkKitLivre'],
                 'chkAcompanhante' => $formulario['chkAcompanhante'],
                 'txtNomeAcompanhante' => $formulario['txtNomeAcompanhante'],
@@ -181,7 +184,7 @@ class EspectadorController extends Controller
             $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
             $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
             $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
-            $dados['fileTermoAdesao'] = isset($_FILES['fileTermoAdesao']) ? $_FILES['fileTermoAdesao'] : "";
+            $dados['fileTermoAdesaoIdentidade'] = isset($_FILES['fileTermoAdesaoIdentidade']) ? $_FILES['fileTermoAdesaoIdentidade'] : "";
 
             if ($this->espectadorModel->editarEspectador($dados)) {
 
@@ -289,6 +292,24 @@ class EspectadorController extends Controller
     public function deletarImagem($id)
     {
         $fotoAdesao = $this->espectadorModel->lerAnexosPorId($id);
+
+        $dados = [
+            'fotoAdesao' => $fotoAdesao
+        ];
+
+        if ($this->espectadorModel->deletarFoto($dados)) {
+            Alertas::mensagem('imagem', 'Imagem deletada com sucesso.');
+            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
+        } else {
+            Alertas::mensagem('imagem', 'Não foi deletar a imagem', 'alert alert-danger');
+            Redirecionamento::redirecionar('EspectadorController/editar/' . $fotoAdesao[0]->fk_espectador);
+        }
+    }
+
+    //Tive que fazer este novo metodo, pois o método acima é utilizado por outras partes do sistema
+    public function deletarImagemUnica($id)
+    {
+        $fotoAdesao = $this->espectadorModel->lerAnexosPorIdAnexo($id);
 
         $dados = [
             'fotoAdesao' => $fotoAdesao
