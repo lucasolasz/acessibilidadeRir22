@@ -141,21 +141,21 @@ function disableHorarioRodaGigante(chk_brinquedo) {
 
 function disableSintaOSom(chk_tipo_deficiencia) {
 
-    $('#chkAcessoServico7').prop('checked', false);
+    $('#chkAcessoServico6').prop('checked', false);
 
     if (chk_tipo_deficiencia == 3) {
 
-        $('#chkAcessoServico7').prop('checked', true);
+        $('#chkAcessoServico6').prop('checked', true);
     }
 }
 
 function disableAudioDescricao(chk_tipo_deficiencia) {
 
-    $('#chkAcessoServico6').prop('checked', false);
+    $('#chkAcessoServico7').prop('checked', false);
 
     if (chk_tipo_deficiencia == 2) {
 
-        $('#chkAcessoServico6').prop('checked', true);
+        $('#chkAcessoServico7').prop('checked', true);
     }
 }
 
