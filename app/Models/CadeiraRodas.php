@@ -15,7 +15,7 @@ class CadeiraRodas
     {
         $this->db->query("SELECT * FROM tb_cadeira_rodas tcr 
         LEFT JOIN tb_espectador te ON te.fk_cadeira_rodas = tcr.id_cadeira_rodas 
-        LEFT JOIN tb_anexo ta ON ta.fk_espectador = te.id_espectador AND ta.chk_termo_brinquedo <> 'S'
+        -- LEFT JOIN tb_anexo ta ON ta.fk_espectador = te.id_espectador AND ta.chk_termo_brinquedo <> 'S'
         ORDER BY id_cadeira_rodas");
         return $this->db->resultados();
     }

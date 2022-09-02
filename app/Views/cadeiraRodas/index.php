@@ -42,13 +42,12 @@
                             <tr>
                                 <td><?= $cadeiraRodas->num_cadeira_rodas ?></td>
                                 <td><a href=" <?= URL . '/EspectadorController/editar/' . $cadeiraRodas->id_espectador ?>"><?= ucfirst($cadeiraRodas->ds_nome_espectador) ?></a></td>
-                                <td>
+                                <!-- <td>
                                     <?php if (!$cadeiraRodas->ds_nome_espectador == "") { ?>
                                         <a href="" data-bs-toggle="modal" data-bs-target="#fullScreenModal<?= $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-success"><i class="bi bi-card-image"></i></a>
 
                                     <?php } ?>
-                                </td>
-                                </td>
+                                </td> -->                                
                                 <td><a href="<?= URL . '/CadeiraRodasController/editar/' . $cadeiraRodas->id_cadeira_rodas ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a></td>
                                 <?php if ($_SESSION['fk_perfil_usuario'] == 1) { ?>
                                     <td>
