@@ -19,11 +19,11 @@ ALTER TABLE tb_agenda_brinquedo ADD CONSTRAINT fk_quinze_discovery_tb_agenda_bri
 
 
 --  Auto-generated SQL script #202209021031
-INSERT INTO acessibilidaderir.tb_brinquedo (id_brinquedo,ds_brinquedo)
+INSERT INTO tb_brinquedo (id_brinquedo,ds_brinquedo)
 	VALUES (5,'Carrosel');
-INSERT INTO acessibilidaderir.tb_brinquedo (id_brinquedo,ds_brinquedo)
+INSERT INTO tb_brinquedo (id_brinquedo,ds_brinquedo)
 	VALUES (6,'Discovery');
-UPDATE acessibilidaderir.tb_brinquedo
+UPDATE tb_brinquedo
 	SET ds_brinquedo='Mega drop'
 	WHERE id_brinquedo=3;
 
