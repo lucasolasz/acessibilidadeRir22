@@ -44,14 +44,21 @@
                     }
 
                     $marcacoesSunsetLimpo = substr($marcacoesSunset, 3);
-
+                    // var_dump($marcacoesSunset);
                     ?>
                     <td><?= $marcacoesSunsetLimpo ?></td>
                     <td class="text-center">
-                        <?php if ($resultado->chk_entrada_sunset == 'S') { ?>
-                            <a href="<?= URL . '/PlataformasController/checkOutEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                        <?php
+                        if (!$marcacoesSunset == "") {
+                            if ($resultado->chk_entrada_sunset == 'S') { ?>
+                                <a href="<?= URL . '/PlataformasController/checkOutEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                            <?php } else { ?>
+                                <a href="<?= URL . '/PlataformasController/checkInEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+                            <?php } ?>
                         <?php } else { ?>
-                            <a href="<?= URL . '/PlataformasController/checkInEspectadorSunset/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+
+                            <button disabled="disabled" class="btn btn-outline-secondary"><i class="bi bi-check-square"></i></button>
+
                         <?php } ?>
                     </td>
                     <td class="text-center">
@@ -72,14 +79,22 @@
                     }
 
                     $marcacoesMundoLimpo = substr($marcacoesMundo, 3);
-
                     ?>
                     <td><?= $marcacoesMundoLimpo ?></td>
                     <td class="text-center">
-                        <?php if ($resultado->chk_entrada_mundo == 'S') { ?>
-                            <a href="<?= URL . '/PlataformasController/checkOutEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                        <?php
+                        if (!$marcacoesMundo == "") {
+
+                            if ($resultado->chk_entrada_mundo == 'S') { ?>
+                                <a href="<?= URL . '/PlataformasController/checkOutEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-success"><i class="bi bi-check-square"></i></a>
+                            <?php } else { ?>
+                                <a href="<?= URL . '/PlataformasController/checkInEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+                            <?php } ?>
+
                         <?php } else { ?>
-                            <a href="<?= URL . '/PlataformasController/checkInEspectadorMundo/' . $resultado->id_espectador ?>" class="btn btn-outline-success"><i class="bi bi-check-square"></i></a>
+
+                            <button disabled="disabled" class="btn btn-outline-secondary"><i class="bi bi-check-square"></i></button>
+
                         <?php } ?>
                     </td>
                     <td class="text-center">

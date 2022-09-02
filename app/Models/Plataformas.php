@@ -232,8 +232,9 @@ class Plataformas
     public function checkInEspectadorSunset($id)
     {
 
-        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset, checkin_sunset = :checkin_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", 'S');
+        $this->db->bind("checkin_sunset", date('Y-m-d H:i:s'));
         $this->db->bind("id_espectador", $id);
         if ($this->db->executa()) {
             return true;
@@ -245,8 +246,9 @@ class Plataformas
     public function checkOutEspectadorSunset($id)
     {
 
-        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset WHERE id_espectador = :id_espectador");
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_sunset = :chk_entrada_sunset, checkout_sunset = :checkout_sunset WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_sunset", NULL);
+        $this->db->bind("checkout_sunset", date('Y-m-d H:i:s'));
         $this->db->bind("id_espectador", $id);
 
         if ($this->db->executa()) {
@@ -259,8 +261,9 @@ class Plataformas
     public function checkInEspectadorMundo($id)
     {
 
-        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo, checkin_mundo = :checkin_mundo WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_mundo", 'S');
+        $this->db->bind("checkin_mundo", date('Y-m-d H:i:s'));
         $this->db->bind("id_espectador", $id);
 
         if ($this->db->executa()) {
@@ -273,8 +276,9 @@ class Plataformas
     public function checkOutEspectadorMundo($id)
     {
 
-        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo WHERE id_espectador = :id_espectador");
+        $this->db->query("UPDATE tb_espectador SET chk_entrada_mundo = :chk_entrada_mundo, checkout_mundo = :checkout_mundo WHERE id_espectador = :id_espectador");
         $this->db->bind("chk_entrada_mundo", NULL);
+        $this->db->bind("checkout_mundo", date('Y-m-d H:i:s'));
         $this->db->bind("id_espectador", $id);
 
         if ($this->db->executa()) {
