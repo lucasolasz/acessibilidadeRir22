@@ -23,4 +23,4 @@ define('URL', 'https://setoracessibilidade.com.br');
 
 define('APP_NOME', 'Setor Acessibilidade');
 
-define('APP_VERSAO', '1.8.37');
+define('APP_VERSAO', '1.8.38');

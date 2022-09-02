@@ -70,16 +70,16 @@ $brinquedosAgendados = [];
                         ?>
 
                             <div class="mb-3 row">
-                                <label for="cboTrintaMinMontanhaRussa" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <label for="cboHoraMontanhaRussa" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
                                 <div class="col-md-7">
-                                    <select class="form-select <?= $dados['montanhaErro'] ? 'is-invalid' : '' ?>" name="cboTrintaMinMontanhaRussa" id="cboTrintaMinMontanhaRussa">
+                                    <select class="form-select <?= $dados['montanhaErro'] ? 'is-invalid' : '' ?>" name="cboHoraMontanhaRussa" id="cboHoraMontanhaRussa">
                                         <optgroup label="Horário Selecionado">
-                                            <option value="<?= $agendamento->id_trinta_montanha ?>"><?= $agendamento->range_montanha ?></option>
+                                            <option value="<?= $agendamento->id_hora_montanha ?>"><?= $agendamento->range_montanha ?></option>
                                         </optgroup>
                                         <optgroup label="Disponíveis">
-                                            <?php foreach ($dados['trintaMinMontanhaRussa'] as $trintaMinMontanhaRussa) { ?>
+                                            <?php foreach ($dados['horaMontanhaRussa'] as $horaMontanhaRussa) { ?>
 
-                                                <option value="<?= $trintaMinMontanhaRussa->id_trinta_min ?>"><?= $trintaMinMontanhaRussa->range_trinta_min ?></option>
+                                                <option value="<?= $horaMontanhaRussa->id_hora ?>"><?= $horaMontanhaRussa->range_hora ?></option>
 
                                             <?php } ?>
                                         </optgroup>
@@ -96,16 +96,16 @@ $brinquedosAgendados = [];
                         ?>
 
                             <div class="mb-3 row">
-                                <label for="cboQuinzeMinCabum" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <label for="cboQuinzeMinMegaDrop" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
                                 <div class="col-md-7">
-                                    <select class="form-select <?= $dados['kabumErro'] ? 'is-invalid' : '' ?>" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
+                                    <select class="form-select <?= $dados['megaDropErro'] ? 'is-invalid' : '' ?>" name="cboQuinzeMinMegaDrop" id="cboQuinzeMinMegaDrop">
                                         <optgroup label="Horário Selecionado">
-                                            <option value="<?= $agendamento->id_quinze_cabum ?>"><?= $agendamento->range_cabum ?></option>
+                                            <option value="<?= $agendamento->id_quinze_mega_drop ?>"><?= $agendamento->range_mega_drop ?></option>
                                         </optgroup>
                                         <optgroup label="Disponíveis">
-                                            <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
+                                            <?php foreach ($dados['quinzeMinMegaDrop'] as $quinzeMinMegaDrop) { ?>
 
-                                                <option value="<?= $quinzeMinCabum->id_quinze_min ?>"><?= $quinzeMinCabum->range_quinze_min ?></option>
+                                                <option value="<?= $quinzeMinMegaDrop->id_quinze_min ?>"><?= $quinzeMinMegaDrop->range_quinze_min ?></option>
 
                                             <?php } ?>
                                         </optgroup>
@@ -144,13 +144,70 @@ $brinquedosAgendados = [];
                                 </div>
                             </div>
 
-                        <?php    } ?>
+                        <?php    } elseif ($agendamento->id_brinquedo == 5) {
+
+                            $brinquedosAgendados[] = 5;
+
+                        ?>
+
+                            <div class="mb-3 row">
+                                <label for="cboQuinzeCarrosel" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
+                                    <select class="form-select <?= $dados['carroselErro'] ? 'is-invalid' : '' ?>" name="cboQuinzeCarrosel" id="cboQuinzeCarrosel">
+                                        <optgroup label="Horário Selecionado">
+                                            <option value="<?= $agendamento->id_quinze_carrosel ?>"><?= $agendamento->range_carrosel ?></option>
+                                        </optgroup>
+                                        <optgroup label="Disponíveis">
+                                            <?php foreach ($dados['quinzeMinCarrosel'] as $quinzeMinCarrosel) { ?>
+
+                                                <option value="<?= $quinzeMinCarrosel->id_quinze_min ?>"><?= $quinzeMinCarrosel->range_quinze_min ?></option>
+
+                                            <?php } ?>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                </div>
+                            </div>
+
+
+
+                        <?php    } elseif ($agendamento->id_brinquedo == 6) {
+
+                            $brinquedosAgendados[] = 6;
+
+                        ?>
+
+                            <div class="mb-3 row">
+                                <label for="cboQuinzeDiscovery" class="col-md-3 col-form-label"><?= $agendamento->ds_brinquedo ?>: </label>
+                                <div class="col-md-7">
+                                    <select class="form-select <?= $dados['discoveryErro'] ? 'is-invalid' : '' ?>" name="cboQuinzeDiscovery" id="cboQuinzeDiscovery">
+                                        <optgroup label="Horário Selecionado">
+                                            <option value="<?= $agendamento->id_quinze_discovery ?>"><?= $agendamento->range_discovery ?></option>
+                                        </optgroup>
+                                        <optgroup label="Disponíveis">
+                                            <?php foreach ($dados['quinzeMinDiscovery'] as $quinzeMinDiscovery) { ?>
+
+                                                <option value="<?= $quinzeMinDiscovery->id_quinze_min ?>"><?= $quinzeMinDiscovery->range_quinze_min ?></option>
+
+                                            <?php } ?>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="<?= URL . '/BrinquedosController/apagarAgendamento/' . $agendamento->id_brinquedo . '&id_espectador=' . $dados['agendamento'][0]->id_espectador ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                                </div>
+                            </div>
+
+
+                        <?php    }  ?>
                     <?php } ?>
                 </div>
 
                 <div class="mb-3">
 
-                    <?php if (count($brinquedosAgendados) != 4) { ?>
+                    <?php if (count($brinquedosAgendados) != 6) { ?>
                         <h3>Brinquedos não agendados:</h3>
                     <?php } ?>
 
@@ -184,28 +241,28 @@ $brinquedosAgendados = [];
                     </div>
                 </div>
 
-                <div class="p-0 form-check" id="divTrintaMontanhaRussa">
+                <div class="p-0 form-check" id="divHoraMontanhaRussa">
                     <div class="mb-3 mt-3">
-                        <label for="cboTrintaMinMontanhaRussaNA" class="form-label">Horário montanha russa:</label>
-                        <select class="form-select" name="cboTrintaMinMontanhaRussaNA" id="cboTrintaMinMontanhaRussaNA">
+                        <label for="cboHoraMontanhaRussaNA" class="form-label">Horário montanha russa:</label>
+                        <select class="form-select" name="cboHoraMontanhaRussaNA" id="cboHoraMontanhaRussaNA">
                             <option value=""></option>
-                            <?php foreach ($dados['trintaMinMontanhaRussa'] as $trintaMinMontanhaRussa) { ?>
+                            <?php foreach ($dados['horaMontanhaRussa'] as $horaMontanhaRussa) { ?>
 
-                                <option value="<?= $trintaMinMontanhaRussa->id_trinta_min ?>"><?= $trintaMinMontanhaRussa->range_trinta_min ?></option>
+                                <option value="<?= $horaMontanhaRussa->id_hora ?>"><?= $horaMontanhaRussa->range_hora ?></option>
 
                             <?php } ?>
                         </select>
                     </div>
                 </div>
 
-                <div class="p-0 form-check" id="divQuinzeCabum">
+                <div class="p-0 form-check" id="divQuinzeMegaDrop">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabumNA" class="form-label">Horário Kabum:</label>
-                        <select class="form-select" name="cboQuinzeMinCabumNA" id="cboQuinzeMinCabumNA">
+                        <label for="cboQuinzeMinMegaDropNA" class="form-label">Horário Mega drop:</label>
+                        <select class="form-select" name="cboQuinzeMinMegaDropNA" id="cboQuinzeMinMegaDropNA">
                             <option value=""></option>
-                            <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
+                            <?php foreach ($dados['quinzeMinMegaDrop'] as $quinzeMinMegaDrop) { ?>
 
-                                <option value="<?= $quinzeMinCabum->id_quinze_min ?>"><?= $quinzeMinCabum->range_quinze_min ?></option>
+                                <option value="<?= $quinzeMinMegaDrop->id_quinze_min ?>"><?= $quinzeMinMegaDrop->range_quinze_min ?></option>
 
                             <?php } ?>
                         </select>
@@ -220,6 +277,34 @@ $brinquedosAgendados = [];
                             <?php foreach ($dados['horaRodaGigante'] as $horaRodaGigante) { ?>
 
                                 <option value="<?= $horaRodaGigante->id_hora ?>"><?= $horaRodaGigante->range_hora ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-0 form-check" id="divQuinzeCarrosel">
+                    <div class="mb-3 mt-3">
+                        <label for="cboQuinzeCarroselNA" class="form-label">Horário Carrosel:</label>
+                        <select class="form-select" name="cboQuinzeCarroselNA" id="cboQuinzeCarroselNA">
+                            <option value=""></option>
+                            <?php foreach ($dados['quinzeMinCarrosel'] as $quinzeMinCarrosel) { ?>
+
+                                <option value="<?= $quinzeMinCarrosel->id_quinze_min ?>"><?= $quinzeMinCarrosel->range_quinze_min ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-0 form-check" id="divQuinzeDiscovery">
+                    <div class="mb-3 mt-3">
+                        <label for="cboQuinzeDiscoveryNA" class="form-label">Horário Discovery:</label>
+                        <select class="form-select" name="cboQuinzeDiscoveryNA" id="cboQuinzeDiscoveryNA">
+                            <option value=""></option>
+                            <?php foreach ($dados['quinzeMinDiscovery'] as $quinzeMinDiscovery) { ?>
+
+                                <option value="<?= $quinzeMinDiscovery->id_quinze_min ?>"><?= $quinzeMinDiscovery->range_quinze_min ?></option>
 
                             <?php } ?>
                         </select>
@@ -283,9 +368,11 @@ $brinquedosAgendados = [];
     $(document).ready(function() {
 
         $("#divHoraTirolesa").hide();
-        $("#divTrintaMontanhaRussa").hide();
-        $("#divQuinzeCabum").hide();
+        $("#divHoraMontanhaRussa").hide();
+        $("#divQuinzeMegaDrop").hide();
         $("#divHoraRodaGigante").hide();
+        $("#divQuinzeCarrosel").hide();
+        $("#divQuinzeDiscovery").hide();
 
         countChecked();
     });
@@ -313,6 +400,18 @@ $brinquedosAgendados = [];
     $("#chkBrinquedo4").click(function() {
         chk_brinquedo = $("#chkBrinquedo4:checked").val();
         disableHorarioRodaGigante(chk_brinquedo);
+    });
+
+    //Monitora campo brinquedo carrosel
+    $("#chkBrinquedo5").click(function() {
+        chk_brinquedo = $("#chkBrinquedo5:checked").val();
+        disableHorarioCarrosel(chk_brinquedo);
+    });
+
+    //Monitora campo brinquedo discovery
+    $("#chkBrinquedo6").click(function() {
+        chk_brinquedo = $("#chkBrinquedo6:checked").val();
+        disableHorarioDiscovery(chk_brinquedo);
     });
 
     //Chama função após algum clique em checkbox

@@ -46,12 +46,18 @@
                                 <?php
 
                                 $db = new Database();
-                                $db->query("SELECT id_brinquedo, ds_brinquedo, th.range_hora AS range_tirolesa, th2.range_hora AS range_roda_gigante, tqm2.range_quinze_min AS range_cabum, ttm.range_trinta_min AS range_montanha from tb_brinquedo tb 
+                                $db->query("SELECT id_brinquedo, ds_brinquedo, th.range_hora AS range_tirolesa, 
+                                th2.range_hora AS range_roda_gigante, th3.range_hora AS range_montanha,
+                                tqm.range_quinze_min AS range_mega_drop, tqm2.range_quinze_min AS range_carrosel, 
+                                tqm3.range_quinze_min AS range_discovery
+                                FROM tb_brinquedo tb 
                                 JOIN tb_agenda_brinquedo tab ON tab.fk_brinquedo = tb.id_brinquedo
                                 LEFT JOIN tb_hora th ON th.id_hora = tab.fk_hora_tirolesa
                                 LEFT JOIN tb_hora th2 ON th2.id_hora = tab.fk_hora_roda_gigante
-                                LEFT JOIN tb_trinta_min ttm ON ttm.id_trinta_min = tab.fk_trinta_min 
-                                LEFT JOIN tb_quinze_min tqm2 ON tqm2.id_quinze_min = tab.fk_quinze_min 
+                                LEFT JOIN tb_hora th3 ON th3.id_hora = tab.fk_hora_montanha_russa
+                                LEFT JOIN tb_quinze_min tqm ON tqm.id_quinze_min = tab.fk_quinze_mega_drop
+                                LEFT JOIN tb_quinze_min tqm2 ON tqm2.id_quinze_min = tab.fk_quinze_carrosel 
+                                LEFT JOIN tb_quinze_min tqm3 ON tqm3.id_quinze_min = tab.fk_quinze_discovery
                                 WHERE tab.fk_espectador = :fk_espectador");
                                 $db->bind("fk_espectador", $agendamentos->id_espectador);
                                 $resultados = $db->resultados();
@@ -70,10 +76,16 @@
                                         $horarios = $horarios . ' / ' .  $resultados->range_montanha;
                                     } elseif ($resultados->id_brinquedo == 3) {
 
-                                        $horarios = $horarios . ' / ' .  $resultados->range_cabum;
+                                        $horarios = $horarios . ' / ' .  $resultados->range_mega_drop;
                                     } elseif ($resultados->id_brinquedo == 4) {
 
                                         $horarios = $horarios . ' / ' .  $resultados->range_roda_gigante;
+                                    } elseif ($resultados->id_brinquedo == 5) {
+
+                                        $horarios = $horarios . ' / ' .  $resultados->range_carrosel;
+                                    } elseif ($resultados->id_brinquedo == 6) {
+
+                                        $horarios = $horarios . ' / ' .  $resultados->range_discovery;
                                     }
                                 }
 

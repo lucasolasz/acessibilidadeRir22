@@ -51,24 +51,24 @@
                     </div>
                 </div>
 
-                <div class="p-0 form-check" id="divTrintaMontanhaRussa">
+                <div class="p-0 form-check" id="divHoraMontanhaRussa">
                     <div class="mb-3 mt-3">
-                        <label for="cboTrintaMinMontanhaRussa" class="form-label">Horário montanha russa:</label>
-                        <select class="form-select" name="cboTrintaMinMontanhaRussa" id="cboTrintaMinMontanhaRussa">
+                        <label for="cboHoraMontanhaRussa" class="form-label">Horário montanha russa:</label>
+                        <select class="form-select" name="cboHoraMontanhaRussa" id="cboHoraMontanhaRussa">
                             <option value=""></option>
-                            <?php foreach ($dados['trintaMinMontanhaRussa'] as $trintaMinMontanhaRussa) { ?>
+                            <?php foreach ($dados['horaMontanhaRussa'] as $horaMontanhaRussa) { ?>
 
-                                <option value="<?= $trintaMinMontanhaRussa->id_trinta_min ?>"><?= $trintaMinMontanhaRussa->range_trinta_min ?></option>
+                                <option value="<?= $horaMontanhaRussa->id_hora ?>"><?= $horaMontanhaRussa->range_hora ?></option>
 
                             <?php } ?>
                         </select>
                     </div>
                 </div>
 
-                <div class="p-0 form-check" id="divQuinzeCabum">
+                <div class="p-0 form-check" id="divQuinzeMegaDrop">
                     <div class="mb-3 mt-3">
-                        <label for="cboQuinzeMinCabum" class="form-label">Horário Kabum:</label>
-                        <select class="form-select" name="cboQuinzeMinCabum" id="cboQuinzeMinCabum">
+                        <label for="cboQuinzeMinMegaDrop" class="form-label">Horário Mega drop:</label>
+                        <select class="form-select" name="cboQuinzeMinMegaDrop" id="cboQuinzeMinMegaDrop">
                             <option value=""></option>
                             <?php foreach ($dados['quinzeMinCabum'] as $quinzeMinCabum) { ?>
 
@@ -87,6 +87,35 @@
                             <?php foreach ($dados['horaRodaGigante'] as $horaRodaGigante) { ?>
 
                                 <option value="<?= $horaRodaGigante->id_hora ?>"><?= $horaRodaGigante->range_hora ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="p-0 form-check" id="divQuinzeCarrosel">
+                    <div class="mb-3 mt-3">
+                        <label for="cboQuinzeCarrosel" class="form-label">Horário carrosel:</label>
+                        <select class="form-select" name="cboQuinzeCarrosel" id="cboQuinzeCarrosel">
+                            <option value=""></option>
+                            <?php foreach ($dados['quinzeMinCarrosel'] as $quinzeMinCarrosel) { ?>
+
+                                <option value="<?= $quinzeMinCarrosel->id_quinze_min ?>"><?= $quinzeMinCarrosel->range_quinze_min ?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-0 form-check" id="divQuinzeDiscovery">
+                    <div class="mb-3 mt-3">
+                        <label for="cboQuinzeDiscovery" class="form-label">Horário discovery:</label>
+                        <select class="form-select" name="cboQuinzeDiscovery" id="cboQuinzeDiscovery">
+                            <option value=""></option>
+                            <?php foreach ($dados['quinzeMinDiscovery'] as $quinzeMinDiscovery) { ?>
+
+                                <option value="<?= $quinzeMinDiscovery->id_quinze_min ?>"><?= $quinzeMinDiscovery->range_quinze_min ?></option>
 
                             <?php } ?>
                         </select>
@@ -116,9 +145,11 @@
         });
 
         $("#divHoraTirolesa").hide();
-        $("#divTrintaMontanhaRussa").hide();
-        $("#divQuinzeCabum").hide();
+        $("#divHoraMontanhaRussa").hide();
+        $("#divQuinzeMegaDrop").hide();
         $("#divHoraRodaGigante").hide();
+        $("#divQuinzeCarrosel").hide();
+        $("#divQuinzeDiscovery").hide();
 
     });
 
@@ -135,7 +166,7 @@
         disableHorarioMontanhaRussa(chk_brinquedo);
     });
 
-    //Monitora campo brinquedo cabum
+    //Monitora campo brinquedo cabum (mega drop)
     $("#chkBrinquedo3").click(function() {
         chk_brinquedo = $("#chkBrinquedo3:checked").val();
         disableHorarioCabum(chk_brinquedo);
@@ -145,6 +176,18 @@
     $("#chkBrinquedo4").click(function() {
         chk_brinquedo = $("#chkBrinquedo4:checked").val();
         disableHorarioRodaGigante(chk_brinquedo);
+    });
+
+    //Monitora campo brinquedo Carrosel
+    $("#chkBrinquedo5").click(function() {
+        chk_brinquedo = $("#chkBrinquedo5:checked").val();
+        disableHorarioCarrosel(chk_brinquedo);
+    });
+
+    //Monitora campo brinquedo discovery
+    $("#chkBrinquedo6").click(function() {
+        chk_brinquedo = $("#chkBrinquedo6:checked").val();
+        disableHorarioDiscovery(chk_brinquedo);
     });
 
     //Chama função após algum clique em checkbox

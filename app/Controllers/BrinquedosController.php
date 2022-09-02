@@ -34,8 +34,10 @@ class BrinquedosController extends Controller
         $brinquedos = $this->brinquedosModel->visualizarBrinquedos();
         $horaTirolesa = $this->brinquedosModel->visualizarHoraTirolesa();
         $horaRodaGigante = $this->brinquedosModel->visualizarHoraRogaGigante();
-        $trintaMinMontanhaRussa = $this->brinquedosModel->visualizarTrintaMinMontanhaRussa();
-        $quinzeMinCabum = $this->brinquedosModel->visualizarQuinzeMinCabum();
+        $horaMontanhaRussa = $this->brinquedosModel->visualizarHoraMontanhaRussa();
+        $quinzeMinMegaDrop = $this->brinquedosModel->visualizarQuinzeMinMegaDrop();
+        $quinzeMinCarrosel = $this->brinquedosModel->visualizarQuinzeMinCarrosel();
+        $quinzeMinDiscovery = $this->brinquedosModel->visualizarQuinzeMinDiscovery();
 
         
         $temErroCadastro = false;
@@ -47,17 +49,22 @@ class BrinquedosController extends Controller
 
             $dados = ['fk_espectador' => $id];
 
+            //Precisou colocar estes campos null no cadastro, pois as funções de validações necessitam deles 
             $dados['cboHoraTirolesaNA'] = NULL;
-            $dados['cboTrintaMinMontanhaRussaNA'] = NULL;
-            $dados['cboQuinzeMinCabumNA'] = NULL;
+            $dados['cboHoraMontanhaRussaNA'] = NULL;
+            $dados['cboQuinzeMinMegaDropNA'] = NULL;
             $dados['cboHoraRodaGiganteNA'] = NULL;
+            $dados['cboQuinzeCarroselNA'] = NULL;
+            $dados['cboQuinzeDiscoveryNA'] = NULL;
 
             //Converte valores vazios para NULL para salvar no banco
             $dados['hidIdExpectador'] = !$formulario['hidIdExpectador'] == "" ? $formulario['hidIdExpectador'] : NULL;
             $dados['cboHoraTirolesa'] = !$formulario['cboHoraTirolesa'] == "" ? $formulario['cboHoraTirolesa'] : NULL;
-            $dados['cboTrintaMinMontanhaRussa'] = !$formulario['cboTrintaMinMontanhaRussa'] == "" ? $formulario['cboTrintaMinMontanhaRussa'] : NULL;
-            $dados['cboQuinzeMinCabum'] = !$formulario['cboQuinzeMinCabum'] == "" ? $formulario['cboQuinzeMinCabum'] : NULL;
+            $dados['cboHoraMontanhaRussa'] = !$formulario['cboHoraMontanhaRussa'] == "" ? $formulario['cboHoraMontanhaRussa'] : NULL;
+            $dados['cboQuinzeMinMegaDrop'] = !$formulario['cboQuinzeMinMegaDrop'] == "" ? $formulario['cboQuinzeMinMegaDrop'] : NULL;
             $dados['cboHoraRodaGigante'] = !$formulario['cboHoraRodaGigante'] == "" ? $formulario['cboHoraRodaGigante'] : NULL;
+            $dados['cboQuinzeCarrosel'] = !$formulario['cboQuinzeCarrosel'] == "" ? $formulario['cboQuinzeCarrosel'] : NULL;
+            $dados['cboQuinzeDiscovery'] = !$formulario['cboQuinzeDiscovery'] == "" ? $formulario['cboQuinzeDiscovery'] : NULL;
             $dados['chkBrinquedo'] = isset($formulario['chkBrinquedo']) ? $formulario['chkBrinquedo'] : NULL;
 
             //Termo responsabilidade
@@ -73,8 +80,10 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
                 ];
 
                 $dados['termoErro'] = 'Necessário o envio de um termo de responsabilidade';
@@ -86,8 +95,11 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
+
                 ];
                 
                 $horarioErroCadastro = "Tirolesa";
@@ -101,24 +113,29 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
+
                 ];
 
                 $horarioErroCadastro = "Montanha Russa";
                 $temErroCadastro = true;
-            } elseif(!$this->brinquedosModel->validaHorariosKabum($dados)) {
+            } elseif(!$this->brinquedosModel->validaHorariosMegaDrop($dados)) {
                 $dados = [
 
                     'espectador' => $espectador,
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
                 ];
 
-                $horarioErroCadastro = "Kabum";
+                $horarioErroCadastro = "Mega drop";
                 $temErroCadastro = true;
             } elseif(!$this->brinquedosModel->validaHorariosRodaGigante($dados)){
                 
@@ -128,13 +145,44 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
                 ];
 
                 $horarioErroCadastro = "Roda Gigante";
                 $temErroCadastro = true;
-            }
+            } elseif(!$this->brinquedosModel->validaHorariosCarrosel($dados)){
+                
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
+                ];
+
+                $horarioErroCadastro = "Carrosel";
+                $temErroCadastro = true;
+            } elseif(!$this->brinquedosModel->validaHorariosDiscovery($dados)){
+                
+                $dados = [
+
+                    'espectador' => $espectador,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery
+                ];
+
+                $horarioErroCadastro = "Discovery";
+                $temErroCadastro = true;
+            } 
             
             
             
@@ -157,8 +205,10 @@ class BrinquedosController extends Controller
                 'brinquedos' => $brinquedos,
                 'horaTirolesa' => $horaTirolesa,
                 'horaRodaGigante' => $horaRodaGigante,
-                'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                'quinzeMinCabum' => $quinzeMinCabum,
+                'horaMontanhaRussa' => $horaMontanhaRussa,
+                'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                'quinzeMinDiscovery' => $quinzeMinDiscovery,
                 'termoErro' => '',
                 'tirolesaErro' => ''
             ];
@@ -179,8 +229,10 @@ class BrinquedosController extends Controller
         $brinquedos = $this->brinquedosModel->visualizarBrinquedos();
         $horaTirolesa = $this->brinquedosModel->visualizarHoraTirolesa();
         $horaRodaGigante = $this->brinquedosModel->visualizarHoraRogaGigante();
-        $trintaMinMontanhaRussa = $this->brinquedosModel->visualizarTrintaMinMontanhaRussa();
-        $quinzeMinCabum = $this->brinquedosModel->visualizarQuinzeMinCabum();
+        $horaMontanhaRussa = $this->brinquedosModel->visualizarHoraMontanhaRussa();
+        $quinzeMinMegaDrop = $this->brinquedosModel->visualizarQuinzeMinMegaDrop();
+        $quinzeMinCarrosel = $this->brinquedosModel->visualizarQuinzeMinCarrosel();
+        $quinzeMinDiscovery = $this->brinquedosModel->visualizarQuinzeMinDiscovery();
         $termoResponsabilidade = $this->brinquedosModel->lerAnexosPorId($id);
 
         $temErroEditar = false;
@@ -194,16 +246,21 @@ class BrinquedosController extends Controller
             $dados = ['fk_espectador' => $id];
             //Brinquedos agendados
             $dados['cboHoraTirolesa'] = isset($formulario['cboHoraTirolesa']) ? $formulario['cboHoraTirolesa'] : NULL;
-            $dados['cboTrintaMinMontanhaRussa'] = isset($formulario['cboTrintaMinMontanhaRussa']) ? $formulario['cboTrintaMinMontanhaRussa'] : NULL;
-            $dados['cboQuinzeMinCabum'] = isset($formulario['cboQuinzeMinCabum']) ? $formulario['cboQuinzeMinCabum'] : NULL;
+            $dados['cboHoraMontanhaRussa'] = isset($formulario['cboHoraMontanhaRussa']) ? $formulario['cboHoraMontanhaRussa'] : NULL;
             $dados['cboHoraRodaGigante'] = isset($formulario['cboHoraRodaGigante']) ? $formulario['cboHoraRodaGigante'] : NULL;
+            $dados['cboQuinzeMinMegaDrop'] = isset($formulario['cboQuinzeMinMegaDrop']) ? $formulario['cboQuinzeMinMegaDrop'] : NULL;
+            $dados['cboQuinzeCarrosel'] = isset($formulario['cboQuinzeCarrosel']) ? $formulario['cboQuinzeCarrosel'] : NULL;
+            $dados['cboQuinzeDiscovery'] = isset($formulario['cboQuinzeDiscovery']) ? $formulario['cboQuinzeDiscovery'] : NULL;
+            
 
             //Brinquedos não agendados
             $dados['chkBrinquedo'] = isset($formulario['chkBrinquedo']) ? $formulario['chkBrinquedo'] : NULL;
             $dados['cboHoraTirolesaNA'] = !$formulario['cboHoraTirolesaNA'] == "" ? $formulario['cboHoraTirolesaNA'] : NULL;
-            $dados['cboTrintaMinMontanhaRussaNA'] = !$formulario['cboTrintaMinMontanhaRussaNA'] == "" ? $formulario['cboTrintaMinMontanhaRussaNA'] : NULL;
-            $dados['cboQuinzeMinCabumNA'] = !$formulario['cboQuinzeMinCabumNA'] == "" ? $formulario['cboQuinzeMinCabumNA'] : NULL;
+            $dados['cboHoraMontanhaRussaNA'] = !$formulario['cboHoraMontanhaRussaNA'] == "" ? $formulario['cboHoraMontanhaRussaNA'] : NULL;
+            $dados['cboQuinzeMinMegaDropNA'] = !$formulario['cboQuinzeMinMegaDropNA'] == "" ? $formulario['cboQuinzeMinMegaDropNA'] : NULL;            
             $dados['cboHoraRodaGiganteNA'] = !$formulario['cboHoraRodaGiganteNA'] == "" ? $formulario['cboHoraRodaGiganteNA'] : NULL;
+            $dados['cboQuinzeCarroselNA'] = !$formulario['cboQuinzeCarroselNA'] == "" ? $formulario['cboQuinzeCarroselNA'] : NULL;
+            $dados['cboQuinzeDiscoveryNA'] = !$formulario['cboQuinzeDiscoveryNA'] == "" ? $formulario['cboQuinzeDiscoveryNA'] : NULL;
 
             //Termo responsabilidade input
             $dados['fileTermoResponsabilidade'] = !$_FILES['fileTermoResponsabilidade']['name'] == "" ? $_FILES['fileTermoResponsabilidade'] : "";
@@ -219,8 +276,10 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
                     'termoResponsabilidade' => $termoResponsabilidade,
                 ];
 
@@ -232,8 +291,10 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
                     'termoResponsabilidade' => $termoResponsabilidade,
                 ];
                 $dados['tirolesaErro'] = "Horário Tirolesa já esta em uso";
@@ -246,26 +307,30 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
                     'termoResponsabilidade' => $termoResponsabilidade,
                 ];
                 $dados['montanhaErro'] = "Horário Montanha Russa já esta em uso";
                 $horarioErroEditar = "Montanha russa";
                 $temErroEditar = true;
-            } elseif (!$this->brinquedosModel->validaHorariosKabum($dados)) {
+            } elseif (!$this->brinquedosModel->validaHorariosMegaDrop($dados)) {
 
                 $dados = [
                     'agendamento' => $agendamento,
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
                     'termoResponsabilidade' => $termoResponsabilidade,
                 ];
-                $dados['kabumErro'] = "Horário Kabum já esta em uso";
-                $horarioErroEditar = "Kabum";
+                $dados['megaDropErro'] = "Horário Mega drop já esta em uso";
+                $horarioErroEditar = "Mega drop";
                 $temErroEditar = true;
             } elseif (!$this->brinquedosModel->validaHorariosRodaGigante($dados)) {
 
@@ -274,14 +339,54 @@ class BrinquedosController extends Controller
                     'brinquedos' => $brinquedos,
                     'horaTirolesa' => $horaTirolesa,
                     'horaRodaGigante' => $horaRodaGigante,
-                    'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                    'quinzeMinCabum' => $quinzeMinCabum,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
                     'termoResponsabilidade' => $termoResponsabilidade,
                 ];
                 $dados['rodaGiganteErro'] = "Horário Roda Gigante já esta em uso";
                 $horarioErroEditar = "Roda Gigante";
                 $temErroEditar = true;
-            } else {
+            } elseif (!$this->brinquedosModel->validaHorariosCarrosel($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['carroselErro'] = "Horário Carrosel já esta em uso";
+                $horarioErroEditar = "Carrosel";
+                $temErroEditar = true;
+
+
+            } elseif (!$this->brinquedosModel->validaHorariosDiscovery($dados)) {
+
+                $dados = [
+                    'agendamento' => $agendamento,
+                    'brinquedos' => $brinquedos,
+                    'horaTirolesa' => $horaTirolesa,
+                    'horaRodaGigante' => $horaRodaGigante,
+                    'horaMontanhaRussa' => $horaMontanhaRussa,
+                    'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                    'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                    'quinzeMinDiscovery' => $quinzeMinDiscovery,
+                    'termoResponsabilidade' => $termoResponsabilidade,
+                ];
+                $dados['discoveryErro'] = "Horário Discovery já esta em uso";
+                $horarioErroEditar = "Discovery";
+                $temErroEditar = true;
+            
+            }
+            
+            
+            else {
 
                 // var_dump($dados);
                 // exit();
@@ -302,8 +407,10 @@ class BrinquedosController extends Controller
                 'brinquedos' => $brinquedos,
                 'horaTirolesa' => $horaTirolesa,
                 'horaRodaGigante' => $horaRodaGigante,
-                'trintaMinMontanhaRussa' => $trintaMinMontanhaRussa,
-                'quinzeMinCabum' => $quinzeMinCabum,
+                'horaMontanhaRussa' => $horaMontanhaRussa,
+                'quinzeMinMegaDrop' => $quinzeMinMegaDrop,
+                'quinzeMinCarrosel' => $quinzeMinCarrosel,
+                'quinzeMinDiscovery' => $quinzeMinDiscovery,
                 'termoResponsabilidade' => $termoResponsabilidade,
                 'termoErro' => ''
             ];

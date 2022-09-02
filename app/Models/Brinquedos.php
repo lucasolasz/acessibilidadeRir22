@@ -40,16 +40,31 @@ class Brinquedos
         return $this->db->resultados();
     }
 
-    public function visualizarTrintaMinMontanhaRussa()
+    public function visualizarHoraMontanhaRussa()
     {
-        $this->db->query("SELECT * FROM tb_trinta_min ttm  
-        WHERE ttm.id_trinta_min NOT IN (SELECT DISTINCT(ttm2.id_trinta_min) FROM tb_trinta_min ttm2 JOIN tb_agenda_brinquedo tab ON ttm2.id_trinta_min = tab.fk_trinta_min)");
+        $this->db->query("SELECT * FROM tb_hora th  
+        WHERE th.id_hora NOT IN (SELECT DISTINCT(id_hora) FROM tb_hora th2 JOIN tb_agenda_brinquedo tab ON th2.id_hora = tab.fk_hora_montanha_russa)");
         return $this->db->resultados();
     }
-    public function visualizarQuinzeMinCabum()
+
+    public function visualizarQuinzeMinMegaDrop()
     {
         $this->db->query("SELECT * FROM tb_quinze_min tqm  
-        WHERE tqm.id_quinze_min NOT IN (SELECT DISTINCT(tqm2.id_quinze_min) FROM tb_quinze_min tqm2 JOIN tb_agenda_brinquedo tab ON tqm2.id_quinze_min = tab.fk_quinze_min)");
+        WHERE tqm.id_quinze_min NOT IN (SELECT DISTINCT(tqm2.id_quinze_min) FROM tb_quinze_min tqm2 JOIN tb_agenda_brinquedo tab ON tqm2.id_quinze_min = tab.fk_quinze_mega_drop)");
+        return $this->db->resultados();
+    }
+
+    public function visualizarQuinzeMinCarrosel()
+    {
+        $this->db->query("SELECT * FROM tb_quinze_min tqm  
+        WHERE tqm.id_quinze_min NOT IN (SELECT DISTINCT(tqm2.id_quinze_min) FROM tb_quinze_min tqm2 JOIN tb_agenda_brinquedo tab ON tqm2.id_quinze_min = tab.fk_quinze_carrosel)");
+        return $this->db->resultados();
+    }
+
+    public function visualizarQuinzeMinDiscovery()
+    {
+        $this->db->query("SELECT * FROM tb_quinze_min tqm  
+        WHERE tqm.id_quinze_min NOT IN (SELECT DISTINCT(tqm2.id_quinze_min) FROM tb_quinze_min tqm2 JOIN tb_agenda_brinquedo tab ON tqm2.id_quinze_min = tab.fk_quinze_discovery)");
         return $this->db->resultados();
     }
 
@@ -66,13 +81,15 @@ class Brinquedos
 
             foreach ($dados['chkBrinquedo'] as $chkBrinquedo) {
 
-                $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_trinta_min, fk_quinze_min) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_trinta_min, :fk_quinze_min)");
+                $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_quinze_mega_drop, fk_hora_montanha_russa, fk_quinze_carrosel, fk_quinze_discovery) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_quinze_mega_drop, :fk_hora_montanha_russa, :fk_quinze_carrosel, :fk_quinze_discovery)");
                 $this->db->bind("fk_espectador", $dados['hidIdExpectador']);
                 $this->db->bind("fk_brinquedo", $chkBrinquedo);
                 $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesa']);
                 $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);
-                $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussa']);
-                $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabum']);
+                $this->db->bind("fk_quinze_mega_drop", $dados['cboQuinzeMinMegaDrop']);
+                $this->db->bind("fk_hora_montanha_russa", $dados['cboHoraMontanhaRussa']);
+                $this->db->bind("fk_quinze_carrosel", $dados['cboQuinzeCarrosel']);
+                $this->db->bind("fk_quinze_discovery", $dados['cboQuinzeDiscovery']);
                 if (!$this->db->executa()) {
                     $armazenaBrinquedoErro = true;
                 }
@@ -152,14 +169,16 @@ class Brinquedos
             // echo "entrei";
 
             foreach ($dados['chkBrinquedo'] as $chkBrinquedo) {
-                $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_trinta_min, fk_quinze_min) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_trinta_min, :fk_quinze_min)");
+                $this->db->query("INSERT INTO tb_agenda_brinquedo (fk_espectador, fk_brinquedo, fk_hora_tirolesa, fk_hora_roda_gigante, fk_quinze_mega_drop, fk_hora_montanha_russa, fk_quinze_carrosel, fk_quinze_discovery) VALUES (:fk_espectador, :fk_brinquedo, :fk_hora_tirolesa, :fk_hora_roda_gigante, :fk_quinze_mega_drop, :fk_hora_montanha_russa, :fk_quinze_carrosel, :fk_quinze_discovery)");
 
                 $this->db->bind("fk_espectador", $dados['fk_espectador']);
                 $this->db->bind("fk_brinquedo", $chkBrinquedo);
                 $this->db->bind("fk_hora_tirolesa", $dados['cboHoraTirolesaNA']);
                 $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGiganteNA']);
-                $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussaNA']);
-                $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabumNA']);
+                $this->db->bind("fk_quinze_mega_drop", $dados['cboQuinzeMinMegaDropNA']);
+                $this->db->bind("fk_hora_montanha_russa", $dados['cboHoraMontanhaRussaNA']);
+                $this->db->bind("fk_quinze_carrosel", $dados['cboQuinzeCarroselNA']);
+                $this->db->bind("fk_quinze_discovery", $dados['cboQuinzeDiscoveryNA']);
                 if (!$this->db->executa()) {
                     $editarBrinquedoErro = true;
                 }
@@ -180,24 +199,24 @@ class Brinquedos
         }
 
 
-        if (!$dados['cboTrintaMinMontanhaRussa'] == NULL) {
+        if (!$dados['cboHoraMontanhaRussa'] == NULL) {
 
             $this->db->query("UPDATE tb_agenda_brinquedo SET 
-            fk_trinta_min = :fk_trinta_min            
+            fk_hora_montanha_russa = :fk_hora_montanha_russa            
             WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussa']);
+            $this->db->bind("fk_hora_montanha_russa", $dados['cboHoraMontanhaRussa']);
             $this->db->bind("fk_espectador", $dados['fk_espectador']);
             if (!$this->db->executa()) {
                 $editarBrinquedoErro = true;
             }
         }
 
-        if (!$dados['cboQuinzeMinCabum'] == NULL) {
+        if (!$dados['cboQuinzeMinMegaDrop'] == NULL) {
 
             $this->db->query("UPDATE tb_agenda_brinquedo SET 
-            fk_quinze_min = :fk_quinze_min            
+            fk_quinze_mega_drop = :fk_quinze_mega_drop            
             WHERE fk_espectador = :fk_espectador");
-            $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabum']);
+            $this->db->bind("fk_quinze_mega_drop", $dados['cboQuinzeMinMegaDrop']);
             $this->db->bind("fk_espectador", $dados['fk_espectador']);
             if (!$this->db->executa()) {
                 $editarBrinquedoErro = true;
@@ -211,6 +230,30 @@ class Brinquedos
             fk_hora_roda_gigante = :fk_hora_roda_gigante            
             WHERE fk_espectador = :fk_espectador");
             $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
+        }
+
+        if (!$dados['cboQuinzeCarrosel'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_quinze_carrosel = :fk_quinze_carrosel            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_quinze_carrosel", $dados['cboQuinzeCarrosel']);
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);
+            if (!$this->db->executa()) {
+                $editarBrinquedoErro = true;
+            }
+        }
+
+        if (!$dados['cboQuinzeDiscovery'] == NULL) {
+
+            $this->db->query("UPDATE tb_agenda_brinquedo SET 
+            fk_quinze_discovery = :fk_quinze_discovery            
+            WHERE fk_espectador = :fk_espectador");
+            $this->db->bind("fk_quinze_discovery", $dados['cboQuinzeDiscovery']);
             $this->db->bind("fk_espectador", $dados['fk_espectador']);
             if (!$this->db->executa()) {
                 $editarBrinquedoErro = true;
@@ -327,12 +370,21 @@ class Brinquedos
     public function lerAgendamentoPorId($id)
     {
 
-        $this->db->query("SELECT id_brinquedo, ds_brinquedo, th.id_hora AS id_hora_tirolesa ,th.range_hora AS range_tirolesa, th2.id_hora AS id_hora_roda_gigante, th2.range_hora AS range_roda_gigante, tqm2.id_quinze_min AS id_quinze_cabum, tqm2.range_quinze_min AS range_cabum, ttm.id_trinta_min AS id_trinta_montanha, ttm.range_trinta_min range_montanha, te.id_espectador, te.ds_nome_espectador FROM tb_brinquedo tb 
+        $this->db->query("SELECT id_brinquedo, ds_brinquedo, th.range_hora AS range_tirolesa, th.id_hora AS id_hora_tirolesa,
+        th2.range_hora AS range_roda_gigante, th2.id_hora AS id_hora_roda_gigante, 
+        th3.range_hora as range_montanha, th3.id_hora as id_hora_montanha,
+        tqm.range_quinze_min AS range_mega_drop, tqm.id_quinze_min as id_quinze_mega_drop,
+        tqm2.range_quinze_min AS range_carrosel, tqm2.id_quinze_min as id_quinze_carrosel,
+        tqm3.range_quinze_min AS range_discovery, tqm3.id_quinze_min as id_quinze_discovery,
+        te.id_espectador, te.ds_nome_espectador
+        from tb_brinquedo tb 
         JOIN tb_agenda_brinquedo tab ON tab.fk_brinquedo = tb.id_brinquedo
         LEFT JOIN tb_hora th ON th.id_hora = tab.fk_hora_tirolesa
         LEFT JOIN tb_hora th2 ON th2.id_hora = tab.fk_hora_roda_gigante
-        LEFT JOIN tb_trinta_min ttm ON ttm.id_trinta_min = tab.fk_trinta_min 
-        LEFT JOIN tb_quinze_min tqm2 ON tqm2.id_quinze_min = tab.fk_quinze_min
+        LEFT JOIN tb_hora th3 ON th3.id_hora = tab.fk_hora_montanha_russa
+        LEFT JOIN tb_quinze_min tqm on tqm.id_quinze_min = tab.fk_quinze_mega_drop
+        LEFT JOIN tb_quinze_min tqm2 on tqm2.id_quinze_min = tab.fk_quinze_carrosel 
+        LEFT JOIN tb_quinze_min tqm3 on tqm3.id_quinze_min = tab.fk_quinze_discovery
         LEFT JOIN tb_espectador te ON te.id_espectador = tab.fk_espectador 
         where tab.fk_espectador = :fk_espectador;");
         $this->db->bind("fk_espectador", $id);
@@ -417,11 +469,11 @@ class Brinquedos
     public function validaHorariosMontanha($dados)
     {
 
-        if (!$dados['cboTrintaMinMontanhaRussa'] == NULL or !$dados['cboTrintaMinMontanhaRussaNA'] == NULL) {
+        if (!$dados['cboHoraMontanhaRussa'] == NULL or !$dados['cboHoraMontanhaRussaNA'] == NULL) {
          
-            $this->db->query("SELECT fk_trinta_min FROM tb_agenda_brinquedo WHERE (fk_trinta_min = :fk_trinta_min or fk_trinta_min = :fk_trinta_minNA) AND fk_espectador <> :fk_espectador");
-            $this->db->bind("fk_trinta_min", $dados['cboTrintaMinMontanhaRussa']);        
-            $this->db->bind("fk_trinta_minNA", $dados['cboTrintaMinMontanhaRussaNA']);        
+            $this->db->query("SELECT fk_hora_montanha_russa FROM tb_agenda_brinquedo WHERE (fk_hora_montanha_russa = :fk_hora_montanha_russa or fk_hora_montanha_russa = :fk_hora_montanha_russaNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_hora_montanha_russa", $dados['cboHoraMontanhaRussa']);        
+            $this->db->bind("fk_hora_montanha_russaNA", $dados['cboHoraMontanhaRussaNA']);        
             $this->db->bind("fk_espectador", $dados['fk_espectador']);        
             $result = $this->db->resultados();  
 
@@ -436,14 +488,14 @@ class Brinquedos
 
     }
 
-    public function validaHorariosKabum($dados)
+    public function validaHorariosMegaDrop($dados)
     {
 
-        if (!$dados['cboQuinzeMinCabum'] == NULL or !$dados['cboQuinzeMinCabumNA'] == NULL) {
+        if (!$dados['cboQuinzeMinMegaDrop'] == NULL or !$dados['cboQuinzeMinMegaDropNA'] == NULL) {
          
-            $this->db->query("SELECT fk_quinze_min FROM tb_agenda_brinquedo WHERE (fk_quinze_min = :fk_quinze_min or fk_quinze_min = :fk_quinze_minNA) AND fk_espectador <> :fk_espectador");
-            $this->db->bind("fk_quinze_min", $dados['cboQuinzeMinCabum']);        
-            $this->db->bind("fk_quinze_minNA", $dados['cboQuinzeMinCabumNA']);        
+            $this->db->query("SELECT fk_quinze_mega_drop FROM tb_agenda_brinquedo WHERE (fk_quinze_mega_drop = :fk_quinze_mega_drop or fk_quinze_mega_drop = :fk_quinze_mega_dropNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_quinze_mega_drop", $dados['cboQuinzeMinMegaDrop']);        
+            $this->db->bind("fk_quinze_mega_dropNA", $dados['cboQuinzeMinMegaDropNA']);        
             $this->db->bind("fk_espectador", $dados['fk_espectador']);        
             $result = $this->db->resultados();  
 
@@ -466,6 +518,50 @@ class Brinquedos
             $this->db->query("SELECT fk_hora_roda_gigante FROM tb_agenda_brinquedo WHERE (fk_hora_roda_gigante = :fk_hora_roda_gigante or fk_hora_roda_gigante = :fk_hora_roda_giganteNA) AND fk_espectador <> :fk_espectador");
             $this->db->bind("fk_hora_roda_gigante", $dados['cboHoraRodaGigante']);        
             $this->db->bind("fk_hora_roda_giganteNA", $dados['cboHoraRodaGiganteNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function validaHorariosCarrosel($dados)
+    {
+
+        if (!$dados['cboQuinzeCarrosel'] == NULL or !$dados['cboQuinzeCarroselNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_quinze_carrosel FROM tb_agenda_brinquedo WHERE (fk_quinze_carrosel = :fk_quinze_carrosel or fk_quinze_carrosel = :fk_quinze_carroselNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_quinze_carrosel", $dados['cboQuinzeCarrosel']);        
+            $this->db->bind("fk_quinze_carroselNA", $dados['cboQuinzeCarroselNA']);        
+            $this->db->bind("fk_espectador", $dados['fk_espectador']);        
+            $result = $this->db->resultados();  
+
+            if(empty($result)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public function validaHorariosDiscovery($dados)
+    {
+
+        if (!$dados['cboQuinzeDiscovery'] == NULL or !$dados['cboQuinzeDiscoveryNA'] == NULL) {
+         
+            $this->db->query("SELECT fk_quinze_discovery FROM tb_agenda_brinquedo WHERE (fk_quinze_discovery = :fk_quinze_discovery or fk_quinze_discovery = :fk_quinze_discoveryNA) AND fk_espectador <> :fk_espectador");
+            $this->db->bind("fk_quinze_discovery", $dados['cboQuinzeDiscovery']);        
+            $this->db->bind("fk_quinze_discoveryNA", $dados['cboQuinzeDiscoveryNA']);        
             $this->db->bind("fk_espectador", $dados['fk_espectador']);        
             $result = $this->db->resultados();  
 

@@ -109,10 +109,10 @@ function disableHorarioTiroleza(chk_brinquedo) {
 
 function disableHorarioMontanhaRussa(chk_brinquedo) {
 
-    $("#divTrintaMontanhaRussa").hide(200);
+    $("#divHoraMontanhaRussa").hide(200);
 
     if (chk_brinquedo == 2) {
-        $("#divTrintaMontanhaRussa").show(200);
+        $("#divHoraMontanhaRussa").show(200);
 
     }
 }
@@ -121,10 +121,10 @@ function disableHorarioCabum(chk_brinquedo) {
 
     // console.log('oi');
 
-    $("#divQuinzeCabum").hide(200);
+    $("#divQuinzeMegaDrop").hide(200);
 
     if (chk_brinquedo == 3) {
-        $("#divQuinzeCabum").show(200);
+        $("#divQuinzeMegaDrop").show(200);
 
     }
 }
@@ -135,6 +135,26 @@ function disableHorarioRodaGigante(chk_brinquedo) {
 
     if (chk_brinquedo == 4) {
         $("#divHoraRodaGigante").show(200);
+
+    }
+}
+
+function disableHorarioCarrosel(chk_brinquedo) {
+
+    $("#divQuinzeCarrosel").hide(200);
+
+    if (chk_brinquedo == 5) {
+        $("#divQuinzeCarrosel").show(200);
+
+    }
+}
+
+function disableHorarioDiscovery(chk_brinquedo) {
+
+    $("#divQuinzeDiscovery").hide(200);
+
+    if (chk_brinquedo == 6) {
+        $("#divQuinzeDiscovery").show(200);
 
     }
 }
