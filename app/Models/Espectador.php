@@ -366,6 +366,39 @@ class Espectador
 
             if (!$dados['chkAcessoServico'] == "") {
 
+                foreach ($dados['chkAcessoServico'] as $chkAcessoServicoCadeira) {
+                    $temCadeiraMarcada = false;
+
+                    if ($chkAcessoServicoCadeira == 4) {
+                        $temCadeiraMarcada = true;
+                    }
+                }
+
+                if (!$temCadeiraMarcada) {
+
+                    $fotoAdesao = $this->lerAnexosPorId($dados['id_espectador']);
+
+                    if (!empty($fotoAdesao)) {
+
+                        if ($this->deletarFotoAdesao($fotoAdesao)) {
+
+                            $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = NULL WHERE id_espectador = :id_espectador");
+                            $this->db->bind("id_espectador", $dados['id_espectador']);
+                            if (!$this->db->executa()) {
+                                $editarEspectadorErro = true;
+                            }
+                        } 
+                    } else {
+
+                        $this->db->query("UPDATE tb_espectador SET fk_cadeira_rodas = NULL WHERE id_espectador = :id_espectador");
+                        $this->db->bind("id_espectador", $dados['id_espectador']);
+                        if (!$this->db->executa()) {
+                            $editarEspectadorErro = true;
+                        }
+                    }
+                }
+
+
                 //Apaga os anteriores e salva as novas opções escolhidas
                 $this->db->query("DELETE FROM tb_relac_acesso_servico WHERE fk_espectador = :fk_espectador");
                 $this->db->bind("fk_espectador", $dados['id_espectador']);
@@ -483,7 +516,7 @@ class Espectador
                 $this->db->executa();
             }
 
-            if (!$dados['fileTermoAdesaoIdentidade']['name'] == "") {
+            if (!$dados['fileTermoAdesaoIdentidade']['name'][0] == "") {
 
                 //Se entrar aqui na edição, está sendo feita uma substituição
                 $pastaArquivo = "espectador_id_" . $dados['id_espectador'];
@@ -604,7 +637,7 @@ class Espectador
                     if (!$this->db->executa()) {
                         $deletarEspectadorErro = true;
                     }
-                }                
+                }
 
                 //Apaga a pasta apos estar vazia
                 rmdir($pastaPrincipal);
@@ -700,6 +733,33 @@ class Espectador
             return true;
         } else {
             return false;
+        }
+    }
+
+    //Criado para nao dar problema na função de cima, pois agora tem mais de um arquivo de foto (adesao e identidade)
+    public function deletarFotoAdesao($dados)
+    {
+        $deletarAdesaoErro = false;
+
+        foreach ($dados as $fotosAdesao) {
+
+            //Monta string do diretório da imagem
+            $path_arquivo = $fotosAdesao->nm_path_arquivo . DIRECTORY_SEPARATOR . $fotosAdesao->nm_arquivo;
+            $upload = new Upload();
+            $upload->deletarArquivo(null, $path_arquivo);
+
+            //Deleta da tabela
+            $this->db->query("DELETE FROM tb_anexo WHERE id_anexo = :id_anexo");
+            $this->db->bind("id_anexo", $fotosAdesao->id_anexo);
+            if (!$this->db->executa()) {
+                $deletarAdesaoErro = true;
+            }
+        }
+
+        if ($deletarAdesaoErro) {
+            return false;
+        } else {
+            return true;
         }
     }
 
