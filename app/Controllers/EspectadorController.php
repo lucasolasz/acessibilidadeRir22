@@ -43,6 +43,9 @@ class EspectadorController extends Controller
 
         if (isset($formulario)) {
 
+            // var_dump($formulario);
+            // exit();
+
 
             $dados = [
                 'txtNomeEspectador' => trim($formulario['txtNomeEspectador']),
@@ -73,10 +76,11 @@ class EspectadorController extends Controller
             $dados['chkTipoDeficiencia'] = isset($formulario['chkTipoDeficiencia']) ? $formulario['chkTipoDeficiencia'] : "";
             $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
             $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
-            $dados['fileTermoAdesaoIdentidade'] = isset($_FILES['fileTermoAdesaoIdentidade']) ? $_FILES['fileTermoAdesaoIdentidade'] : "";          
+            $dados['fileTermoAdesaoIdentidade'] = isset($_FILES['fileTermoAdesaoIdentidade']) ? $_FILES['fileTermoAdesaoIdentidade'] : "";    
+            $dados['txtOutroObjeto'] = !$formulario['txtOutroObjeto'] == "" ? $formulario['txtOutroObjeto'] : NULL;      
 
-            // var_dump($dados['fileTermoAdesaoIdentidade']);
-            // var_dump($dados['fileIdentidade']);
+            // var_dump($dados['txtOutroObjeto']);
+            // // var_dump($dados['fileIdentidade']);
             // exit();
 
             if ($this->espectadorModel->armazenarEspectador($dados)) {
@@ -139,7 +143,7 @@ class EspectadorController extends Controller
 
         if (isset($formulario)) {
 
-            // var_dump($formulario['cboQuantidadeMenor']);
+            // var_dump($formulario);
             // exit();
 
 
@@ -185,6 +189,7 @@ class EspectadorController extends Controller
             $dados['radioCondicao'] = isset($formulario['radioCondicao']) ? $formulario['radioCondicao'] : NULL;
             $dados['chkGuardaVolume'] = isset($formulario['chkGuardaVolume']) ? $formulario['chkGuardaVolume'] : "";
             $dados['fileTermoAdesaoIdentidade'] = isset($_FILES['fileTermoAdesaoIdentidade']) ? $_FILES['fileTermoAdesaoIdentidade'] : "";
+            $dados['txtOutroObjeto'] = !$formulario['txtOutroObjeto'] == "" ? $formulario['txtOutroObjeto'] : NULL;   
 
             if ($this->espectadorModel->editarEspectador($dados)) {
 

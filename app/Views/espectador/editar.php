@@ -26,12 +26,20 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
     }
 }
 
+$guardaVolumesOutros = false;
+
+foreach ($dados['relacGuardaVolumes'] as $relacGuardaVolumesObj) {
+
+    if ($relacGuardaVolumesObj->fk_guarda_volumes == 4) {
+        $guardaVolumesOutros = true;
+    }
+}
+
 
 
 ?>
 
 <div class="col-xl-4 col-md-6 mx-auto p-5">
-    <!-- <pre><?php var_dump($dados['fotoAdesao']); ?></pre> -->
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -418,6 +426,13 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
                     </div>
                 </div>
 
+                <div class="pl-5 form-check" id="divOutrosGuardaVolumes">
+                    <div class="mt-3">
+                        <label for="txtOutroObjeto">Outro objeto:</label>
+                        <textarea class="form-control" id="txtOutroObjeto" placeholder="Descrição opcional" name="txtOutroObjeto"><?= $dados['espectador']->txt_outros_guarda_volumes?></textarea>
+                    </div>
+                </div>
+
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <input type="submit" value="Atualizar" class="btn btn-artcor">
@@ -436,6 +451,7 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
         $("#divAcompanhante").hide();
         $("#divAcompanhanteItens").hide();
         $("#divQtmenores").hide();
+        $("#divOutrosGuardaVolumes").hide();
 
 
         <?php if ($fk_condicao == '1') { ?>
@@ -452,7 +468,7 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
             <?php } ?>
         <?php } ?>
 
-        <?php if ($fk_condicao == '2') { ?>
+        <?php if ($fk_condicao != '1') { ?>
             $("#divAcompanhante").show();
             <?php if ($dados['espectador']->chk_acompanhante == 'S') { ?>
                 $("#divAcompanhanteItens").show();
@@ -469,6 +485,11 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
         <?php if (!$guarda_volumes) { ?>
             $("#divGuardaVolumes").hide();
         <?php } ?>
+
+        <?php if ($guardaVolumesOutros) { ?>
+            $("#divOutrosGuardaVolumes").show();
+        <?php } ?>
+
 
     });
 
@@ -513,5 +534,11 @@ foreach ($dados['relacTipoDeficiencia'] as $relacTipoDeficiencia) {
     $("#chkTipoDeficiencia1").click(function() {
         chk_tipo_deficiencia = $("#chkTipoDeficiencia1:checked").val();
         disableTipoDeficienciaFisica(chk_tipo_deficiencia);
+    });
+
+    //Monitora campo chk guarda volumes outros
+    $("#chkGuardaVolume4").click(function() {
+        chk_guarda_volumes = $("#chkGuardaVolume4:checked").val();
+        disableOutrosObjetos(chk_guarda_volumes);
     });
 </script>

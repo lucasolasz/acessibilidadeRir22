@@ -11,9 +11,11 @@ function disableTipoDeficiencia(id_condicao) {
 
 function disableAcompanhante(id_condicao) {
 
+    console.log(id_condicao);
+
     $("#divAcompanhante").hide(200);
 
-    if (id_condicao == 1 || id_condicao == 2) {
+    if (id_condicao > 0) {
         $("#divAcompanhante").show(200);
     }
 
@@ -179,3 +181,12 @@ function disableAudioDescricao(chk_tipo_deficiencia) {
     }
 }
 
+function disableOutrosObjetos(chk_guarda_volumes) {
+
+    $("#divOutrosGuardaVolumes").hide(200);
+
+    if (chk_guarda_volumes == 4) {
+        $("#divOutrosGuardaVolumes").show(200);
+
+    }
+}

@@ -35,7 +35,7 @@
                 <div class="mb-3">
                     <label for="txtEmail" class="form-label">E-mail: *</label>
                     <input type="text" class="form-control" name="txtEmail" id="txtEmail" value="">
-                </div>               
+                </div>
 
                 <label for="radioCondicao" class="form-label">Condição: *</label>
                 <?php foreach ($dados['condicao'] as $condicao) {
@@ -259,6 +259,13 @@
                     </div>
                 </div>
 
+                <div class="pl-5 form-check" id="divOutrosGuardaVolumes">
+                    <div class="mt-3">
+                        <label for="txtOutroObjeto">Outro objeto:</label>
+                        <textarea class="form-control" id="txtOutroObjeto" placeholder="Descrição opcional" name="txtOutroObjeto"></textarea>
+                    </div>
+                </div>
+
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <input type="submit" value="Cadastrar" class="btn btn-artcor">
@@ -277,6 +284,8 @@
         $("#divQtmenores").hide();
         $("#divCadeiraRodas").hide();
         $("#divGuardaVolumes").hide();
+        $("#divOutrosGuardaVolumes").hide();
+
 
         $("#txtDocumento").keyup(function() {
             $("#txtDocumento").val(this.value.match(/[0-9]*/));
@@ -359,4 +368,12 @@
         chk_tipo_deficiencia = $("#chkTipoDeficiencia2:checked").val();
         disableAudioDescricao(chk_tipo_deficiencia);
     });
+
+
+    //Monitora campo chk guarda volumes outros
+    $("#chkGuardaVolume4").click(function() {
+        chk_guarda_volumes = $("#chkGuardaVolume4:checked").val();
+        disableOutrosObjetos(chk_guarda_volumes);
+    });
+
 </script>

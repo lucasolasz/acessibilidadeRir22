@@ -375,3 +375,18 @@ INSERT INTO tb_plataforma_mundo (id_plataforma_mundo, num_reserva, cor_reserva) 
 (206,"A12","V"),
 (207,"A13","V"),
 (208,"A14","C");
+
+
+--  Auto-generated SQL script #202209031229
+INSERT INTO tb_tipo_deficiencia_fisica (id_tipo_deficiencia_fisica,ds_tipo_deficiencia_fisica)
+	VALUES (16,'Paralisia cerebral');
+
+
+--  Auto-generated SQL script #202209031238
+INSERT INTO tb_guarda_volume (id_guarda_volume,ds_guarda_volume)
+	VALUES (4,'Outros');
+
+
+ALTER TABLE tb_espectador ADD txt_outros_guarda_volumes varchar(500) DEFAULT NULL NULL;
+
+
