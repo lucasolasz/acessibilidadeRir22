@@ -83,7 +83,7 @@ class Espectador
             }
 
             //Insert do espectador
-            $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica, ds_email_espectador, txt_outros_guarda_volumes) VALUES (:ds_nome_espectador,
+            $this->db->query("INSERT INTO tb_espectador (ds_nome_espectador, ds_documento_espectador, ds_descricao_deficiencia, tel_espectador, idade_espectador, chk_kit_livre, fk_condicao, chk_acompanhante, fk_acompanhante, fk_cadeira_rodas, fk_usuario, fk_tipo_deficiencia_fisica, ds_email_espectador, txt_outros_guarda_volumes, ds_numero_pulseira) VALUES (:ds_nome_espectador,
             :ds_documento_espectador,
             :ds_descricao_deficiencia,
             :tel_espectador,
@@ -96,7 +96,8 @@ class Espectador
             :fk_usuario,
             :fk_tipo_deficiencia_fisica,
             :ds_email_espectador,
-            :txt_outros_guarda_volumes)");
+            :txt_outros_guarda_volumes,
+            :ds_numero_pulseira)");
 
             $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
             $this->db->bind("ds_documento_espectador", $dados['txtDocumento']);
@@ -112,6 +113,7 @@ class Espectador
             $this->db->bind("fk_tipo_deficiencia_fisica", $dados['cboTipoDeficienciaFisica']);
             $this->db->bind("ds_email_espectador", $dados['txtEmail']);
             $this->db->bind("txt_outros_guarda_volumes", $dados['txtOutroObjeto']);
+            $this->db->bind("ds_numero_pulseira", $dados['txtNumPulseira']);
             if (!$this->db->executa()) {
                 $armazenaEspectadorErro = true;
             }
@@ -346,7 +348,8 @@ class Espectador
             fk_cadeira_rodas = :fk_cadeira_rodas,
             fk_tipo_deficiencia_fisica = :fk_tipo_deficiencia_fisica,
             ds_email_espectador = :ds_email_espectador,
-            txt_outros_guarda_volumes = :txt_outros_guarda_volumes
+            txt_outros_guarda_volumes = :txt_outros_guarda_volumes,
+            ds_numero_pulseira = :ds_numero_pulseira
             WHERE id_espectador = :id_espectador");
 
             $this->db->bind("ds_nome_espectador", $dados['txtNomeEspectador']);
@@ -363,6 +366,7 @@ class Espectador
             $this->db->bind("id_espectador", $dados['id_espectador']);
             $this->db->bind("ds_email_espectador", $dados['txtEmail']);
             $this->db->bind("txt_outros_guarda_volumes", $dados['txtOutroObjeto']);
+            $this->db->bind("ds_numero_pulseira", $dados['txtNumPulseira']);
             if (!$this->db->executa()) {
                 $editarEspectadorErro = true;
             }

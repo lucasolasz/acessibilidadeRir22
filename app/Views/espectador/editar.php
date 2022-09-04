@@ -77,6 +77,11 @@ foreach ($dados['relacGuardaVolumes'] as $relacGuardaVolumesObj) {
                     <input type="text" class="form-control" name="txtEmail" id="txtEmail" value="<?= $dados['espectador']->ds_email_espectador ?>">
                 </div>
 
+                <div class="mb-3">
+                    <label for="txtNumPulseira" class="form-label">Número pulseira: *</label>
+                    <input type="text" class="form-control" name="txtNumPulseira" id="txtNumPulseira" value="<?= $dados['espectador']->ds_numero_pulseira ?>">
+                </div>
+
                 <label for="radioCondicao" class="form-label">Condição: *</label>
                 <?php foreach ($dados['condicao'] as $condicao) {
                     $condicaoChecked = '';

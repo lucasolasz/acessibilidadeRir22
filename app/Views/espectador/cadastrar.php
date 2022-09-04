@@ -37,6 +37,11 @@
                     <input type="text" class="form-control" name="txtEmail" id="txtEmail" value="">
                 </div>
 
+                <div class="mb-3">
+                    <label for="txtNumPulseira" class="form-label">Número pulseira: *</label>
+                    <input type="text" class="form-control" name="txtNumPulseira" id="txtNumPulseira" value="">
+                </div>
+
                 <label for="radioCondicao" class="form-label">Condição: *</label>
                 <?php foreach ($dados['condicao'] as $condicao) {
                     $condicaoChecked = '';
